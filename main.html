@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset = "utf-8">
+      <style type="text/css">
+          
+      </style>
+      
+   </head>
+   <body>
+        <p id="bot1"></p>
+        <p id="bot2"></p>
+        <p id="bot3"></p>
+        <input type="text" id = "playerin">
+        <input type="button" value="打出" id="event"><p id="player"></p>
+        <p id="display"></p>
+
+
+        <script src="listen.js"></script>
+      <script >
+        let dictionary=["1W","2W","3W","4W","5W","6W","7W","8W","9W","1T","2T","3T","4T","5T","6T","7T","8T","9T","1S","2S","3S","4S","5S","6S","7S","8S","9S","DONG","NAN","XI","BEI","ZHONG","FA","BAI",""];
+        //0-8 1w(萬)-9w 9-17 1t(桶)-9t 18-26 1s(索)-9s 27-33東南西北中發白
+        function mahjong(str){
+            for(let i=0;i<34;i++)
+                if(str==dictionary[i])
+                    return i;
+        }
+        function sortfunc(a,b){
+            return a-b;
+        }
+        class handCard{//手牌->16+1 or 13+1
+            //Array listenList
+            //let hand[17]
+            //let num[34]
+            //let newCard
+            listenList=[];//聽甚麼牌
+            hand=[];//手牌
+            num=[];//34種牌的出現次數
+            newCard=34;//剛摸到的牌 34=null
+            init(){
+                for(let i=0;i<34;i++)
+                    this.num[i]=0;
+            }
+            in(array){
+                this.init();
+                for(let i=0;i<array.length;i++){
+                    this.hand[i]=array[i];
+                    this.num[array[i]]++;
+                }
+            }
+            _sort(){
+                this.hand.sort(sortfunc);   
+            }
+            AIdraw(){//AI丟牌
+                return 0;//index
+            }
+        }
+
+        let allCard=[];
+        let handOfCard=[];//0=player 1,2,3=bot 1,2,3
+        let bot1=document.getElementById("bot1");
+        let bot2=document.getElementById("bot2");
+        let bot3=document.getElementById("bot3");
+        let player=document.getElementById("player");
+        let draw=document.getElementById("display");
+        for(let i=0;i<34;i++){
+            for(let j=0;j<4;j++)
+                allCard[i*4+j]=mahjong(dictionary[i]);
+        }
+        for(let i=0;i<136;i++){//洗牌
+            let idx=Math.floor(Math.random()*136);
+            [allCard[i],allCard[idx]]=[allCard[idx],allCard[i]];//swap
+        }
+
+        let current=0;
+        for(let i=0;i<4;i++){
+            let tmp=[];
+            for(let j=0;j<16;j++)
+                tmp[j]=allCard[current++];
+            tmp[16]=34;
+            handOfCard[i]=new handCard();
+            handOfCard[i].in(tmp);
+            handOfCard[i]._sort();  
+        } 
+        function drawCard(){       
+            return allCard[current++];
+        }
+        
+        function display(n,hand){
+            let str="";
+            for(let i=0;i<16;i++)
+                str+=dictionary[hand[i]]+"  ";
+            str+="||||"+dictionary[hand[16]];
+            if(n==0)
+                player.innerHTML=str;
+            else if(n==1)
+                bot1.innerHTML=str;
+            else if(n==2)
+                bot2.innerHTML=str;
+            else if(n==3)
+                bot3.innerHTML=str;
+        }
+        function display3(str){
+            draw.innerHTML=str;
+        }
+        handOfCard[0].hand[16]=drawCard();
+        handOfCard[0].num[handOfCard[0].hand[16]]++;
+        display(1,handOfCard[1].hand);
+        display(2,handOfCard[2].hand);
+        display(3,handOfCard[3].hand);
+        display(0,handOfCard[0].hand);
+        
+        
+        let str1="";
+        function play(){
+            if(current==136-16)
+                return;
+            let n=parseInt(document.getElementById("playerin").value);
+            n--;
+            [handOfCard[0].hand[n],handOfCard[0].hand[16]]=[handOfCard[0].hand[16],handOfCard[0].hand[n]];
+            str1+=dictionary[handOfCard[0].hand[16]]+" ";
+            handOfCard[0].num[handOfCard[0].hand[16]]--;
+            handOfCard[0].hand[16]=34;
+            handOfCard[0]._sort();
+
+            let discard;
+            handOfCard[1].hand[16]=drawCard();
+            handOfCard[1].num[handOfCard[1].hand[16]]++;
+            display(1,handOfCard[1].hand);
+            //sleep 1s
+            handOfCard[1]._sort();
+            discard=handOfCard[1].AIdraw();
+            handOfCard[1].num[handOfCard[1].hand[16]]--;
+            str1+=dictionary[handOfCard[1].hand[discard]]+" ";
+            [handOfCard[1].hand[discard],handOfCard[1].hand[16]]=[handOfCard[1].hand[16],handOfCard[1].hand[discard]];
+            handOfCard[1].hand[16]=34;
+            display(1,handOfCard[1].hand);
+            if(current==136-16)
+                return;
+
+            handOfCard[2].hand[16]=drawCard();
+            handOfCard[2].num[handOfCard[2].hand[16]]++;
+            display(2,handOfCard[2].hand);
+            //sleep 1s
+            handOfCard[2]._sort();
+            discard=handOfCard[2].AIdraw();
+            handOfCard[2].num[handOfCard[2].hand[16]]--;
+            str1+=dictionary[handOfCard[2].hand[discard]]+" ";
+            [handOfCard[2].hand[discard],handOfCard[2].hand[16]]=[handOfCard[2].hand[16],handOfCard[2].hand[discard]];
+            handOfCard[2].hand[16]=34;
+            display(2,handOfCard[2].hand);
+            if(current==136-16)
+                return;
+
+            handOfCard[3].hand[16]=drawCard();
+            handOfCard[3].num[handOfCard[3].hand[16]]++;
+            display(3,handOfCard[3].hand);
+            //sleep 1s
+            handOfCard[3]._sort();
+            discard=handOfCard[3].AIdraw();
+            handOfCard[3].num[handOfCard[3].hand[16]]--;
+            str1+=dictionary[handOfCard[3].hand[discard]]+" ";
+            [handOfCard[3].hand[discard],handOfCard[3].hand[16]]=[handOfCard[3].hand[16],handOfCard[3].hand[discard]];
+            handOfCard[3].hand[16]=34;
+            display(3,handOfCard[3].hand);
+            if(current==136-16)
+                return;
+
+            handOfCard[0].hand[16]=drawCard();
+            handOfCard[0].num[handOfCard[0].hand[16]]++;
+            display3(str1);
+            display(0,handOfCard[0].hand);
+            document.getElementById("playerin").value="";
+        }
+        document.getElementById("event").addEventListener("click",play,false);
+
+        
+        //for(let i=0;i<136;i++)
+        //    document.writeln(allCard[i].val+"<br>");
+      </script>
+   </body>
+</html>
