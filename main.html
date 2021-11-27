@@ -3,7 +3,10 @@
    <head>
       <meta charset = "utf-8">
       <style type="text/css">
-          
+          img{
+              width: 100px;
+              height: 130px;
+          }
       </style>
       
    </head>
@@ -89,8 +92,8 @@
         function display(n,hand){
             let str="";
             for(let i=0;i<16;i++)
-                str+=dictionary[hand[i]]+"  ";
-            str+="||||"+dictionary[hand[16]];
+                str+="<img src='"+dictionary[hand[i]]+".png'>  ";
+            str+="||||"+"<img src='"+dictionary[hand[16]]+".png'>  ";
             if(n==0)
                 player.innerHTML=str;
             else if(n==1)
