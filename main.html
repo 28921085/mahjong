@@ -4,8 +4,8 @@
       <meta charset = "utf-8">
       <style type="text/css">
           img{
-              width: 100px;
-              height: 130px;
+              width: 30px;
+              height: 39px;
           }
       </style>
       
@@ -16,6 +16,7 @@
         <p id="bot3"></p>
         <input type="text" id = "playerin">
         <input type="button" value="打出" id="event"><p id="player"></p>
+        <hr>
         <p id="display"></p>
 
 
@@ -127,7 +128,7 @@
             handOfCard[n]._sort();
             discard=handOfCard[n].AIdraw();
             handOfCard[n].num[handOfCard[n].hand[discard]]--;
-            str1+=dictionary[handOfCard[n].hand[discard]]+" ";
+            str1+="<img src='"+dictionary[handOfCard[n].hand[discard]]+".png'>  ";
             [handOfCard[n].hand[discard],handOfCard[n].hand[16]]=[handOfCard[n].hand[16],handOfCard[n].hand[discard]];
             handOfCard[n].hand[16]=34;
             handOfCard[n]._sort();
@@ -153,7 +154,7 @@
                 return;
             n--;
             [handOfCard[0].hand[n],handOfCard[0].hand[16]]=[handOfCard[0].hand[16],handOfCard[0].hand[n]];
-            str1+=dictionary[handOfCard[0].hand[16]]+" ";
+            str1+="<img src='"+dictionary[handOfCard[0].hand[16]]+".png'>  ";
             handOfCard[0].num[handOfCard[0].hand[16]]--;
             handOfCard[0].hand[16]=34;
             handOfCard[0]._sort();
