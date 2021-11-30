@@ -3,10 +3,7 @@
    <head>
       <meta charset = "utf-8">
       <style type="text/css">
-          img{
-              width: 100px;
-              height: 130px;
-          }
+          
       </style>
       
    </head>
@@ -92,8 +89,8 @@
         function display(n,hand){
             let str="";
             for(let i=0;i<16;i++)
-                str+="<img src='"+dictionary[hand[i]]+".png'>  ";
-            str+="||||"+"<img src='"+dictionary[hand[16]]+".png'>  ";
+                str+=dictionary[hand[i]]+"  ";
+            str+="||||"+dictionary[hand[16]];
             if(n==0)
                 player.innerHTML=str;
             else if(n==1)
@@ -103,9 +100,28 @@
             else if(n==3)
                 bot3.innerHTML=str;
         }
+        let str1="";
         function display3(str){
             draw.innerHTML=str;
         }
+        function cont(n){//continue game
+            let discard;
+            handOfCard[n]._sort();
+            discard=handOfCard[n].AIdraw();
+            handOfCard[n].num[handOfCard[n].hand[16]]--;
+            str1+=dictionary[handOfCard[n].hand[discard]]+" ";
+            [handOfCard[n].hand[discard],handOfCard[n].hand[16]]=[handOfCard[n].hand[16],handOfCard[n].hand[discard]];
+            handOfCard[n].hand[16]=34;
+            display(n,handOfCard[n].hand);
+        }
+        function sleep(n){
+            const music=new Audio("sleep.mp3");
+            music.addEventListener("ended",function(){
+                cont(n);
+            },false);
+            music.play();
+        }
+
         handOfCard[0].hand[16]=drawCard();
         handOfCard[0].num[handOfCard[0].hand[16]]++;
         display(1,handOfCard[1].hand);
@@ -114,7 +130,6 @@
         display(0,handOfCard[0].hand);
         
         
-        let str1="";
         function play(){
             if(current==136-16)
                 return;
@@ -126,46 +141,55 @@
             handOfCard[0].hand[16]=34;
             handOfCard[0]._sort();
 
-            let discard;
+            
             handOfCard[1].hand[16]=drawCard();
             handOfCard[1].num[handOfCard[1].hand[16]]++;
             display(1,handOfCard[1].hand);
-            //sleep 1s
-            handOfCard[1]._sort();
-            discard=handOfCard[1].AIdraw();
-            handOfCard[1].num[handOfCard[1].hand[16]]--;
-            str1+=dictionary[handOfCard[1].hand[discard]]+" ";
-            [handOfCard[1].hand[discard],handOfCard[1].hand[16]]=[handOfCard[1].hand[16],handOfCard[1].hand[discard]];
-            handOfCard[1].hand[16]=34;
-            display(1,handOfCard[1].hand);
+            let discard;
+            n=1;
+            handOfCard[n]._sort();
+            discard=handOfCard[n].AIdraw();
+            handOfCard[n].num[handOfCard[n].hand[16]]--;
+            str1+=dictionary[handOfCard[n].hand[discard]]+" ";
+            [handOfCard[n].hand[discard],handOfCard[n].hand[16]]=[handOfCard[n].hand[16],handOfCard[n].hand[discard]];
+            handOfCard[n].hand[16]=34;
+            handOfCard[n]._sort();
+            display(n,handOfCard[n].hand);
+            
             if(current==136-16)
                 return;
 
             handOfCard[2].hand[16]=drawCard();
             handOfCard[2].num[handOfCard[2].hand[16]]++;
             display(2,handOfCard[2].hand);
-            //sleep 1s
-            handOfCard[2]._sort();
-            discard=handOfCard[2].AIdraw();
-            handOfCard[2].num[handOfCard[2].hand[16]]--;
-            str1+=dictionary[handOfCard[2].hand[discard]]+" ";
-            [handOfCard[2].hand[discard],handOfCard[2].hand[16]]=[handOfCard[2].hand[16],handOfCard[2].hand[discard]];
-            handOfCard[2].hand[16]=34;
-            display(2,handOfCard[2].hand);
+            n=2;
+            
+            handOfCard[n]._sort();
+            discard=handOfCard[n].AIdraw();
+            handOfCard[n].num[handOfCard[n].hand[16]]--;
+            str1+=dictionary[handOfCard[n].hand[discard]]+" ";
+            [handOfCard[n].hand[discard],handOfCard[n].hand[16]]=[handOfCard[n].hand[16],handOfCard[n].hand[discard]];
+            handOfCard[n].hand[16]=34;
+            handOfCard[n]._sort();
+            display(n,handOfCard[n].hand);
+
             if(current==136-16)
                 return;
 
             handOfCard[3].hand[16]=drawCard();
             handOfCard[3].num[handOfCard[3].hand[16]]++;
             display(3,handOfCard[3].hand);
-            //sleep 1s
-            handOfCard[3]._sort();
-            discard=handOfCard[3].AIdraw();
-            handOfCard[3].num[handOfCard[3].hand[16]]--;
-            str1+=dictionary[handOfCard[3].hand[discard]]+" ";
-            [handOfCard[3].hand[discard],handOfCard[3].hand[16]]=[handOfCard[3].hand[16],handOfCard[3].hand[discard]];
-            handOfCard[3].hand[16]=34;
-            display(3,handOfCard[3].hand);
+            
+            n=3;
+            handOfCard[n]._sort();
+            discard=handOfCard[n].AIdraw();
+            handOfCard[n].num[handOfCard[n].hand[16]]--;
+            str1+=dictionary[handOfCard[n].hand[discard]]+" ";
+            [handOfCard[n].hand[discard],handOfCard[n].hand[16]]=[handOfCard[n].hand[16],handOfCard[n].hand[discard]];
+            handOfCard[n].hand[16]=34;
+            handOfCard[n]._sort();
+            display(n,handOfCard[n].hand);
+            
             if(current==136-16)
                 return;
 
