@@ -101,3 +101,6 @@ function solve(dat){
     }
     return listen;//把聽牌名單傳回去
 }
+function test(){
+    console.log("ttttt");
+}
