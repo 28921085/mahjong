@@ -239,6 +239,69 @@
         display(2,handOfCard[2].hand);
         display(3,handOfCard[3].hand);
         display(0,handOfCard[0].hand);
+
+        //吃碰槓胡判斷 n=打牌的那家 card=牌的value
+        function someone_can_pon(n,card){//碰
+            let ans=-1;//無人能碰
+            for(let i=0;i<4;i++)
+                if(n!=i&&handOfCard[i].num[card]>=2)
+                    ans=i;
+            if(ans==0){
+                let reply=window.prompt("要碰嗎?(0=不碰 else=碰)","0");
+                if(reply=="0")
+                    ans=-1;
+            }
+            return ans;
+        }
+        function someone_can_eat(n,card){//吃
+            let i=(i+n)%4;//下家
+            let eatlist=[];//二維陣列 每格兩張牌
+            let k=0;
+            //字牌不處理 n 吃 n-1 n-2
+            if(card<27&&card%9>1&&handOfCard[n].num[card-2]&&handOfCard[n].num[card-1]){
+                eatlist[k]=[];
+                eatlist[k][0]=card-2;
+                eatlist[k][1]=card-1;
+                k++;    
+            }
+            // n 吃 n-1 n+1
+            if(card<27&&card%9>0&&card%9<8&&handOfCard[n].num[card+1]&&handOfCard[n].num[card-1]){
+                eatlist[k]=[];
+                eatlist[k][0]=card-1;
+                eatlist[k][1]=card+1;
+                k++;    
+            }
+            // n 吃 n+1 n+2
+            if(card<27&&card%9<7&&handOfCard[n].num[card+1]&&handOfCard[n].num[card+2]){
+                eatlist[k]=[];
+                eatlist[k][0]=card+1;
+                eatlist[k][1]=card+2;
+                k++;    
+            }
+            return eatlist;
+        }
+        function someone_can_win(n,card){//胡
+            let winlist=[];//可能會一炮多響
+            let k=0;
+            for(let i=0;i<4;i++){
+                if(i==n)
+                    continue;
+                for(let j=0;j<handOfCard[i].listenList.length;j++){
+                    if(card==handOfCard[i].listenList[j]){
+                        winlist[k]=i;
+                        k++;
+                        break;
+                    }
+                }
+            }
+            return winlist;
+        }
+        function someone_can_kan(n,card){//槓
+            for(let i=0;i<4;i++)
+                if(i!=n&&handOfCard[i].num[card]==3)
+                    return i;
+            return -1;
+        }
         
         
         let str1="";
@@ -250,20 +313,28 @@
             discard=parseInt(document.getElementById("playerin").value)-1;
         }
         document.getElementById("event").addEventListener("click",playerIn,false);
-        function cont(n){
-            if(n!=0){
+        
+        let cnt,notdraw, pon,eat,win,kan;
+        function cont(n){//打牌(AI)
+            if(n){
                 handOfCard[n]._sort();
                 discard=handOfCard[n].AIdraw();
                 handOfCard[n].num[handOfCard[n].hand[discard]]--;
                 str1+="<img src='"+dictionary[handOfCard[n].hand[discard]]+".png'>  ";
+                
+                notdraw=0;
+                pon=someone_can_pon(n,handOfCard[n].hand[discard]);
+                if(pon!=-1){
+                    cnt=pon-1;
+                    notdraw=1;
+                    window.alert("玩家"+pon.toString()+" 碰");
+                }
+                
                 [handOfCard[n].hand[discard],handOfCard[n].hand[16]]=[handOfCard[n].hand[16],handOfCard[n].hand[discard]];
                 handOfCard[n].hand[16]=34;
                 handOfCard[n]._sort();
                 display3(str1);
                 display(n,handOfCard[n].hand);
-            }
-            else{
-
             }
         }
         function sleep(n){
@@ -280,6 +351,9 @@
                 return;
             }
             let n=parseInt(document.getElementById("playerin").value);
+            cnt=0;
+            notdraw=0;
+
             document.getElementById("playerin").value="";
             if(isNaN(n)||n>17||n<=0)
                 return;
@@ -287,24 +361,43 @@
             [handOfCard[0].hand[n],handOfCard[0].hand[16]]=[handOfCard[0].hand[16],handOfCard[0].hand[n]];
             str1+="<img src='"+dictionary[handOfCard[0].hand[16]]+".png'>  ";
             handOfCard[0].num[handOfCard[0].hand[16]]--;
+            
+            pon=someone_can_pon(0,handOfCard[0].hand[16]);
+            if(pon!=-1){
+                cnt=pon-1;
+                notdraw=1;
+                window.alert("玩家"+pon.toString()+" 碰");
+            }
+            
             handOfCard[0].hand[16]=34;
             handOfCard[0]._sort();
             display(0,handOfCard[0].hand);
             display3(str1);
-            let cnt=0;
-            let AIdo=setInterval(function(){
+            
+            
+            let AIdo=setInterval(function(){//抽牌
                 cnt=(cnt+1)%4;
                 if(cnt==0){
-                    handOfCard[0].hand[16]=drawCard();
-                    handOfCard[0].num[handOfCard[0].hand[16]]++;
-                    display(0,handOfCard[0].hand);
+                    if(!notdraw){
+                        handOfCard[0].hand[16]=drawCard();
+                        handOfCard[0].num[handOfCard[0].hand[16]]++;
+                        display(0,handOfCard[0].hand);
+                    }
+                    else
+                        notdraw=0;
+                    sleep(cnt);
                     clearInterval(AIdo);
                 }
-
-                handOfCard[cnt].hand[16]=drawCard();
-                handOfCard[cnt].num[handOfCard[cnt].hand[16]]++;
-                display(cnt,handOfCard[cnt].hand);
-                sleep(cnt);
+                else{
+                    if(!notdraw){
+                        handOfCard[cnt].hand[16]=drawCard();
+                        handOfCard[cnt].num[handOfCard[cnt].hand[16]]++;
+                        display(cnt,handOfCard[cnt].hand);
+                    }
+                    else 
+                        notdraw=0;
+                    sleep(cnt);
+                }
                 if(current==136-16){
                     window.alert("遊戲結束");
                     clearInterval(AIdo);
