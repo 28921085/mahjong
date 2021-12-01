@@ -18,6 +18,8 @@
         <input type="button" value="打出" id="event"><p id="player"></p>
         <hr>
         <p id="display"></p>
+        <hr>
+        <p id="allcard"></p>
 
 
         
@@ -185,6 +187,7 @@
         let bot3=document.getElementById("bot3");
         let player=document.getElementById("player");
         let draw=document.getElementById("display");
+        let all=document.getElementById("allcard");
         for(let i=0;i<34;i++){
             for(let j=0;j<4;j++)
                 allCard[i*4+j]=mahjong(dictionary[i]);
@@ -193,6 +196,11 @@
             let idx=Math.floor(Math.random()*136);
             [allCard[i],allCard[idx]]=[allCard[idx],allCard[i]];//swap
         }
+
+        let tmpstr="";
+        for(let i=16*3+17;i<136;i++)
+            tmpstr+="<img src='"+dictionary[allCard[i]]+".png'>  ";
+        all.innerHTML=tmpstr;
 
         let current=0;
         for(let i=0;i<4;i++){
@@ -243,15 +251,20 @@
         }
         document.getElementById("event").addEventListener("click",playerIn,false);
         function cont(n){
-            handOfCard[n]._sort();
-            discard=handOfCard[n].AIdraw();
-            handOfCard[n].num[handOfCard[n].hand[discard]]--;
-            str1+="<img src='"+dictionary[handOfCard[n].hand[discard]]+".png'>  ";
-            [handOfCard[n].hand[discard],handOfCard[n].hand[16]]=[handOfCard[n].hand[16],handOfCard[n].hand[discard]];
-            handOfCard[n].hand[16]=34;
-            handOfCard[n]._sort();
-            display3(str1);
-            display(n,handOfCard[n].hand);
+            if(n!=0){
+                handOfCard[n]._sort();
+                discard=handOfCard[n].AIdraw();
+                handOfCard[n].num[handOfCard[n].hand[discard]]--;
+                str1+="<img src='"+dictionary[handOfCard[n].hand[discard]]+".png'>  ";
+                [handOfCard[n].hand[discard],handOfCard[n].hand[16]]=[handOfCard[n].hand[16],handOfCard[n].hand[discard]];
+                handOfCard[n].hand[16]=34;
+                handOfCard[n]._sort();
+                display3(str1);
+                display(n,handOfCard[n].hand);
+            }
+            else{
+
+            }
         }
         function sleep(n){
             const music=new Audio("sleep.mp3");
@@ -276,30 +289,32 @@
             handOfCard[0].num[handOfCard[0].hand[16]]--;
             handOfCard[0].hand[16]=34;
             handOfCard[0]._sort();
+            display(0,handOfCard[0].hand);
+            display3(str1);
             let cnt=0;
             let AIdo=setInterval(function(){
-                cnt++;
+                cnt=(cnt+1)%4;
+                if(cnt==0){
+                    handOfCard[0].hand[16]=drawCard();
+                    handOfCard[0].num[handOfCard[0].hand[16]]++;
+                    display(0,handOfCard[0].hand);
+                    clearInterval(AIdo);
+                }
 
                 handOfCard[cnt].hand[16]=drawCard();
                 handOfCard[cnt].num[handOfCard[cnt].hand[16]]++;
                 display(cnt,handOfCard[cnt].hand);
-                
                 sleep(cnt);
                 if(current==136-16){
                     window.alert("遊戲結束");
                     clearInterval(AIdo);
                 }
-                if(cnt==3)
-                    clearInterval(AIdo);
+                
             },1000);
             if(current==136-16){
                 window.alert("遊戲結束");
                 return;
             }
-            handOfCard[0].hand[16]=drawCard();
-            handOfCard[0].num[handOfCard[0].hand[16]]++;
-            display3(str1);
-            display(0,handOfCard[0].hand);
             
         }
         document.getElementById("event").addEventListener("click",play,false);
