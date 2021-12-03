@@ -1,0 +1,1 @@
+https://28921085.github.io/mahjong/main.html
