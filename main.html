@@ -26,10 +26,10 @@
       <script >
           //<!--
             
-        let dictionary=["1W","2W","3W","4W","5W","6W","7W","8W","9W","1T","2T","3T","4T","5T","6T","7T","8T","9T","1S","2S","3S","4S","5S","6S","7S","8S","9S","DONG","NAN","XI","BEI","ZHONG","FA","BAI","f1","f2","f3","f4","f5","f6","f7","f8",
+        let dictionary=["1W","2W","3W","4W","5W","6W","7W","8W","9W","1T","2T","3T","4T","5T","6T","7T","8T","9T","1S","2S","3S","4S","5S","6S","7S","8S","9S","DONG","NAN","XI","BEI","ZHONG","FA","BAI","f1","f2","f3","f4","f5","f6","f7","f8","",
         "1W","2W","3W","4W","5W","6W","7W","8W","9W","1T","2T","3T","4T","5T","6T","7T","8T","9T","1S","2S","3S","4S","5S","6S","7S","8S","9S","DONG","NAN","XI","BEI","ZHONG","FA","BAI","f1","f2","f3","f4","f5","f6","f7","f8",""];
         //此行為立著的牌 0-8 1w(萬)-9w 9-17 1t(桶)-9t 18-26 1s(索)-9s 27-33東南西北中發白 34-41 f(花)1-8
-        //此行為亮出來的牌 42-50 1w(萬)-9w 51-59 1t(桶)-9t 60-68 1s(索)-9s 69-75東南西北中發白 76-83 f(花)1-8 84 null
+        //此行為亮出來的牌 以下全部加一 我有改index 42-50 1w(萬)-9w 51-59 1t(桶)-9t 60-68 1s(索)-9s 69-75東南西北中發白 76-83 f(花)1-8 84 null
         function mahjong(str){
             for(let i=0;i<34;i++)
                 if(str==dictionary[i])
@@ -38,13 +38,18 @@
         function sortfunc(a,b){
             return a-b;
         }
+        class Pile{//亮搭
+            card=0;//吃碰槓哪一張牌
+            type=0;//1=吃 2=碰 3=槓 4=暗槓 5=花
+            eatdata=0;//吃牌專用 ex card=5  0=5 6 7 ,1 =4 5 6 ,2=3 4 5 
+        }
         class handCard{//手牌->16+1 or 13+1
             //Array listenList
             //let hand[17]
             //let num[34]
             //let newCard
             mxlen=16;//剩餘手牌長度
-            pile=[];//pile[][3] 亮搭
+            pile=[];//pile = new Pile()
             listenList=[];//聽甚麼牌
             hand=[];//手牌
             num=[];//34種牌的出現次數
@@ -222,9 +227,17 @@
         
         function display(n,hand){
             let str="";
-            for(let i=0;i<16;i++)
+            let mxlen=handOfCard[n].mxlen;
+            for(let i=0;i<mxlen;i++)
                 str+="<img src='"+dictionary[hand[i]]+".png'>  ";
-            str+="||||"+"<img src='"+dictionary[hand[16]]+".png'>  ";
+            str+="||||"+"<img src='"+dictionary[hand[mxlen]]+".png'>  ";
+            for(let i=0;i<handOfCard[n].pile.length;i++){
+                if(handOfCard[n].pile[i].type==2){
+                    str+="|";
+                    for(let j=0;j<3;j++)
+                        str+="<img src='"+dictionary[handOfCard[n].pile[i].card]+".png'>  ";
+                }
+            }
             if(n==0)
                 player.innerHTML=str;
             else if(n==1)
@@ -262,11 +275,16 @@
             handOfCard[n].num[card]-=2;
             for(let i=0,j=2;j>0;i++)
                 if(handOfCard[n].hand[i]==card)
-                    j--,handOfCard[n].hand[i]+=42;
-            handOfCard[n].hand[16]=card+42;
+                    j--,handOfCard[n].hand[i]+=43;
+            
+            let tmp=new Pile();
+            tmp.card=card;
+            tmp.type=2;
+            handOfCard[n].pile.push(tmp);
             handOfCard[n]._sort();
             display(n,handOfCard[n].hand);
         }
+
         function someone_can_eat(n,card){//吃
             let i=(i+n)%4;//下家
             let eatlist=[];//二維陣列 每格兩張牌
@@ -311,10 +329,25 @@
             return winlist;
         }
         function someone_can_kan(n,card){//槓
+            let last=(n-1+4)%4;
             for(let i=0;i<4;i++)
-                if(i!=n&&handOfCard[i].num[card]==3)
+                if(i!=n&&i!=last&&handOfCard[i].num[card]==3)//不能槓自己跟上家
                     return i;
+            //補槓
+            if(handOfCard[n].num[card]==3)
+                return n+4;//暗槓
+            else if(handOfCard[n].num[card+42]==3)
+                return n+8;//明槓
             return -1;
+        }
+        function kan_show(n,card){
+            if(n<4){
+
+            }
+            else{
+
+            }
+            
         }
         
         
@@ -344,9 +377,9 @@
                     window.alert("玩家"+pon.toString()+" 碰");
                     pon_show(pon,handOfCard[n].hand[discard]);
                 }
-                
-                [handOfCard[n].hand[discard],handOfCard[n].hand[16]]=[handOfCard[n].hand[16],handOfCard[n].hand[discard]];
-                handOfCard[n].hand[16]=84;
+                let mxlen=handOfCard[n].mxlen;
+                [handOfCard[n].hand[discard],handOfCard[n].hand[mxlen]]=[handOfCard[n].hand[mxlen],handOfCard[n].hand[discard]];
+                handOfCard[n].hand[mxlen]=42;
                 handOfCard[n]._sort();
                 display3(str1);
                 display(n,handOfCard[n].hand);
@@ -385,7 +418,7 @@
                 pon_show(pon,handOfCard[0].hand[16]);
             }
             
-            handOfCard[0].hand[16]=84;
+            handOfCard[0].hand[16]=42;
             handOfCard[0]._sort();
             display(0,handOfCard[0].hand);
             display3(str1);
@@ -395,8 +428,9 @@
                 cnt=(cnt+1)%4;
                 if(cnt==0){
                     if(!notdraw){
-                        handOfCard[0].hand[16]=drawCard();
-                        handOfCard[0].num[handOfCard[0].hand[16]]++;
+                        let mxlen=handOfCard[0].mxlen;
+                        handOfCard[0].hand[mxlen]=drawCard();
+                        handOfCard[0].num[handOfCard[0].hand[mxlen]]++;
                         display(0,handOfCard[0].hand);
                     }
                     else//吃碰後不能摸牌
@@ -406,8 +440,9 @@
                 }
                 else{
                     if(!notdraw){
-                        handOfCard[cnt].hand[16]=drawCard();
-                        handOfCard[cnt].num[handOfCard[cnt].hand[16]]++;
+                        let mxlen=handOfCard[cnt].mxlen;
+                        handOfCard[cnt].hand[mxlen]=drawCard();
+                        handOfCard[cnt].num[handOfCard[cnt].hand[mxlen]]++;
                         display(cnt,handOfCard[cnt].hand);
                     }
                     else //吃碰後不能摸牌
