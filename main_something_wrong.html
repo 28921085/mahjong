@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset = "utf-8">
+      <style type="text/css">
+          img{
+              width: 30px;
+              height: 39px;
+          }
+      </style>
+      
+   </head>
+   <body>
+        <p id="bot1"></p>
+        <p id="bot2"></p>
+        <p id="bot3"></p>
+        <input type="text" id = "playerin">
+        <input type="button" value="打出" id="event"><p id="player"></p>
+        <hr>
+        <p id="display"></p>
+        <hr>
+        <p id="allcard"></p>
+
+
+        
+      <script >
+          //<!--
+            
+        let dictionary=["1W","2W","3W","4W","5W","6W","7W","8W","9W","1T","2T","3T","4T","5T","6T","7T","8T","9T","1S","2S","3S","4S","5S","6S","7S","8S","9S","DONG","NAN","XI","BEI","ZHONG","FA","BAI","f1","f2","f3","f4","f5","f6","f7","f8"," ",
+        "1W","2W","3W","4W","5W","6W","7W","8W","9W","1T","2T","3T","4T","5T","6T","7T","8T","9T","1S","2S","3S","4S","5S","6S","7S","8S","9S","DONG","NAN","XI","BEI","ZHONG","FA","BAI","f1","f2","f3","f4","f5","f6","f7","f8"," "];
+        //此行為立著的牌 0-8 1w(萬)-9w 9-17 1t(桶)-9t 18-26 1s(索)-9s 27-33東南西北中發白 34-41 f(花)1-8
+        //此行為亮出來的牌 以下全部加一 我有改index 42-50 1w(萬)-9w 51-59 1t(桶)-9t 60-68 1s(索)-9s 69-75東南西北中發白 76-83 f(花)1-8 84 null
+        function mahjong(str){
+            for(let i=0;i<34;i++)
+                if(str==dictionary[i])
+                    return i;
+        }
+        function sortfunc(a,b){//升序排列
+            return a-b;
+        }
+        class Pile{//亮搭
+            card=0;//吃碰槓哪一張牌
+            type=0;//1=吃 2=碰 3=槓 4=暗槓 5=花
+            eatdata=0;//吃牌專用 ex card=5  0=5 6 7 ,1 =4 5 6 ,2=3 4 5 
+        }
+        class handCard{//手牌->一開始16+1  
+            //Array listenList
+            //let hand[17]
+            //let num[34]
+            //let newCard
+            mxlen=16;//剩餘手牌長度 每次吃碰槓後-3
+            pile=[];//pile = new Pile()
+            listenList=[];//聽甚麼牌
+            hand=[];//手牌
+            num=[];//34種牌的出現次數
+            newCard=42;//剛摸到的牌 42=null
+            init(){
+                for(let i=0;i<86;i++)
+                    this.num[i]=0;
+            }
+            in(array){
+                this.init();
+                for(let i=0;i<array.length;i++){
+                    this.hand[i]=array[i];
+                    this.num[array[i]]++;
+                }
+            }
+            _sort(){
+                this.hand.sort(sortfunc);   
+            }
+            AIdraw(){//AI丟牌
+                //待補
+                return 0;//index
+            }
+            get_listen(){//這裡目前還沒用到
+                stopped = 0,has=0,num=[];
+                function ifwin(n) {//第幾個對子
+                    //一次取一個順子或刻子
+                    if (n == 5)
+                        has = 1;
+                    if (stopped || has)
+                        return;
+                    for (let i = 0; i < 9; i++) {
+                        if (num[i] > 2) {
+                            num[i] -= 3;
+                            ifwin(n + 1);
+                            num[i] += 3;
+                        }
+                        if (i < 7 && num[i] && num[i + 1] && num[i + 2]) {
+                            num[i]--;
+                            num[i + 1]--;
+                            num[i + 2]--;
+                            ifwin(n + 1);
+                            num[i]++;
+                            num[i + 1]++;
+                            num[i + 2]++;
+                        }
+                        if (num[i])
+                            stopped = 1;
+                    }
+                    if (stopped || has)
+                        return;
+                    for (let i = 9; i < 18; i++) {
+                        if (num[i] > 2) {
+                            num[i] -= 3;
+                            ifwin(n + 1);
+                            num[i] += 3;
+                        }
+                        if (i < 16 && num[i] && num[i + 1] && num[i + 2]) {
+                            num[i]--;
+                            num[i + 1]--;
+                            num[i + 2]--;
+                            ifwin(n + 1);
+                            num[i]++;
+                            num[i + 1]++;
+                            num[i + 2]++;
+                        }
+                        if (num[i])
+                            stopped = 1;
+                    }
+                    if (stopped || has)
+                        return;
+                    for (let i = 18; i < 27; i++) {
+                        if (num[i] > 2) {
+                            num[i] -= 3;
+                            ifwin(n + 1);
+                            num[i] += 3;
+                        }
+                        if (i < 25 && num[i] && num[i + 1] && num[i + 2]) {
+                            num[i]--;
+                            num[i + 1]--;
+                            num[i + 2]--;
+                            ifwin(n + 1);
+                            num[i]++;
+                            num[i + 1]++;
+                            num[i + 2]++;
+                        }
+                        if (num[i])
+                            stopped = 1;
+                    }
+                    if (stopped || has)
+                        return;
+                    for (let i = 27; i < 34; i++) {
+                        if (num[i] >= 3) {
+                            num[i] -= 3;
+                            ifwin(n + 1);
+                            num[i] += 3;
+                        }
+                        if (num[i])
+                            stopped = 1;
+                    }
+                }
+                function solve(dat){
+                    //init
+                    num=dat;
+                    has=0,stopped=0;
+                    //generate listen list
+                    let listen=[];//聽牌
+                    for(let i=0;i<34;i++){//每種牌都放一次
+                        if(num[i]==4)
+                            continue;
+                        num[i]++;
+                        for (j = 0; j < 34; j++) {//拔掉眼睛
+                            if (num[j] > 1) {
+                                stop = 0;
+                                num[j] -= 2;
+                                ifwin(0);
+                                num[j] += 2;
+                            }
+                        }
+                        num[i]--;
+                        if (has) {//如果能湊成5個順子或刻子
+                            has = 0;
+                            listen.push(i);
+                        }
+                    }
+                    return listen;//把聽牌名單傳回去
+                }
+                this.listenList=solve(num);
+            }
+            show_listen(){
+                if(this.listenList.length==0)
+                    return "not ready";
+                tmp="";
+                for(let i=0;i<listenList.length;i++)
+                    tmp+=listenList[i].toString()+" ";
+                return tmp;
+            }
+        }
+        
+      
+        let allCard=[];
+        let handOfCard=[];//0=player 1,2,3=bot 1,2,3
+        let bot1=document.getElementById("bot1");
+        let bot2=document.getElementById("bot2");
+        let bot3=document.getElementById("bot3");
+        let player=document.getElementById("player");
+        let draw=document.getElementById("display");
+        let all=document.getElementById("allcard");
+        for(let i=0;i<34;i++){
+            for(let j=0;j<4;j++)
+                allCard[i*4+j]=mahjong(dictionary[i]);
+        }
+        //我先把洗牌註解掉以測試槓牌
+        /*for(let i=0;i<136;i++){//洗牌
+            let idx=Math.floor(Math.random()*136);
+            [allCard[i],allCard[idx]]=[allCard[idx],allCard[i]];//swap
+        }*/
+
+        let tmpstr="";
+        for(let i=16*3+17;i<136;i++)
+            tmpstr+="<img src='"+dictionary[allCard[i]]+".png'>  ";
+        all.innerHTML=tmpstr;
+
+        let current=0;
+        for(let i=0;i<4;i++){//發初始牌
+            let tmp=[];
+            for(let j=0;j<16;j++)
+                tmp[j]=allCard[current++];
+            tmp[16]=42;
+            handOfCard[i]=new handCard();
+            handOfCard[i].in(tmp);
+            handOfCard[i]._sort();  
+        } 
+        function drawCard(){      //抽牌 
+            return allCard[current++];
+        }
+        
+        function display(n,hand){
+            let str="";
+            let mxlen=handOfCard[n].mxlen;
+            for(let i=0;i<mxlen;i++)
+                str+="<img src='"+dictionary[hand[i]]+".png'>  ";
+            str+="||||"+"<img src='"+dictionary[hand[mxlen]]+".png'>  ";
+            for(let i=0;i<handOfCard[n].pile.length;i++){
+                if(handOfCard[n].pile[i].type==2){
+                    str+="|";
+                    for(let j=0;j<3;j++)
+                        str+="<img src='"+dictionary[handOfCard[n].pile[i].card]+".png'>  ";
+                }
+                else if(handOfCard[n].pile[i].type==3){
+                    str+="|明槓";
+                    for(let j=0;j<3;j++)
+                        str+="<img src='"+dictionary[handOfCard[n].pile[i].card]+".png'>  ";
+                }
+                else if(handOfCard[n].pile[i].type==4){
+                    str+="|暗槓";
+                    for(let j=0;j<3;j++)
+                        str+="<img src='"+dictionary[handOfCard[n].pile[i].card]+".png'>  ";
+                }
+            }
+            if(n==0)
+                player.innerHTML=str;
+            else if(n==1)
+                bot1.innerHTML=str;
+            else if(n==2)
+                bot2.innerHTML=str;
+            else if(n==3)
+                bot3.innerHTML=str;
+        }
+        function display3(str){//顯示打出來的牌
+            draw.innerHTML=str;
+        }
+        
+        
+        let cnt,notdraw, pon=-1,eat=-1,win=-1,kan=-1,mxlen;
+
+        //吃碰槓胡判斷 n=打牌的那家 card=牌的value
+        function someone_can_pon(n,card){//碰
+            if(kan!=-1)//如果選擇槓，則不能碰
+                return -1;
+            let ans=-1;//無人能碰
+            for(let i=0;i<4;i++)
+                if(n!=i&&handOfCard[i].num[card]>=2)//不能碰自己 該牌>=2
+                    ans=i;
+            if(ans==0){//玩家決定要不要碰
+                let reply=window.prompt("要碰嗎?(0=不碰 else=碰)","0");
+                if(reply=="0")
+                    ans=-1;
+            }
+            return ans;
+        }
+        function pon_show(n,card){//碰下去之後做的事
+            handOfCard[n].mxlen-=3;
+            handOfCard[n].num[card]-=2;
+            handOfCard[n].num[card+43]+=3;//sort之後會跑到後面
+            for(let i=0,j=2;j>0;i++)
+                if(handOfCard[n].hand[i]==card)
+                    j--,handOfCard[n].hand[i]+=43;
+            let tmp=new Pile();//新增亮搭資訊
+            tmp.card=card;
+            tmp.type=2;
+            handOfCard[n].pile.push(tmp);
+            handOfCard[n]._sort();
+            display(n,handOfCard[n].hand);
+        }
+        //這個還沒用到
+        function someone_can_eat(n,card){//吃
+            let i=(i+n)%4;//下家
+            let eatlist=[];//二維陣列 每格兩張牌
+            let k=0;
+            //字牌不處理 n 吃 n-1 n-2
+            if(card<27&&card%9>1&&handOfCard[n].num[card-2]&&handOfCard[n].num[card-1]){
+                eatlist[k]=[];
+                eatlist[k][0]=card-2;
+                eatlist[k][1]=card-1;
+                k++;    
+            }
+            // n 吃 n-1 n+1
+            if(card<27&&card%9>0&&card%9<8&&handOfCard[n].num[card+1]&&handOfCard[n].num[card-1]){
+                eatlist[k]=[];
+                eatlist[k][0]=card-1;
+                eatlist[k][1]=card+1;
+                k++;    
+            }
+            // n 吃 n+1 n+2
+            if(card<27&&card%9<7&&handOfCard[n].num[card+1]&&handOfCard[n].num[card+2]){
+                eatlist[k]=[];
+                eatlist[k][0]=card+1;
+                eatlist[k][1]=card+2;
+                k++;    
+            }
+            return eatlist;
+        }
+        //這個還沒用到
+        function someone_can_win(n,card){//胡
+            let winlist=[];//可能會一炮多響
+            let k=0;
+            for(let i=0;i<4;i++){
+                if(i==n)
+                    continue;
+                for(let j=0;j<handOfCard[i].listenList.length;j++){
+                    if(card==handOfCard[i].listenList[j]){
+                        winlist[k]=i;
+                        k++;
+                        break;
+                    }
+                }
+            }
+            return winlist;
+        }
+        //ex:手中有3張7萬 然後別人打7萬 類似碰
+        function someone_can_kan(n,card){//槓
+            let next=(n+1)%4;
+            let ans=-1;
+            for(let i=0;i<4;i++)
+                if(i!=n&&i!=next&&handOfCard[i].num[card]==3)//不能槓自己跟上家
+                    ans= i;
+            if(ans==0){
+                let reply=window.prompt("要槓嗎?(0=不槓 else=槓)","0");
+                if(reply=="0")
+                    ans=-1;
+            }
+            return ans;//哪一家槓牌
+        }
+        //ex:手中有4張7萬 輪到你時選擇暗槓
+        function dark_kan(n){//暗槓
+            let kanlist=[];//一回合可能槓很多次
+            for(let i=0;i<34;i++){
+                if(handOfCard[n].num[i]==4)
+                    kanlist.push(i);
+            }
+            if(kanlist.length==0)//無牌可槓
+                return -1;
+            if(n==0){
+                for(let i=0;i<kanlist.length;i++){
+                    let reply=window.prompt("要暗槓"+dictionary[kanlist[i]]+"嗎?(0=不槓 else=暗槓)","0");
+                    if(reply=="0")
+                        continue;
+                    return kanlist[i];//槓哪一張
+                }
+            }   
+            else
+                return kanlist[0]; //槓哪一張
+            return -1;
+        }
+        //ex:碰7萬之後 自己在摸到一張7萬
+        function light_kan(n){//明槓
+            let kanlist=[];//可能一回合槓很多次
+            for(let i=0;i<34;i++){
+                for(let j=0;j<handOfCard[n].pile.length;j++){
+                    //找亮搭的堆 如果手牌中有一張牌已經碰過
+                    if(i==handOfCard[n].pile[j].card&&handOfCard[n].pile[j].type==2)
+                        kanlist.push(i);
+                }
+            }
+            if(kanlist.length==0)
+                return -1;
+            if(n==0){
+                for(let i=0;i<kanlist.length;i++){
+                    let reply=window.prompt("要明槓"+dictionary[kanlist[i]]+"嗎?(0=不槓 else=明槓)","0");
+                    if(reply=="0")
+                        continue;
+                    return kanlist[i];
+                }
+            }   
+            else
+                return kanlist[0]; 
+            return -1;
+        }
+        function kan_show(kan,card){//someone can kan 之後做的事
+            let mxlen;
+            let n=kan;
+            handOfCard[n].mxlen-=3;
+            handOfCard[n].num[card]-=3;
+            for(let i=0,j=3;j>0;i++)
+                if(handOfCard[n].hand[i]==card)
+                    j--,handOfCard[n].hand[i]+=43;//將槓完的牌放到後面
+            let tmp=new Pile();//新增亮搭
+            tmp.card=card;
+            tmp.type=3;
+            handOfCard[n].pile.push(tmp);
+            
+            handOfCard[n]._sort();
+            mxlen=handOfCard[n].mxlen;
+            handOfCard[n].hand[mxlen]=drawCard();//槓完要抽一張牌(非一般抽牌)
+            handOfCard[n].num[handOfCard[n].hand[mxlen]]++;
+            display(n,handOfCard[n].hand);
+        }
+        //dark/light kan之後做的事
+        function self_kan_show(n,card,type){//type 0=暗槓 1=明槓
+            let mxlen=handOfCard[n].mxlen;
+            if(type){
+                handOfCard[n].num[card]--;
+                for(let i=0,j=1;j>0;i++)
+                    if(handOfCard[n].hand[i]==card)
+                        j--,handOfCard[n].hand[i]+=43;//放到後面
+                for(let i=0;i<handOfCard[n].pile.length;i++){
+                    if(handOfCard[n].pile[i].type==2&&handOfCard[n].pile[i].card==card)
+                        handOfCard[n].pile[i].type=3;//找之前碰牌的亮搭 並改為槓
+                }
+                handOfCard[n]._sort();
+                handOfCard[n].hand[mxlen]=drawCard();//槓完抽牌
+                handOfCard[n].num[handOfCard[n].hand[mxlen]]++;
+                display(n,handOfCard[n].hand);
+            }
+            else{
+                handOfCard[n].mxlen-=3;
+                handOfCard[n].num[card]-=4;
+                for(let i=0,j=4;j>0;i++)
+                    if(handOfCard[n].hand[i]==card)
+                        j--,handOfCard[n].hand[i]+=43;//放後面
+                let tmp=new Pile();//新增亮搭
+                tmp.card=card;
+                tmp.type=4;
+                handOfCard[n].pile.push(tmp);
+                handOfCard[n]._sort();
+                handOfCard[n].hand[mxlen]=drawCard();//槓完抽牌
+                handOfCard[n].num[handOfCard[n].hand[mxlen]]++;
+                display(n,handOfCard[n].hand);
+            }
+        }
+       
+
+        handOfCard[0].hand[16]=drawCard();
+        handOfCard[0].num[handOfCard[0].hand[16]]++;
+
+        //先假設第一回合不能槓 因為這裡一堆bug
+        /*//摸牌時槓
+        let skip=0;
+        kan=dark_kan(0);
+        if(kan!=-1){
+            cnt--;
+            notdraw=1;
+            window.alert("玩家0 暗槓");
+            self_kan_show(0,kan,0);
+        }
+        kan=light_kan(0);
+        if(!skip&&kan!=-1){
+            cnt--;
+            notdraw=1;
+            window.alert("玩家0 明槓");
+            self_kan_show(0,kan,1);
+        }*/
+
+        display(1,handOfCard[1].hand);
+        display(2,handOfCard[2].hand);
+        display(3,handOfCard[3].hand);
+        display(0,handOfCard[0].hand);
+        
+        let str1="";
+        let state=[];//紀錄牌局 還沒用到
+        let discard;//打出來的牌
+
+        //這好像沒用到
+        function playerIn(){
+            playerInput=1;
+            discard=parseInt(document.getElementById("playerin").value)-1;
+        }
+        document.getElementById("event").addEventListener("click",playerIn,false);
+        
+        
+        function cont(n){//打牌(AI) 接在撥放聲音之後
+            if(n){
+                handOfCard[n]._sort();
+                discard=handOfCard[n].AIdraw();//暫時丟第一張
+                handOfCard[n].num[handOfCard[n].hand[discard]]--;
+                str1+="<img src='"+dictionary[handOfCard[n].hand[discard]]+".png'>  ";
+                
+                notdraw=0;
+                kan=someone_can_kan(n,handOfCard[n].hand[discard]);
+                pon=someone_can_pon(n,handOfCard[n].hand[discard]);
+                if(kan!=-1){//先看能不能槓 在看能不能碰
+                    cnt=kan-1;//cnt=當前輪到誰 (0 1 2 3) 因為cnt回合開始會++ 故要-1 
+                    notdraw=1;//阻止一般抽牌(槓完摸得不算一般抽牌)
+                    window.alert("玩家"+(kan%4).toString()+" 明槓");
+                    kan_show(kan,handOfCard[n].hand[discard]);
+                }
+                else if(pon!=-1){
+                    cnt=pon-1;//同上
+                    notdraw=1;//碰完不能摸牌
+                    window.alert("玩家"+pon.toString()+" 碰");
+                    pon_show(pon,handOfCard[n].hand[discard]);
+                }
+                let mxlen=handOfCard[n].mxlen;
+                [handOfCard[n].hand[discard],handOfCard[n].hand[mxlen]]=[handOfCard[n].hand[mxlen],handOfCard[n].hand[discard]];
+                handOfCard[n].hand[mxlen]=42;//丟掉的牌跟手牌最後一張交換 然後設為null
+                handOfCard[n]._sort();
+                display3(str1);
+                display(n,handOfCard[n].hand);
+            }
+        }
+        function sleep(n){//播放聲音
+            const music=new Audio("sleep.mp3");
+            music.addEventListener("ended",function(){
+                cont(n);
+            },false);
+            music.play();
+        }
+       
+        function play(){//玩家打牌後觸發
+            if(current==136-16){
+                window.alert("遊戲結束");
+                return;
+            }
+            let n=parseInt(document.getElementById("playerin").value);
+            cnt=0;//當前輪到誰
+            notdraw=0;
+
+            document.getElementById("playerin").value="";
+            mxlen=handOfCard[0].mxlen;
+            if(isNaN(n)||(n>handOfCard[0].mxlen+1)||n<=0)
+                return;
+            n--;
+            //要打掉的牌根最後一張交換
+            [handOfCard[0].hand[n],handOfCard[0].hand[mxlen]]=[handOfCard[0].hand[mxlen],handOfCard[0].hand[n]];
+            str1+="<img src='"+dictionary[handOfCard[0].hand[mxlen]]+".png'>  ";
+            handOfCard[0].num[handOfCard[0].hand[mxlen]]--;
+            
+            //同AI打牌
+            kan=someone_can_kan(0,handOfCard[0].hand[mxlen]);
+            pon=someone_can_pon(0,handOfCard[0].hand[mxlen]);
+            if(kan!=-1){
+                cnt=kan-1;
+                notdraw=1;
+                window.alert("玩家"+(kan%4).toString()+" 明槓");
+                kan_show(kan,handOfCard[0].hand[mxlen]);
+            }
+            else if(pon!=-1){
+                cnt=pon-1;
+                notdraw=1;
+                window.alert("玩家"+pon.toString()+" 碰");
+                pon_show(pon,handOfCard[0].hand[mxlen]);
+            }
+            
+            handOfCard[0].hand[mxlen]=42;
+            handOfCard[0]._sort();
+            display(0,handOfCard[0].hand);
+            display3(str1);
+            
+            //以下打*****的部份 或 \/ /\括起來的區間 是我認為可能有錯的
+
+           let skip=0;//連續摸牌(槓)   *******
+            let AIdo=setInterval(function(){//抽牌 AI一秒輪一次
+                //*****\/
+                if(!skip)
+                    cnt=(cnt+1)%4;//cnt要 0 1 2 3 0...這樣輪 然後發生槓牌時，下次要再輪到自己
+                //******/\    
+                console.log(cnt.toString()+" "+skip.toString());//debug用
+             
+                 skip=0;//*****
+                 
+                if(cnt==0){//輪到玩家
+                    if(!notdraw){
+                        let mxlen=handOfCard[0].mxlen;
+                        handOfCard[0].hand[mxlen]=drawCard();
+                        handOfCard[0].num[handOfCard[0].hand[mxlen]]++;
+                        display(0,handOfCard[0].hand);
+                        
+                        //*********\/
+                        //摸牌時槓
+                        kan=dark_kan(0);
+                        if(kan!=-1){
+                            skip=1;//跳過抽牌
+                            cnt--;//下次仍要輪到自己(cnt一開始會++)
+                            notdraw=1;//不能抽牌(因為kan函式抽過了
+                            window.alert("玩家0 暗槓");
+                            self_kan_show(0,kan,0);
+                            return;//***** 這我不知道Return之後會去哪 
+                        }
+                        kan=light_kan(0);
+                        if(kan!=-1){
+                            skip=1;
+                            cnt--;
+                            notdraw=1;
+                            window.alert("玩家0 明槓");
+                            self_kan_show(0,kan,1);
+                            return;
+                        }
+                        //********/\
+                        
+                    }
+                    else//吃碰槓後不能(從前面)摸牌
+                        notdraw=0;
+                        
+                    //******* \/   
+                    //if(!skip){
+                        sleep(cnt);//輪到玩家時 這個只會波放聲音
+                        clearInterval(AIdo);//又輪到自己時 要停下來等輸入
+                    //}
+                    //****** /\
+                }
+                else{//AI 摸牌
+                    if(!notdraw){
+                        let mxlen=handOfCard[cnt].mxlen;
+                        handOfCard[cnt].hand[mxlen]=drawCard();
+                        handOfCard[cnt].num[handOfCard[cnt].hand[mxlen]]++;
+                        display(cnt,handOfCard[cnt].hand);
+
+                        //********\/
+                        //摸牌時槓
+                        kan=dark_kan(cnt);
+                        if(kan!=-1){
+                            skip=1;
+                            cnt--;
+                            notdraw=1;
+                            window.alert("玩家"+(cnt+1).toString()+" 暗槓");
+                            self_kan_show(cnt+1,kan,0);
+                            return ;
+                        }
+                        kan=light_kan(0);
+                        if(kan!=-1){
+                            skip=1;
+                            cnt--;
+                            notdraw=1;
+                            window.alert("玩家"+(cnt+1).toString()+" 明槓");
+                            self_kan_show(cnt+1,kan,1);
+                            return ;
+                        }
+                        //********/\ 同上 上面錯下面可能也會錯
+                    }
+                    else //吃碰後不能摸牌
+                        notdraw=0;
+                   // if(!skip)    *******
+                        sleep(cnt);
+                }
+                if(current==136-16){
+                    window.alert("遊戲結束");
+                    clearInterval(AIdo);
+                }
+                //看到這裡辛苦你了
+            },1000);
+            if(current==136-16){
+                window.alert("遊戲結束");
+                return;
+            }
+            
+        }
+        document.getElementById("event").addEventListener("click",play,false);
+        
+        
+        //-->
+      </script>
+   </body>
+</html>
