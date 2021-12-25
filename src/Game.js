@@ -481,10 +481,32 @@ class Game extends Component{
             
             //console.log("render game")
             //this.now=this.now%4
-            return [<h1>{(this.now)}</h1>,[this.player[0].render(this.now),<br/>
-            ,this.player[1].render(this.now),<br/>
-            ,this.player[2].render(this.now),<br/>
-            ,this.player[3].render(this.now),<hr></hr>
+            return [<h1>{(this.now)}</h1>,[<table class="tg">
+            <thead>
+              <tr>
+                <th class="tg-0pky"></th>
+                <th class="tg-0pky" colspan="2"><div id="player2">{this.player[2].render(this.now)}</div></th>
+                <th class="tg-0pky"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="tg-0pky" rowspan="2"><div id="player1">{this.player[1].render(this.now)}</div></td>
+                <td class="tg-0pky" colspan="2" rowspan="2"></td>
+                <td class="tg-0pky" rowspan="2"><div id="player3">{this.player[3].render(this.now)}</div></td>
+              </tr>
+              <tr>
+              </tr>
+              <tr>
+                <td class="tg-0pky"></td>
+                <td class="tg-0pky" colspan="2"><div id="player0">{this.player[0].render(this.now)}</div></td>
+                <td class="tg-0pky"></td>
+              </tr>
+            </tbody>
+            </table>,,<br/>
+            ,,<br/>
+            ,,<br/>
+            ,,<hr></hr>
         ],[this.printArrayCard(this.allCard,this.current),<br/>,<hr/>
             ,this.printArrayCard(this.dropedCard)]]
     }

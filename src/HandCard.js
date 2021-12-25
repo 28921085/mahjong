@@ -193,17 +193,25 @@ class HandCard extends Component{
         console.log("打出"+this.mx)
         return mx;
     }
-   
+//    transform: rotate(45deg);
     
     render(now){
         
         this.list=[]
-      
-         for(let i=0;i<this.have.length;i++){
-            //  console.log(<Card  key={this.have[i] }card={this.have[i]} playernum={this.playernum}  top={this.top}/>)
-             this.list.push(<Card disable={!(now==this.playernum)} key={i+Math.random() }card={this.have[i]} playernum={this.playernum}  top={this.top}/>)
+        this.list.push(<div/>);
+        for(let i=0;i<this.showlist.length;i++){
+            this.list.push(<Card id={"player"+this.playernum} disable={true} key={i+Math.random() }card={this.showlist[i]} playernum={this.playernum}  top={this.top}/>)
              
          }
+         this.list.push(<br/>)
+         for(let i=0;i<this.have.length;i++){
+            //  console.log(<Card  key={this.have[i] }card={this.have[i]} playernum={this.playernum}  top={this.top}/>)
+             this.list.push(<Card id={"player"+this.playernum} disable={!(now==this.playernum)} key={i+Math.random() }card={this.have[i]} playernum={this.playernum}  top={this.top}/>)
+             
+         }
+         this.list.push(<br/>)
+         this.list.push(<br/>)
+         
          this.setState({
              have: null
          })
