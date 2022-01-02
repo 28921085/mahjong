@@ -216,22 +216,22 @@ class Game extends Component{
         str[1]="不吃 "
         str[2]="不吃 "
         //字牌不處理 n 吃 n-1 n-2
-        if(card<27&&card%9>1&&tmp[card-2]&&tmp[card-1]){
+        if(card<27&&card%9>1&&tmp[card-2]>0&&tmp[card-1]>0){
             k[0]=1
             str[0]=this.dictionary[card-2]+this.dictionary[card-1]
-            console.log("can eat type = "+0)
+            console.log("can eat type = 0")
         }
         // n 吃 n-1 n+1
-        if(card<27&&card%9>0&&card%9<8&&tmp[card+1]&&tmp[card-1]){
+        if(card<27&&card%9>0&&card%9<8&&tmp[card+1]>0&&tmp[card-1]>0){
             k[1]=1;  
             str[1]=this.dictionary[card-1]+this.dictionary[card+1]
-            console.log("can eat type = "+1)
+            console.log("can eat type = 1")
         }
         // n 吃 n+1 n+2
-        if(card<27&&card%9<7&&tmp[card+1]&&tmp[card+2]){
+        if(card<27&&card%9<7&&tmp[card+1]>0&&tmp[card+2]>0){
             k[2]=1
-            str[0]=this.dictionary[card+1]+this.dictionary[card+2] 
-            console.log("can eat type = "+2)
+            str[2]=this.dictionary[card+1]+this.dictionary[card+2] 
+            console.log("can eat type = 2")
         }
         if(i==0&&(k[0]||k[1]||k[2])){
             let reply=window.prompt("要吃哪一種?(1: "+str[0]+" 2: "+str[1]+" 3: "+str[2] +" else=不吃)","0");
@@ -240,9 +240,9 @@ class Game extends Component{
                 type=-1;   
             else if(reply=="1"&&str[0]!="不吃 ")
                 type=0
-            else if(reply=="2"&&str[0]!="不吃 ")
+            else if(reply=="2"&&str[1]!="不吃 ")
                 type=1
-            else if(reply=="3"&&str[0]!="不吃 ")
+            else if(reply=="3"&&str[2]!="不吃 ")
                 type=2
             else
                 type=-1
@@ -478,7 +478,7 @@ class Game extends Component{
     render(props){
             // for(let i=0;i<4;i++)
             // console.log("player"+i+"="+this.player[i].have)
-            
+            //
             //console.log("render game")
             //this.now=this.now%4
             return [<h1>{(this.now)}</h1>,[<table class="tg">
