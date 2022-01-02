@@ -26,10 +26,11 @@ render(props){
     // console.log(this.card+" vs "+'./static/card/'+this.dictionary[parseInt(this.card)]+'.png')
     
     return (
-        <button disabled={this.disable||this.playernum!=0||this.show==0} onClick={()=> {
+        <button key={Math.random()}disabled={this.disable||this.playernum!=0||this.show==0} onClick={()=> {
             // console.log("render"+this.playernum)
             // console.log(this.card+" vs "+'./static/card/'+this.dictionary[parseInt(this.card)]+'.png')
             // // this.card=0
+            this.disable=false
             this.top.sent(this.card,this.playernum,this);
             this.setState({
                 card:this.card,

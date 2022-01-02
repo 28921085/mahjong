@@ -23,6 +23,7 @@ class HandCard extends Component{
         }
         this.playernum=props//who 打牌
         this.top=top
+        this.dsiable=props.disable
         this.state={
             have: this.have,
             key:this.playernum
@@ -195,7 +196,7 @@ class HandCard extends Component{
     }
 //    transform: rotate(45deg);
     
-    render(now){
+    render(now,disable=false){
         
         this.list=[]
         this.list.push(<div/>);
@@ -206,7 +207,7 @@ class HandCard extends Component{
          this.list.push(<br/>)
          for(let i=0;i<this.have.length;i++){
             //  console.log(<Card  key={this.have[i] }card={this.have[i]} playernum={this.playernum}  top={this.top}/>)
-             this.list.push(<Card id={"player"+this.playernum} disable={!(now==this.playernum)} key={i+Math.random() }card={this.have[i]} playernum={this.playernum}  top={this.top}/>)
+             this.list.push(<Card id={"player"+this.playernum} disable={!(now==this.playernum)||disable} key={i+Math.random() }card={this.have[i]} playernum={this.playernum}  top={this.top}/>)
              
          }
          this.list.push(<br/>)

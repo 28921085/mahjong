@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component, useState } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Toast from 'react-bootstrap/Toast';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import FuncMenu from './FuncMenu';
+// import './App.css';
+class App extends Component{
+  constructor(){
+    super()
+    this.a=1;
+    this.state={
+      disable:null
+    }
+  }
+  doEat(){
+    console.log(this.a)
+    this.setState({
+      disable:true
+    })
+    this.a++
+  }
+  render(){
+    return <Button disabled={this.state.disable}onClick={()=>this.doEat()}>YA</Button>
+  }
 }
+;
 
 export default App;
