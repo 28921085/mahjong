@@ -339,7 +339,7 @@ class Game extends Component{
         
         if(canDo){//如果可以
             console.log("玩家可以"+canDo)
-            this.showFuncMenu(canDo,card,this);//叫出選單供玩家選擇
+            this.showFuncMenu(canDo,card,this,func);//叫出選單供玩家選擇
         }else{
             console.log("玩家不行"+canDo)
             func();//不行的話往下執行
@@ -386,13 +386,17 @@ class Game extends Component{
                 this.player[0].remove(this.state.card);
             this.player[0].showlist.push(this.state.card)
         }
-        this.now=1
-        this.player[this.now].ming_ker++;
-        console.log(this.pon+"碰")
-        this.canDo=[0,0,0,0]
-        this.show=false
-        this.botsent()
         
+        this.player[this.now+1].ming_ker++;
+        console.log("0"+"碰")
+        this.canDo=[0,0,0,0]
+
+        this.show=false
+        this.now=0
+        this.botsent()
+        this.setState({
+            change:true
+        })
     }
     doKan(){
         let discard=this.state.card
@@ -410,7 +414,7 @@ class Game extends Component{
         this.draw()
         if(this.game_end)
             return;
-        this.botsent()
+       
         
     }
     doWin(){
