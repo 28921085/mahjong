@@ -27,13 +27,16 @@ ReactDOM.render(
           </nav>
           <hr />
           <Routes>
+              
               <Route exact path='/' element={<Start/>} />
-              <Route path='/Play' element={<Game/>} />
+              <Route path='/Play' element={
+              <div class="background"><Game/></div>} />
               <Route path='/App' element={<App/>} />
           </Routes>
         </div>
       </Router>
-    
+      //<link rel="stylesheet" type="text/css" href=""></link>+
+    //style={require('./static/card/battle-background.jpg').default}
   ,
   document.getElementById('root')
 );
