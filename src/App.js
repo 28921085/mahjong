@@ -16,12 +16,12 @@ class App extends Component{
   doEat(){
     console.log(this.a)
     this.setState({
-      disable:true
+      
     })
     this.a++
   }
   render(){
-    return <Button disabled={this.state.disable}onClick={()=>this.doEat()}>YA</Button>
+    return <Button variant="outline-info"  disabled={this.state.disable}onClick={()=>this.doEat()}>YA</Button>
   }
 }
 ;

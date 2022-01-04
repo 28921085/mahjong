@@ -25,6 +25,7 @@ class Game extends Component{
         this.eat=-1
         this.win=-1
         this.show=0;
+        this.whoIsListen=[0,0,0,0]
         this.state={
             change:true,
             showFuncMenu:false
@@ -201,23 +202,7 @@ class Game extends Component{
          }
          return ans;
     }
-//     someone_can_pon(card){//碰
-//         if(this.win!=-1||this.kan!=-1)//如果選擇槓，則不能碰
-//             return -1;
-//        let n=this.now;
-//         let ans=-1;//無人能碰
-//         for(let i=0;i<4;i++)
-//             if(n!=i&&this.player[i].num[card]>=2)//不能碰自己&該牌>=2
-//                 ans=i;
-//         if(ans==0){//玩家決定要不要碰
-//            if(this.kan!=-1)
-//                return -1;
-//             let reply=window.prompt("要碰嗎?(0=不碰 else=碰)","0");
-//             if(reply=="0")
-//                 ans=-1;
-//         }
-//         return ans;
-//    }
+
     someone_can_kan(card){//槓
         if(this.win!=-1)
             return -1
@@ -240,34 +225,38 @@ class Game extends Component{
         let n=this.now
         let i=(n+1)%4;//下家
         let type=-1 // eat n return 0 = n-1 n-2  1 = n-1 n+1  2 = n+1 n+2
-        let k=[];
+        this.k=[];
         let str=[]
         let tmp=this.player[i].num
-        k[0]=0
-        k[1]=0
-        k[2]=0
+        this.k[0]=0
+        this.k[1]=0
+        this.k[2]=0
+        this.eatCard=[]
         str[0]="不吃 "
         str[1]="不吃 "
         str[2]="不吃 "
         //字牌不處理 n 吃 n-1 n-2
         if(card<27&&card%9>1&&tmp[card-2]>0&&tmp[card-1]>0){
-            k[0]=1
+            this.k[0]=1
+            this.eatCard[0]=[this.dictionary[card-2],this.dictionary[card-1]]
             str[0]=this.dictionary[card-2]+this.dictionary[card-1]
             console.log("can eat type = 0")
         }
         // n 吃 n-1 n+1
         if(card<27&&card%9>0&&card%9<8&&tmp[card+1]>0&&tmp[card-1]>0){
-            k[1]=1;  
+            this.k[1]=1;
+            this.eatCard[1]=[this.dictionary[card-1],this.dictionary[card+1]]  
             str[1]=this.dictionary[card-1]+this.dictionary[card+1]
             console.log("can eat type = 1")
         }
         // n 吃 n+1 n+2
         if(card<27&&card%9<7&&tmp[card+1]>0&&tmp[card+2]>0){
-            k[2]=1
+            this.k[2]=1
+            this.eatCard[2]=[this.dictionary[card+1],this.dictionary[card+2]]  
             str[2]=this.dictionary[card+1]+this.dictionary[card+2] 
             console.log("can eat type = 2")
         }
-        if(i==0&&(k[0]||k[1]||k[2])){
+        if(i==0&&(this.k[0]||this.k[1]||this.k[2])){
             let reply=window.prompt("要吃哪一種?(1: "+str[0]+" 2: "+str[1]+" 3: "+str[2] +" else=不吃)","0");
             console.log(reply)
             if(reply=="0")
@@ -283,7 +272,7 @@ class Game extends Component{
         }
         else{
             for(let j=0;j<3;j++)
-                if(k[j])
+                if(this.k[j])
                     type=j
         }
         return type
@@ -348,35 +337,36 @@ class Game extends Component{
     
     
      doEat(){
-    //     let discard=this.state.card
-    //     console.log("玩家選擇吃");
-    //     this.now=(this.now+1)%4
-    //                 if(this.eat==0){
-    //                     this.player[0].remove(discard-2)
-    //                     this.player[0].showlist.push(discard-2)
-    //                     //this.player[this.now].remove(discard)
-    //                     this.player[0].showlist.push(discard)
-    //                     this.player[0].remove(discard-1)
-    //                     this.player[0].showlist.push(discard-1)
-    //                 }
-    //                 else if(this.eat==1){
-    //                     this.player[0].remove(discard-1)
-    //                     this.player[0].showlist.push(discard-1)
-    //                     //this.player[this.now].remove(discard)
-    //                     this.player[0].showlist.push(discard)
-    //                     this.player[0].remove(discard+1)
-    //                     this.player[0].showlist.push(discard+1)
-    //                 }
-    //                 else if(this.eat==2){
-    //                     this.player[0].remove(discard+1)
-    //                     this.player[0].showlist.push(discard+1)
-    //                    //this.player[this.now].remove(discard)
-    //                     this.player[0].showlist.push(discard)
-    //                     this.player[0].remove(discard+2)
-    //                     this.player[0].showlist.push(discard+2)
-    //                 }
-    //                 console.log(this.now+"吃 type = "+this.eat.toString())
-    //                 this.botsent() 
+        let discard=this.state.card
+        console.log("玩家選擇吃");
+        
+        this.now=(this.now+1)%4
+                    if(this.eat==0){
+                        this.player[0].remove(discard-2)
+                        this.player[0].showlist.push(discard-2)
+                        //this.player[this.now].remove(discard)
+                        this.player[0].showlist.push(discard)
+                        this.player[0].remove(discard-1)
+                        this.player[0].showlist.push(discard-1)
+                    }
+                    else if(this.eat==1){
+                        this.player[0].remove(discard-1)
+                        this.player[0].showlist.push(discard-1)
+                        //this.player[this.now].remove(discard)
+                        this.player[0].showlist.push(discard)
+                        this.player[0].remove(discard+1)
+                        this.player[0].showlist.push(discard+1)
+                    }
+                    else if(this.eat==2){
+                        this.player[0].remove(discard+1)
+                        this.player[0].showlist.push(discard+1)
+                       //this.player[this.now].remove(discard)
+                        this.player[0].showlist.push(discard)
+                        this.player[0].remove(discard+2)
+                        this.player[0].showlist.push(discard+2)
+                    }
+                    console.log(this.now+"吃 type = "+this.eat.toString())
+                    this.botsent() 
         //TODO
     }
     doPon(){
@@ -387,13 +377,13 @@ class Game extends Component{
             this.player[0].showlist.push(this.state.card)
         }
         
-        this.player[this.now+1].ming_ker++;
+        this.player[0].ming_ker++;
         console.log("0"+"碰")
         this.canDo=[0,0,0,0]
 
         this.show=false
         this.now=0
-        this.botsent()
+        
         this.setState({
             change:true
         })
@@ -406,12 +396,17 @@ class Game extends Component{
                 this.player[0].remove(discard)
             this.player[0].showlist.push(discard)
         }
-        this.now=1
+     
         console.log(0+"明槓")
         this.player[this.now].ming_ker++;
         this.canDo=[0,0,0,0]
         this.show=false
+        this.now=0
         this.draw()
+        this.setState({
+            change:true
+        })
+        
         if(this.game_end)
             return;
        
@@ -426,6 +421,15 @@ class Game extends Component{
                 console.log(loglist[i])
         window.alert("玩家"+this.win.toString()+"胡牌 遊戲結束")
         //TODO
+    }
+    doCancel(){
+        this.canDo=[0,0,0,0]
+        this.show=false
+        console.log("玩家選擇取消");
+        this.draw()
+        this.setState({
+            change:false
+        })
     }
     //算台
     calculate_reward(card,who){//胡的那張牌 誰放槍
@@ -683,6 +687,12 @@ class Game extends Component{
             this.player[this.now].remove(discard)
         
             this.player[this.now].generate_listenlist()
+            if(this.player[this.now].listenList.length!=0){
+                this.whoIsListen[this.now]=1;
+                this.setState({
+                    change:true
+                })
+            }
             console.log("玩家"+this.now.toString()+"聽:")
             console.log(this.player[this.now].listenList)
             
@@ -796,7 +806,7 @@ class Game extends Component{
         console.log(this.player[this.now].showlist)
         this.win=this.someone_can_win(discard)
         this.kan=this.someone_can_kan(discard)
-        this.someone_can_pon(discard)
+        this.pon=this.someone_can_pon(discard)
         this.eat=this.next_can_eat(discard)
         console.log(discard)
         //------------------切割成 按鈕後動作---------------------------------------
@@ -908,7 +918,9 @@ class Game extends Component{
                 <tbody>
                 <tr>
                     
-                    <td class="tg-0pky" colspan="2" align = "center" ><div id="player2">{this.player[2].render(this.now)}</div></td>
+                    <td class="tg-0pky" colspan="2" align = "center" ><div id="player2">{this.player[2].render(this.now)}
+                    <div>{this.whoIsListen[2]?<Button key={Math.random()} variant="outline-dark" >聽</Button>:""}</div>
+                    </div></td>
                     <td class="tg-0pky"></td>
                 </tr>
                 <tr>
@@ -927,9 +939,12 @@ class Game extends Component{
                 <td>.</td>
                     </tr>
                 <tr>
-                <td class="tg-0pky" rowspan="2" width="50%"align="center"><div id="player1">{this.player[3].render(this.now)}</div></td>
+                <td class="tg-0pky" rowspan="2" width="50%"align="center"><div id="player1">{this.player[3].render(this.now)}
+                <div>{this.whoIsListen[3]?<Button key={Math.random()} variant="outline-dark" >聽</Button>:""}</div></div></td>
                     
-                    <td class="tg-0pky" rowspan="2" width="50%" align="center"><div id="player3">{this.player[1].render(this.now)}</div></td>
+                    <td class="tg-0pky" rowspan="2" width="50%" align="center"><div id="player3">{this.player[1].render(this.now)}
+                    <div>{this.whoIsListen[1]?<Button key={Math.random()} variant="outline-dark" >聽</Button>:""}</div>
+                    </div></td>
                 
                 </tr>
                 <tr >
@@ -952,7 +967,19 @@ class Game extends Component{
                 </tr>
                 <tr>
                 
-                    <td class="tg-0pky" colspan="2" align = "center"><div id="player0">{this.player[0].render(this.now,this.disable)}</div></td>
+                    <td class="tg-0pky" colspan="2" align = "center">
+                    
+                <div>{'YAYA'}</div>{this.show?
+            <div><Button key={Math.random()} variant="outline-primary"   onClick={()=>this.doEat()} disabled={!this.canDo[0]}>吃</Button>
+                <Button key={Math.random()} variant="outline-secondary" onClick={()=>this.doPon()} disabled={!this.canDo[1]}>碰</Button>
+                <Button key={Math.random()}variant="outline-success"  onClick={()=>this.doKan()} disabled={!this.canDo[2]}>槓</Button>
+                
+                <Button key={Math.random()}variant="outline-danger"    onClick={()=>this.doWin()} disabled={!this.canDo[3]}>胡</Button>
+                <Button key={Math.random()}variant="outline-info"    onClick={()=>this.doCancel()}>取消</Button>
+                :<div></div></div>:''}
+                        <div id="player0">{this.player[0].render(this.now,this.disable)}
+                    <div>{this.whoIsListen[0]?<Button key={Math.random()} variant="outline-dark" >聽</Button>:""}</div>
+                    </div></td>
                     <td class="tg-0pky"></td>
                 </tr>
                 </tbody>
@@ -963,14 +990,7 @@ class Game extends Component{
                 ,,<br/>
                 ,,<hr></hr>
             ],[this.printArrayCard(this.allCard,this.current),<br/>,<hr/>
-                ,this.printArrayCard(this.dropedCard)],
-                this.show?
-                [<Button key={Math.random()} variant="outline-primary"   onClick={()=>this.doEat()} disabled={!this.canDo[0]}>吃</Button>,
-                <Button key={Math.random()} variant="outline-secondary" onClick={()=>this.doPon()} disabled={!this.canDo[1]}>碰</Button>,
-                <Button key={Math.random()}variant="outline-success"  onClick={()=>this.doKan()} disabled={!this.canDo[2]}>槓</Button>,
-                // <Button variant="outline-warning">聽</Button>,
-                <Button key={Math.random()}variant="outline-danger"    onClick={()=>this.doWin()} disabled={!this.canDo[3]}>胡</Button>]
-                :<div></div>
+                ,this.printArrayCard(this.dropedCard)]
             
             ]
         //}
