@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import Game from './Game'
 import Start from './Start'
-import App from './App'
+import Dialog from './Dialog'
 import reportWebVitals from './reportWebVitals';
 // let dictionary=["1W","2W","3W","4W","5W","6W","7W","8W","9W","1T","2T","3T","4T","5T","6T","7T","8T","9T","1S","2S","3S","4S","5S","6S","7S","8S","9S","DONG","NAN","XI","BEI","ZHONG","FA","BAI","space"];
 
@@ -22,7 +22,7 @@ ReactDOM.render(
           <ul className="navbar-nav mr-auto">
             <li><Link to={'/'} className="nav-link"> Start </Link></li>
             <li><Link to={'/Play'} className="nav-link">Game</Link></li>
-            <li><Link to={'/App'} className="nav-link">App</Link></li>
+            <li><Link to={'/Dialog'} className="nav-link">Dialog</Link></li>
           </ul>
           </nav>
           <hr />
@@ -36,7 +36,7 @@ ReactDOM.render(
               <div style={{ 
                 backgroundImage: `url(${Background})` 
               }}><Game/></div>} />
-              <Route path='/App' element={<App/>} />
+              <Route path='/Dialog' element={<Dialog say={['大家好','謝謝大家']}/>} />
           </Routes>
         </div>
       </Router>
