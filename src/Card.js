@@ -29,7 +29,7 @@ render(props){
     // console.log(this.card+" vs "+'./static/card/'+this.dictionary[parseInt(this.card)]+'.png')
     
     return (
-        <button key={Math.random()}disabled={this.disable||this.playernum!=0||this.show==0} onClick={this.func?this.func:()=> {
+        <button key={Math.random()} disabled={this.disable||this.playernum!=0||this.show==0} onClick={this.func?this.func:()=> {
             // console.log("render"+this.playernum)
             // console.log(this.card+" vs "+'./static/card/'+this.dictionary[parseInt(this.card)]+'.png')
             // // this.card=0

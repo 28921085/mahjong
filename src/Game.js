@@ -25,6 +25,7 @@ class Game extends Component{
         this.eat=-1
         this.win=-1
         this.show=0;
+        this.showEat=0;
         this.whoIsListen=[0,0,0,0]
         this.state={
             change:true,
@@ -238,37 +239,39 @@ class Game extends Component{
         //字牌不處理 n 吃 n-1 n-2
         if(card<27&&card%9>1&&tmp[card-2]>0&&tmp[card-1]>0){
             this.k[0]=1
-            this.eatCard[0]=[this.dictionary[card-2],this.dictionary[card-1]]
+            this.eatCard[0]=[card-2,card-1]
             str[0]=this.dictionary[card-2]+this.dictionary[card-1]
             console.log("can eat type = 0")
+            console.log(str[0])
         }
         // n 吃 n-1 n+1
         if(card<27&&card%9>0&&card%9<8&&tmp[card+1]>0&&tmp[card-1]>0){
             this.k[1]=1;
-            this.eatCard[1]=[this.dictionary[card-1],this.dictionary[card+1]]  
+            this.eatCard[1]=[card-1,card+1]  
             str[1]=this.dictionary[card-1]+this.dictionary[card+1]
             console.log("can eat type = 1")
         }
         // n 吃 n+1 n+2
         if(card<27&&card%9<7&&tmp[card+1]>0&&tmp[card+2]>0){
             this.k[2]=1
-            this.eatCard[2]=[this.dictionary[card+1],this.dictionary[card+2]]  
+            this.eatCard[2]=[card+1,card+2]  
             str[2]=this.dictionary[card+1]+this.dictionary[card+2] 
             console.log("can eat type = 2")
         }
         if(i==0&&(this.k[0]||this.k[1]||this.k[2])){
-            let reply=window.prompt("要吃哪一種?(1: "+str[0]+" 2: "+str[1]+" 3: "+str[2] +" else=不吃)","0");
-            console.log(reply)
-            if(reply=="0")
-                type=-1;   
-            else if(reply=="1"&&str[0]!="不吃 ")
-                type=0
-            else if(reply=="2"&&str[1]!="不吃 ")
-                type=1
-            else if(reply=="3"&&str[2]!="不吃 ")
-                type=2
-            else
-                type=-1
+            return 0;
+            // let reply=window.prompt("要吃哪一種?(1: "+str[0]+" 2: "+str[1]+" 3: "+str[2] +" else=不吃)","0");
+            // console.log(reply)
+            // if(reply=="0")
+            //     type=-1;   
+            // else if(reply=="1"&&str[0]!="不吃 ")
+            //     type=0
+            // else if(reply=="2"&&str[1]!="不吃 ")
+            //     type=1
+            // else if(reply=="3"&&str[2]!="不吃 ")
+            //     type=2
+            // else
+            //     type=-1
         }
         else{
             for(let j=0;j<3;j++)
@@ -306,9 +309,9 @@ class Game extends Component{
     }
     playerCan(card){//偵測玩家是否可以吃碰槓胡
         let canDo=[0,0,0,0];//分別代表 吃 碰 槓 胡
-        // if(this.next_can_eat(card)==0){//TODO
-        //     cando[0]=1;
-        // }
+        if(this.next_can_eat(card)==0&&this.now==3){//TODO
+            canDo[0]=1;
+        }
         if(this.someone_can_pon(card)==0){
             canDo[1]=1;
         }
@@ -334,14 +337,34 @@ class Game extends Component{
             func();//不行的話往下執行
         }
     }
-    
+
+    showChooseEat(){
+        this.showEat=1
+        this.setState({
+            change:true
+        })
+    }
     
      doEat(){
-        let discard=this.state.card
-        console.log("玩家選擇吃");
         
-        this.now=(this.now+1)%4
-                    if(this.eat==0){
+        console.log("玩家選擇吃");
+        this.showChooseEat();
+        
+        //TODO
+    }
+    Eat(){
+        if(this.showEat==1){
+            return  [this.k[0]?[<Card playernum={0} show={true} disable={false} func={()=>this.doEatCard(0)} card={this.eatCard[0][0]}/>,<Card playernum={0} show={true} disable={false} func={()=>this.doEatCard(0)} card={this.eatCard[0][1]}/>]:"",
+            this.k[1]?[<Card playernum={0} show={true} disable={false} func={()=>this.doEatCard(1)} card={this.eatCard[1][0]}/>,<Card playernum={0} show={true} disable={false} func={()=>this.doEatCard(1)} card={this.eatCard[1][1]}/>]:"",
+            this.k[2]?[<Card playernum={0} show={true} disable={false} func={()=>this.doEatCard(2)} card={this.eatCard[2][0]}/>,<Card playernum={0} show={true} disable={false} func={()=>this.doEatCard(2)} card={this.eatCard[2][1]}/>]:""
+        ]
+        }else{
+            return <div></div>
+        }
+    }
+    doEatCard(choice){
+        let discard=this.state.card
+                    if(choice==0){
                         this.player[0].remove(discard-2)
                         this.player[0].showlist.push(discard-2)
                         //this.player[this.now].remove(discard)
@@ -349,7 +372,7 @@ class Game extends Component{
                         this.player[0].remove(discard-1)
                         this.player[0].showlist.push(discard-1)
                     }
-                    else if(this.eat==1){
+                    else if(choice==1){
                         this.player[0].remove(discard-1)
                         this.player[0].showlist.push(discard-1)
                         //this.player[this.now].remove(discard)
@@ -357,7 +380,7 @@ class Game extends Component{
                         this.player[0].remove(discard+1)
                         this.player[0].showlist.push(discard+1)
                     }
-                    else if(this.eat==2){
+                    else if(choice==2){
                         this.player[0].remove(discard+1)
                         this.player[0].showlist.push(discard+1)
                        //this.player[this.now].remove(discard)
@@ -365,9 +388,15 @@ class Game extends Component{
                         this.player[0].remove(discard+2)
                         this.player[0].showlist.push(discard+2)
                     }
-                    console.log(this.now+"吃 type = "+this.eat.toString())
-                    this.botsent() 
-        //TODO
+                    console.log(this.now+"吃 type = "+choice.toString())
+                    this.canDo=[0,0,0,0]
+        this.showEat=false
+        this.show=false
+        this.now=0
+        
+        this.setState({
+            change:true
+        })
     }
     doPon(){
         console.log("玩家選擇碰");
@@ -969,7 +998,7 @@ class Game extends Component{
                 
                     <td class="tg-0pky" colspan="2" align = "center">
                     
-                <div>{'YAYA'}</div>{this.show?
+                <div key={Math.random()}>{this.Eat()}</div>{this.show?
             <div><Button key={Math.random()} variant="outline-primary"   onClick={()=>this.doEat()} disabled={!this.canDo[0]}>吃</Button>
                 <Button key={Math.random()} variant="outline-secondary" onClick={()=>this.doPon()} disabled={!this.canDo[1]}>碰</Button>
                 <Button key={Math.random()}variant="outline-success"  onClick={()=>this.doKan()} disabled={!this.canDo[2]}>槓</Button>
