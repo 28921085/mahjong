@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import HandCard from './HandCard'
 import Card from './Card'
 import mp3 from './sleep.mp3'
-import Background from './battle-background.jpg';
+import Jay from './battle-background.jpg';
 import FuncMenu from './FuncMenu';
 //import $ from 'jquery';
 import Button from 'react-bootstrap/Button';
@@ -454,7 +454,9 @@ class Game extends Component{
     doCancel(){
         this.canDo=[0,0,0,0]
         this.show=false
+        this.now=0
         console.log("玩家選擇取消");
+        this.showEat=false
         this.draw()
         this.setState({
             change:false
@@ -940,7 +942,7 @@ class Game extends Component{
                 //<th class="tg-0pky"></th>
                 //<td class="tg-0pky"></td>
                 //<td class="tg-0pky" colspan="2" rowspan="2"></td>
-                [<table class="tg">
+                [<table class="tg" >
                 <thead>
                 
                 </thead>

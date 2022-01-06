@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import Background from './battle-background.jpg';
 import {
   BrowserRouter as Router, Routes, Route, Link
 } from "react-router-dom";
@@ -26,11 +26,16 @@ ReactDOM.render(
           </ul>
           </nav>
           <hr />
+          
+          <div key={Math.random()}>Your Money:{getMoney()}</div>
+          
           <Routes>
               
               <Route exact path='/' element={<Start/>} />
               <Route path='/Play' element={
-              <div class="background"><Game/></div>} />
+              <div style={{ 
+                backgroundImage: `url(${Background})` 
+              }}><Game/></div>} />
               <Route path='/App' element={<App/>} />
           </Routes>
         </div>
@@ -40,7 +45,15 @@ ReactDOM.render(
   ,
   document.getElementById('root')
 );
-
+function getMoney(){
+  if(localStorage.getItem('money')!=null){
+    return localStorage.getItem('money');
+  }
+  else{
+    localStorage.setItem('money', 0);
+    return 0
+  }
+}
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
