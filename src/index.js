@@ -40,8 +40,7 @@ ReactDOM.render(
           </Routes>
         </div>
       </Router>
-      //<link rel="stylesheet" type="text/css" href=""></link>+
-    //style={require('./static/card/battle-background.jpg').default}
+      
   ,
   document.getElementById('root')
 );
