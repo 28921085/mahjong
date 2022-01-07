@@ -43,14 +43,14 @@ class HandCard extends Component{
    remove(card){//card!=index     is distionary id
         console.log("打出"+this.dictionary[card])
     //    console.log(this.have)
-        console.log("打出前")
+        /*console.log("打出前")
         console.log(this.num)
-        console.log(this.have)
+        console.log(this.have)*/
         this.num[card]--
-        console.log("打出後")
-        console.log(this.num)
+        //console.log("打出後")
+       // console.log(this.num)
        this.have.splice(this.have.indexOf(card),1)
-       console.log(this.have)
+       //console.log(this.have)
        this.setState({
         have: this.have,
         key:this.playernum

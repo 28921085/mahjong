@@ -34,15 +34,23 @@ class Game extends Component{
         this.ended=true
         this.allCard=[]
         this.dropedCard=[]
-            for(let j=0;j<4;j++){
-                for(let i=0;i<34;i++){
+        //設定牌
+
+        this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,31,32,
+                    1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,
+                    0,1,2,3,4,5,6,7,8,0,1,2,3,4,5,6,
+                    10,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17,
+                    33,32,27,26,25,24,23,22,21,20,21,23,32,24]//測試case用
+
+        /*for(let j=0;j<4;j++){
+            for(let i=0;i<34;i++){
                 this.allCard[i*4+j]=i;
             }
         }
          for(let i=0;i<136;i++){//洗牌
              let idx=Math.floor(Math.random()*136);
              [this.allCard[i],this.allCard[idx]]=[this.allCard[idx],this.allCard[i]];//swap
-         }
+         }*/
         for(let j=0;j<4;j++){
             for(let i=0;i<16;i++){
                 this.player[j].haveID.push(this.current)
@@ -143,13 +151,13 @@ class Game extends Component{
         this.player[this.now].have.push(this.allCard[this.current++])
     }
     draw(){
-        if(136-this.current==16){//16
+        if(this.allCard.length-this.current==16){//16
             window.alert("流局 遊戲結束")
             this.game_end=1;
             //結算
             return;
         }
-        console.log("剩"+(136-this.current).toString()+"張牌")
+        console.log("剩"+(this.allCard.length-this.current).toString()+"張牌")
         console.log("玩家"+this.now.toString()+"抽")
         let card=this.allCard[this.current]
         this.player[this.now].num[card]++//num++
@@ -309,7 +317,7 @@ class Game extends Component{
     }
     playerCan(card){//偵測玩家是否可以吃碰槓胡
         let canDo=[0,0,0,0];//分別代表 吃 碰 槓 胡
-        if(this.next_can_eat(card)==0&&this.now==3){//TODO
+        /*if(this.next_can_eat(card)==0&&this.now==3){//TODO
             canDo[0]=1;
         }
         if(this.someone_can_pon(card)==0){
@@ -319,6 +327,18 @@ class Game extends Component{
             canDo[2]=1;
         }
         if(this.someone_can_win(card)==0){
+            canDo[3]=1;
+        }*/
+        if(this.eat!=-1&&this.now==3){//TODO
+            canDo[0]=1;
+        }
+        if(this.pon==0){
+            canDo[1]=1;
+        }
+        if(this.kan==0){
+            canDo[2]=1;
+        }
+        if(this.win==0){
             canDo[3]=1;
         }
         if(canDo[0]==0&&canDo[1]==0&&canDo[2]==0&&canDo[3]==0)
@@ -474,6 +494,7 @@ class Game extends Component{
             self=1
         }
         //門清
+        console.log(win);
         if(this.player[win].showlist.length==0){
             total++;
             show.push("門清 1台")
