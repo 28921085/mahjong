@@ -270,8 +270,7 @@ class Game extends Component{
     
        
     someone_can_pon(card){//碰
-         if(this.win!=-1||this.kan!=-1)//如果選擇槓，則不能碰
-             return -1;
+        
         let n=this.now;
          let ans=-1;//無人能碰
          for(let i=0;i<4;i++)
@@ -288,8 +287,7 @@ class Game extends Component{
     }
 
     someone_can_kan(card){//槓
-        if(this.win!=-1)
-            return -1
+        
         let n=this.now
         let next=(n+1)%4;
         let ans=-1;
@@ -304,8 +302,7 @@ class Game extends Component{
     }
  
     next_can_eat(card){//吃
-        if(this.win!=-1||this.kan!=-1||this.pon!=-1)
-            return -1
+       
         let n=this.now
         let i=(n+1)%4;//下家
         let type=-1 // eat n return 0 = n-1 n-2  1 = n-1 n+1  2 = n+1 n+2
