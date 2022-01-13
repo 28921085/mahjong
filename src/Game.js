@@ -147,8 +147,7 @@ class Game extends Component{
         if(this.now==0){
             for(let i=0;i<kanlist.length;i++){
                 // let reply=window.prompt("要明槓"+this.dictionary[kanlist[i]]+"嗎?(0=不槓 else=明槓)","0");
-                if(reply=="0")
-                    continue;
+                
                 return kanlist[i];
             }
             return -1;
