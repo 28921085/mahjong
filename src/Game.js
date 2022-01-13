@@ -26,6 +26,8 @@ class Game extends Component{
         this.win=-1
         this.show=0;
         this.showEat=0;
+        this.tempNow=0;
+        this.showKan=0;
         this.whoIsListen=[0,0,0,0]
         this.state={
             change:true,
@@ -40,7 +42,7 @@ class Game extends Component{
                     1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,
                     0,1,2,3,4,5,6,7,8,0,1,2,3,4,5,6,
                     10,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17,
-                    33,32,27,26,25,24,23,22,21,20,21,23,32,24]//測試case用
+                    33,32,27,26,27,24,23,22,21,20,21,23,32,24]//測試case用
 
         /*for(let j=0;j<4;j++){
             for(let i=0;i<34;i++){
@@ -133,6 +135,7 @@ class Game extends Component{
             return -1;
         if(this.now==0){
             for(let i=0;i<kanlist.length;i++){
+                this.showKan=1;
                 let reply=window.prompt("要暗槓"+this.dictionary[kanlist[i]]+"嗎?(0=不槓 else=暗槓)","0");
                 if(reply=="0")
                     continue;
@@ -166,31 +169,34 @@ class Game extends Component{
         this.win=this.self_win(card)
         this.kan=this.light_kan()
         this._kan=this.dark_kan()
-        if(this.win!=-1){
-            window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
-            let loglist=this.calculate_reward(card,this.now)
-            for(let i=0;i<loglist.length;i++)
-                console.log(loglist[i])
-            this.game_end=1
-            return
-            //結算畫面
-        }
-        else if(this.kan!=-1){
-            this.player[this.now].remove(this.kan)
-            this.player[this.now].showlist.push(this.kan)
-            console.log(this.now.toString()+"明槓")
-            this.draw()
-        }
-        else if(this._kan!=-1){
-            for(let i=0;i<4;i++){
-                this.player[this.now].remove(this._kan)
-                this.player[this.now].showlist.push(this._kan)
+        this.doPlayerCanDo(card,()=>{
+            if(this.win!=-1){
+                window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
+                let loglist=this.calculate_reward(card,this.now)
+                for(let i=0;i<loglist.length;i++)
+                    console.log(loglist[i])
+                this.game_end=1
+                return
+                //結算畫面
             }
-            this.player[this.now].dark_ker++;
-            console.log(this.now.toString()+"暗槓")
-            this.draw()
-        }
-    
+            else if(this.kan!=-1){
+                this.player[this.now].remove(this.kan)
+                this.player[this.now].showlist.push(this.kan)
+                console.log(this.now.toString()+"明槓")
+                this.draw()
+            }
+            else if(this._kan!=-1){
+                for(let i=0;i<4;i++){
+                    this.player[this.now].remove(this._kan)
+                    this.player[this.now].showlist.push(this._kan)
+                }
+                this.player[this.now].dark_ker++;
+                console.log(this.now.toString()+"暗槓")
+                this.draw()
+            }
+        
+        })
+       
     }
     
        
@@ -338,15 +344,20 @@ class Game extends Component{
         if(this.kan==0){
             canDo[2]=1;
         }
+        if(this._kan!=-1&&this.now==0){
+            canDo[2]=1;
+        }
         if(this.win==0){
             canDo[3]=1;
         }
+        console.log(canDo)
         if(canDo[0]==0&&canDo[1]==0&&canDo[2]==0&&canDo[3]==0)
         return null
         else
         return canDo;
     }
     doPlayerCanDo(card,func){//看看玩家能不能吃碰槓胡，不能的話繼續流程
+        this.tempNow=this.now;
         let canDo=this.playerCan(card)//偵測玩家能不能吃碰槓胡
         
         if(canDo){//如果可以
@@ -418,6 +429,14 @@ class Game extends Component{
             change:true
         })
     }
+    Kan(){
+        if(this.showKan==1){
+            return  
+        
+        }else{
+            return <div></div>
+        }
+    }
     doPon(){
         console.log("玩家選擇碰");
         for(let i=0;i<3;i++){//刪兩張，顯示三張
@@ -474,10 +493,11 @@ class Game extends Component{
     doCancel(){
         this.canDo=[0,0,0,0]
         this.show=false
-        this.now=0
+        this.now=this.tempNow
         console.log("玩家選擇取消");
         this.showEat=false
-        this.draw()
+        this.botsent()
+        
         this.setState({
             change:false
         })
@@ -752,6 +772,10 @@ class Game extends Component{
             console.log(this.player[this.now].num)
             console.log(this.player[this.now].showlist)
             console.log(this.dictionary[discard])
+            this.win=this.someone_can_win(discard)
+            this.kan=this.someone_can_kan(discard)
+            this.pon=this.someone_can_pon(discard)
+            this.eat=this.next_can_eat(discard)
             this.doPlayerCanDo(discard,()=>{ //利用 call back 達成
                 this.win=this.someone_can_win(discard)
                 this.kan=this.someone_can_kan(discard)
