@@ -697,10 +697,25 @@ class Game extends Component{
             sol+=this.player[win].num[i];
         if(card>=18&&card<27)
             sol++
+        for(let i=0;i<this.player[win].showlist.length;i++){
+            if(this.player[win].showlist[i]<9)
+                wan++
+            else if(this.player[win].showlist[i]<18)
+                ton++
+            else if(this.player[win].showlist[i]<27)
+                sol++
+            else    
+                word++;
+        }
         //要有字 然後其餘的牌為萬桶條其中一個
         if(word&&((wan&&!sol&&!ton)||(!wan&&sol&&!ton)||(!wan&&!sol&&ton))){
             total+=4
             show.push("混一色 4台")
+        }
+        //清一色  
+        if(!word&&((wan&&!sol&&!ton)||(!wan&&sol&&!ton)||(!wan&&!sol&&ton))){
+            total+=8
+            show.push("清一色 8台")
         }
         //大小三元
         let zhong=0,fa=0,bai=0,dont=0
