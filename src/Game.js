@@ -3,6 +3,8 @@ import HandCard from './HandCard'
 import Card from './Card'
 import mp3 from './sleep.mp3'
 import Jay from './battle-background.jpg';
+import bgm from './進關.mp3'
+import bgm_listen from './聽牌.mp3'
 import FuncMenu from './FuncMenu';
 //import $ from 'jquery';
 import Button from 'react-bootstrap/Button';
@@ -32,6 +34,7 @@ class Game extends Component{
         this.playerKan=[]
         this.whoIsListen=[0,0,0,0]
         this.hasKaned=[]
+        this.music_switch=1
         for(let i=0;i<34;i++)
             this.hasKaned.push(0)
         this.state={
@@ -42,7 +45,10 @@ class Game extends Component{
         this.allCard=[]
         this.dropedCard=[]
         //設定牌
-
+        this.music_bgm=new Audio(bgm)
+        this.music_bgm.loop=true
+        this.music_bgm.play()
+       
         
 
         for(let j=0;j<4;j++){
@@ -50,17 +56,17 @@ class Game extends Component{
                 this.allCard[i*4+j]=i;
             }
         }
-         /*for(let i=0;i<136;i++){//洗牌
+         for(let i=0;i<136;i++){//洗牌
              let idx=Math.floor(Math.random()*136);
              [this.allCard[i],this.allCard[idx]]=[this.allCard[idx],this.allCard[i]];//swap
-         }*/
+         }
            /*this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,7,32,
             1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,31,
             1,1,2,3,4,5,6,7,8,0,1,2,3,4,5,31,
             32,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17,
-            33,27,28,29,30,28,22,21,20,21,23,32,24]//測試case用
-        //  this.player[0].skillID=4//韓國瑜
-        // this.player[1].skillID=3//柯文哲*/
+            33,27,28,29,30,28,22,21,20,21,23,32,24]//測試case用*/
+          this.player[0].skillID=4//韓國瑜
+         this.player[1].skillID=3//柯文哲
 
         for(let j=0;j<4;j++){
             for(let i=0;i<16;i++){
@@ -203,6 +209,15 @@ class Game extends Component{
     }
     draw(){
         this.player[this.now].generate_listenlist()
+        if(this.now==0){
+            if(this.player[0].listenList.length&&this.music_switch){
+                this.music_switch=0
+                this.music_bgm.pause()
+                this.music_bgm=new Audio(bgm_listen)
+                this.music_bgm.loop=true
+                this.music_bgm.play()
+            }
+        }
         this.setState({
             change:true
         })
@@ -449,6 +464,15 @@ class Game extends Component{
             console.log("玩家可以"+canDo)
             this.showFuncMenu(canDo,card,this,func);//叫出選單供玩家選擇
             this.player[0].generate_listenlist()
+            if(this.now==0){
+                if(this.player[0].listenList.length&&this.music_switch){
+                    this.music_switch=0
+                    this.music_bgm.pause()
+                    this.music_bgm=new Audio(bgm_listen)
+                    this.music_bgm.loop=true
+                    this.music_bgm.play()
+                }
+            }
         }else{
             console.log("玩家不行"+canDo)
             func();//不行的話往下執行
@@ -584,20 +608,14 @@ class Game extends Component{
         //this.playerKan.splice(this.playerKan.indexOf(card),1)
         console.log(this.playerKan)
         this.now=0
-        this.setState({
-            change:true
-        })
+        
         this.draw()
-        this.setState({
-            change:true
-        })
+        
         console.log( this.player[0])
         if(this.playerKan.length!=0){
             
         }else{
-            this.showKan=0
-            this.canDo=[0,0,0,0]
-            this.show=false
+           
         }
         
         this.setState({
@@ -935,11 +953,13 @@ class Game extends Component{
             this.player[this.now].remove(discard)
         
             this.player[this.now].generate_listenlist()
-            if(this.player[this.now].listenList.length!=0){
-                this.whoIsListen[this.now]=1;
-                this.setState({
-                    change:true
-                })
+            for(let m=0;m<4;m++){
+                if(this.player[m].listenList.length!=0){
+                    this.whoIsListen[m]=1;
+                    this.setState({
+                        change:true
+                    })
+                }
             }
             console.log("玩家"+this.now.toString()+"聽:")
             console.log(this.player[this.now].listenList)
@@ -1048,6 +1068,15 @@ class Game extends Component{
         let discard=card
         this.dropedCard.push(card)
         this.player[this.now].generate_listenlist()
+        if(this.now==0){
+            if(this.player[0].listenList.length&&this.music_switch){
+                this.music_switch=0
+                this.music_bgm.pause()
+                this.music_bgm=new Audio(bgm_listen)
+                this.music_bgm.loop=true
+                this.music_bgm.play()
+            }
+        }
         console.log("玩家"+this.now.toString()+"聽:")
         console.log(this.player[this.now].listenList)
        //this.forceUpdate()
