@@ -28,6 +28,8 @@ class HandCard extends Component{
             this.num.push(0);
             this.alone.push(0);
         }
+        this.ATK=0;
+        this.HP=0;//攻擊力and 血量
         this.playernum=props//who 打牌
         this.top=top
         this.dsiable=props.disable

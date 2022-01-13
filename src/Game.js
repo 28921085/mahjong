@@ -53,8 +53,37 @@ class Game extends Component{
              let idx=Math.floor(Math.random()*136);
              [this.allCard[i],this.allCard[idx]]=[this.allCard[idx],this.allCard[i]];//swap
          }
+
+         this.player[0].skillID=4//韓國瑜
+        this.player[1].skillID=3//柯文哲
+
         for(let j=0;j<4;j++){
             for(let i=0;i<16;i++){
+                if(this.player[j].skillID==4){//國榆
+                    let skill=Math.floor(Math.random()*10)
+                    let target=[18,19,20,21,22,23,24,25,26,32]//1S-9S FA
+                    let index=this.find_these_card(target)
+                    if(skill<7&&index!=-1){
+                        console.log("高雄發大財技能發動")
+                        this.switch_card(index)
+                    }
+                    else 
+                        console.log("高雄發大財發動失敗")
+        
+                }
+                else if(this.player[j].skillID==3){//柯文哲
+                    let skill=Math.floor(Math.random()*10)
+                    
+                    let target=[9,10,11,12,13,14,15,16,17,27,28,29,30,31,33]//1T-9T 發以外字牌
+                    let index=this.find_these_card(target)
+                    if(skill<7&&index!=-1){
+                        console.log("垃圾不分藍綠技能發動")
+                        this.switch_card(index)
+                    }
+                    else 
+                        console.log("垃圾不分藍綠發動失敗")
+                    
+                }
                 this.player[j].haveID.push(this.current)
                 this.player[j].num[this.allCard[ this.current]]++
                 this.player[j].have.push(this.allCard[ this.current++])
@@ -66,8 +95,7 @@ class Game extends Component{
         }
         //抽牌
 
-        this.player[0].skillID=4//韓國瑜
-        this.player[1].skillID=3//柯文哲
+        
 
         console.log("把功能列藏起來")
         this.first_draw()
@@ -180,7 +208,7 @@ class Game extends Component{
             let skill=Math.floor(Math.random()*10)
             let target=[18,19,20,21,22,23,24,25,26,32]//1S-9S FA
             let index=this.find_these_card(target)
-            if(skill<3&&index!=-1){
+            if(skill<7&&index!=-1){
                 console.log("高雄發大財技能發動")
                 this.switch_card(index)
             }
@@ -190,24 +218,16 @@ class Game extends Component{
         }
         else if(this.player[this.now].skillID==3){//柯文哲
             let skill=Math.floor(Math.random()*10)
-            let trash=[0,1,2,3,4,5,6,7,8,18,19,20,21,22,23,24,25,26,32]//1W-9W,1S-9S,FA
-            let change=0
-            for(let i=0;i<trash.length;i++){
-                if(this.allCard[this.current]==trash[i])
-                    change=1;
-            }
-            if(change){
-                let target=[9,10,11,12,13,14,15,16,17,27,28,29,30,31,33]//1T-9T 發以外字牌
-                let index=this.find_these_card(target)
-                if(skill<3&&index!=-1){
-                    console.log("垃圾不分藍綠技能發動")
-                    this.switch_card(index)
-                }
-                else 
-                    console.log("垃圾不分藍綠發動失敗")
-            }
             
-
+            let target=[9,10,11,12,13,14,15,16,17,27,28,29,30,31,33]//1T-9T 發以外字牌
+            let index=this.find_these_card(target)
+            if(skill<7&&index!=-1){
+                console.log("垃圾不分藍綠技能發動")
+                this.switch_card(index)
+            }
+            else 
+                console.log("垃圾不分藍綠發動失敗")
+            
         }
         console.log("剩"+(this.allCard.length-this.current).toString()+"張牌")
         console.log("玩家"+this.now.toString()+"抽")
