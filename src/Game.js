@@ -40,11 +40,7 @@ class Game extends Component{
         this.dropedCard=[]
         //設定牌
 
-      /*  this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,31,32,
-                    1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,
-                    0,1,2,3,4,5,6,7,8,0,1,2,3,4,5,6,
-                    10,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17,
-                    33,32,27,26,27,24,23,22,21,20,21,23,32,24]//測試case用*/
+        
 
         for(let j=0;j<4;j++){
             for(let i=0;i<34;i++){
@@ -55,9 +51,13 @@ class Game extends Component{
              let idx=Math.floor(Math.random()*136);
              [this.allCard[i],this.allCard[idx]]=[this.allCard[idx],this.allCard[i]];//swap
          }
-
-         this.player[0].skillID=4//韓國瑜
-        this.player[1].skillID=3//柯文哲
+           this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,7,32,
+            1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,31,
+            1,1,2,3,4,5,6,7,8,0,1,2,3,4,5,31,
+            32,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17,
+            33,32,27,26,27,24,23,22,21,20,21,23,32,24]//測試case用
+        //  this.player[0].skillID=4//韓國瑜
+        // this.player[1].skillID=3//柯文哲
 
         for(let j=0;j<4;j++){
             for(let i=0;i<16;i++){
@@ -97,7 +97,7 @@ class Game extends Component{
         }
         //抽牌
 
-        
+      
 
         console.log("把功能列藏起來")
         this.first_draw()
@@ -146,7 +146,7 @@ class Game extends Component{
             return -1;
         if(this.now==0){
             for(let i=0;i<kanlist.length;i++){
-                let reply=window.prompt("要明槓"+this.dictionary[kanlist[i]]+"嗎?(0=不槓 else=明槓)","0");
+                // let reply=window.prompt("要明槓"+this.dictionary[kanlist[i]]+"嗎?(0=不槓 else=明槓)","0");
                 if(reply=="0")
                     continue;
                 return kanlist[i];
