@@ -31,6 +31,9 @@ class Game extends Component{
         this.showKan=0;
         this.playerKan=[]
         this.whoIsListen=[0,0,0,0]
+        this.hasKaned=[]
+        for(let i=0;i<34;i++)
+            this.hasKaned.push(0)
         this.state={
             change:true,
             showFuncMenu:false
@@ -47,17 +50,17 @@ class Game extends Component{
                 this.allCard[i*4+j]=i;
             }
         }
-         for(let i=0;i<136;i++){//洗牌
+         /*for(let i=0;i<136;i++){//洗牌
              let idx=Math.floor(Math.random()*136);
              [this.allCard[i],this.allCard[idx]]=[this.allCard[idx],this.allCard[i]];//swap
-         }
-           this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,7,32,
+         }*/
+           /*this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,7,32,
             1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,31,
             1,1,2,3,4,5,6,7,8,0,1,2,3,4,5,31,
             32,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17,
-            33,32,27,26,27,24,23,22,21,20,21,23,32,24]//測試case用
+            33,27,28,29,30,28,22,21,20,21,23,32,24]//測試case用
         //  this.player[0].skillID=4//韓國瑜
-        // this.player[1].skillID=3//柯文哲
+        // this.player[1].skillID=3//柯文哲*/
 
         for(let j=0;j<4;j++){
             for(let i=0;i<16;i++){
@@ -100,7 +103,7 @@ class Game extends Component{
       
 
         console.log("把功能列藏起來")
-        this.first_draw()
+        this.draw()
 
     }
     printAll(){
@@ -126,8 +129,7 @@ class Game extends Component{
     }
     //ex:碰7萬之後 自己在摸到一張7萬
     light_kan(){//明槓
-        if(this.win!=-1)
-            return
+       
         let kanlist=[];//可能一回合槓很多次
         //找亮搭的堆 如果手牌中有一張牌已經碰過
         let tmp=this.player[this.now].showlist
@@ -146,19 +148,23 @@ class Game extends Component{
             return -1;
         if(this.now==0){
             for(let i=0;i<kanlist.length;i++){
-                // let reply=window.prompt("要明槓"+this.dictionary[kanlist[i]]+"嗎?(0=不槓 else=明槓)","0");
-                
-                return kanlist[i];
+                let tmp=[]
+                if(this.hasKaned[kanlist[i]]==0){
+                    console.log("++++++++")
+                    this.hasKaned[kanlist[i]]=1
+                    tmp[0]=kanlist[i]
+                    tmp[1]=1
+                    this.playerKan.push(tmp)
+                }
             }
-            return -1;
+            return 0;
         }   
         else
             return kanlist[0]; 
     }
     dark_kan(){//暗槓
         let kanlist=[];//一回合可能槓很多次 選擇要槓哪張
-        if(this.win!=-1||this.kan!=-1)
-            return
+        
         for(let i=0;i<34;i++){
             if(this.player[this.now].num[i]==4)
                 kanlist.push(i);
@@ -167,23 +173,21 @@ class Game extends Component{
             return -1;
         if(this.now==0){
             for(let i=0;i<kanlist.length;i++){
-              
-                this.playerKan=kanlist
-                
-                return kanlist[i];//槓哪一張
+                let tmp=[]
+                if(this.hasKaned[kanlist[i]]==0){
+                    console.log("-------")
+                    this.hasKaned[kanlist[i]]=1
+                    tmp[0]=kanlist[i]
+                    tmp[1]=0
+                    this.playerKan.push(tmp)
+                }
             }
-            return -1;
+            return 0;
         }   
         else
             return kanlist[0]; //槓哪一張
     }
-    first_draw(){//先假設抽第一張牌不能槓不然會出大事
-        console.log("剩"+(136-this.current).toString()+"張牌")
-        console.log("玩家"+this.now.toString()+"抽")
-        let card=this.allCard[this.current]
-        this.player[this.now].num[card]++//num++
-        this.player[this.now].have.push(this.allCard[this.current++])
-    }
+   
     find_these_card(card){//card 為陣列
         for(let i=this.current+1;i<this.allCard.length;i++){
             for(let j=0;j<card.length;j++){
@@ -198,6 +202,10 @@ class Game extends Component{
         console.log(this.dictionary[this.allCard[this.current]]+"被換到了前面")
     }
     draw(){
+        this.player[this.now].generate_listenlist()
+        this.setState({
+            change:true
+        })
         if(this.allCard.length-this.current==16){//16
             window.alert("流局 遊戲結束")
             this.game_end=1;
@@ -238,7 +246,9 @@ class Game extends Component{
         this.win=this.self_win(card)
         this.kan=this.light_kan()
         this._kan=this.dark_kan()
+        console.log(this.win+"545")
         this.doPlayerCanDo(card,()=>{
+            console.log(this.win)
             if(this.win!=-1){
                 window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
                 let loglist=this.calculate_reward(card,this.now)
@@ -252,6 +262,8 @@ class Game extends Component{
                 this.player[this.now].remove(this.kan)
                 this.player[this.now].showlist.push(this.kan)
                 console.log(this.now.toString()+"明槓")
+                this.player[this.now].generate_listenlist()
+                console.log("玩家聽"+this.player[this.now].listenList)
                 this.draw()
             }
             else if(this._kan!=-1){
@@ -260,7 +272,9 @@ class Game extends Component{
                     this.player[this.now].showlist.push(this._kan)
                 }
                 this.player[this.now].dark_ker++;
+                this.player[this.now].generate_listenlist()
                 console.log(this.now.toString()+"暗槓")
+                console.log("玩家聽"+this.player[this.now].listenList)
                 this.draw()
             }
         
@@ -276,13 +290,13 @@ class Game extends Component{
          for(let i=0;i<4;i++)
              if(n!=i&&this.player[i].num[card]>=2)//不能碰自己&該牌>=2
                  ans=i;
-         if(ans==0){//玩家決定要不要碰
+         /*if(ans==0){//玩家決定要不要碰
             if(this.kan!=-1)
                 return -1;
             //  let reply=window.prompt("要碰嗎?(0=不碰 else=碰)","0");
 
            
-         }
+         }*/
          return ans;
     }
 
@@ -294,10 +308,10 @@ class Game extends Component{
         for(let i=0;i<4;i++)
             if(i!=n&&i!=next&&this.player[i].num[card]==3)//不能槓自己跟上家
                 ans= i;
-        if(ans==0){
-            // let reply=window.prompt("要槓嗎?(0=不槓 else=槓)","0");
+        // if(ans==0){
+        //     // let reply=window.prompt("要槓嗎?(0=不槓 else=槓)","0");
            
-        }
+        // }
         return ans;//哪一家槓牌
     }
  
@@ -379,6 +393,7 @@ class Game extends Component{
     }
     showFuncMenu(canDo,card){
         // canDo,doEat,doPon,doKan,doWin
+        console.log(canDo)
         this.canDo=canDo
         this.show=1
         this.setState({
@@ -404,14 +419,18 @@ class Game extends Component{
         if(this.eat!=-1&&this.now==3){//TODO
             canDo[0]=1;
         }
+        console.log("this.pon"+this.pon)
         if(this.pon==0){
             canDo[1]=1;
         }
-        if(this.kan==0){
+        if(this.kan==0){//ming_kan
             canDo[2]=1;
+          
         }
-        if(this.playerKan.length!=0&&this.now==0){
+        else if(this.now==0&&this.playerKan.length){//dark kan
+          
             canDo[2]=1;
+            
         }
         if(this.win==0){
             canDo[3]=1;
@@ -425,10 +444,11 @@ class Game extends Component{
     doPlayerCanDo(card,func){//看看玩家能不能吃碰槓胡，不能的話繼續流程
         this.tempNow=this.now;
         let canDo=this.playerCan(card)//偵測玩家能不能吃碰槓胡
-        
+        console.log("show="+this.show)
         if(canDo){//如果可以
             console.log("玩家可以"+canDo)
             this.showFuncMenu(canDo,card,this,func);//叫出選單供玩家選擇
+            this.player[0].generate_listenlist()
         }else{
             console.log("玩家不行"+canDo)
             func();//不行的話往下執行
@@ -503,13 +523,16 @@ class Game extends Component{
             for(let i=0;i<this.playerKan.length;i++){
                 // 
                 for(let j=0;j<4;j++){
-                    temp.push(<Card playernum={0} key={Math.random()} show={true} disable={false} func={()=>this.doChooseKan(this.playerKan[i])} card={this.playerKan[i]}/>)
+                    temp.push(<Card playernum={0} key={Math.random()} show={true} disable={false} func={()=>this.doChooseKan(this.playerKan[i][0],this.playerKan[i][1])} card={this.playerKan[i][0]}/>)
+                    
                 }
 
-                 }
-                 if(temp!=[])
-                 return temp
-            return  <div></div>
+             }
+
+        
+        if(temp!=[])
+            return temp
+        return  <div></div>
         
         }else{
             return <div></div>
@@ -534,17 +557,40 @@ class Game extends Component{
             change:true
         })
     }
-    doChooseKan(card){
+    doChooseKan(card,type){
         console.log(card)
-        for(let i=0;i<4;i++){
+        
+        if(type==0){//暗槓
+            for(let i=0;i<4;i++){
+                this.player[0].remove(card)
+                this.player[0].showlist.push(card)
+            }
+        }
+        else{
             this.player[0].remove(card)
             this.player[0].showlist.push(card)
         }
         this.player[0].dark_ker++;
-        console.log(this.now.toString()+"暗槓")
-        this.playerKan.splice(this.playerKan.indexOf(card),1)
-        
+        if(type==0)
+            console.log(this.now.toString()+"暗槓")
+        else
+            console.log(this.now.toString()+"明槓")
+        console.log(this.playerKan)
+        let tmpnew=[]
+        for(let i=0;i<this.playerKan.length;i++)
+            if(card!=this.playerKan[i][0])
+                tmpnew.push(this.playerKan[i])
+        this.playerKan=tmpnew
+        //this.playerKan.splice(this.playerKan.indexOf(card),1)
+        console.log(this.playerKan)
         this.now=0
+        this.setState({
+            change:true
+        })
+        this.draw()
+        this.setState({
+            change:true
+        })
         console.log( this.player[0])
         if(this.playerKan.length!=0){
             
@@ -569,11 +615,14 @@ class Game extends Component{
         }else{
             let discard=this.state.card
             console.log("玩家選擇槓");
+            console.log("456126845213894652485612")
             for(let i=0;i<4;i++){//刪三張，顯示四張
                 if(i!=0)
                     this.player[0].remove(discard)
                 this.player[0].showlist.push(discard)
             }
+            console.log("fsdjfajfdfjasdjfasfasd")
+            console.log(this.player[0].num)
             this.showKan=0
             console.log(0+"明槓")
             this.player[this.now].ming_ker++;
