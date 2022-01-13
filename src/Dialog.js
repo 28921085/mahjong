@@ -20,13 +20,22 @@ export default function Dialog(props) {
     setNow(now+1)
     
   };
+  const gerObj=()=>{
+    let temp=[]
+    temp.push(<h1>aaaa</h1>)
+    temp.push(<h1>bbbb</h1>)
+    temp.push(<h1>cccc</h1>)
+    temp[1]=null
+    console.log(temp.length)
+    return temp
+  }
   // setNow(0)
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
         開始對話
       </Button>
-
+      {gerObj()}
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>

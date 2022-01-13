@@ -7,6 +7,7 @@ import FuncMenu from './FuncMenu';
 //import $ from 'jquery';
 import Button from 'react-bootstrap/Button';
 import { findRenderedDOMComponentWithClass } from 'react-dom/cjs/react-dom-test-utils.production.min';
+import { ButtonGroup } from 'react-bootstrap';
 class Game extends Component{
     constructor(props){
         super(props)
@@ -28,6 +29,7 @@ class Game extends Component{
         this.showEat=0;
         this.tempNow=0;
         this.showKan=0;
+        this.playerKan=[]
         this.whoIsListen=[0,0,0,0]
         this.state={
             change:true,
@@ -135,10 +137,9 @@ class Game extends Component{
             return -1;
         if(this.now==0){
             for(let i=0;i<kanlist.length;i++){
-                this.showKan=1;
-                let reply=window.prompt("要暗槓"+this.dictionary[kanlist[i]]+"嗎?(0=不槓 else=暗槓)","0");
-                if(reply=="0")
-                    continue;
+              
+                this.playerKan=kanlist
+                
                 return kanlist[i];//槓哪一張
             }
             return -1;
@@ -344,7 +345,7 @@ class Game extends Component{
         if(this.kan==0){
             canDo[2]=1;
         }
-        if(this._kan!=-1&&this.now==0){
+        if(this.playerKan.length!=0&&this.now==0){
             canDo[2]=1;
         }
         if(this.win==0){
@@ -431,7 +432,19 @@ class Game extends Component{
     }
     Kan(){
         if(this.showKan==1){
-            return  
+            console.log("in Kan()")
+            let temp=[]
+            
+            for(let i=0;i<this.playerKan.length;i++){
+                // 
+                for(let j=0;j<4;j++){
+                    temp.push(<Card playernum={0} key={Math.random()} show={true} disable={false} func={()=>this.doChooseKan(this.playerKan[i])} card={this.playerKan[i]}/>)
+                }
+
+                 }
+                 if(temp!=[])
+                 return temp
+            return  <div></div>
         
         }else{
             return <div></div>
@@ -456,27 +469,61 @@ class Game extends Component{
             change:true
         })
     }
-    doKan(){
-        let discard=this.state.card
-        console.log("玩家選擇槓");
-        for(let i=0;i<4;i++){//刪三張，顯示四張
-            if(i!=0)
-                this.player[0].remove(discard)
-            this.player[0].showlist.push(discard)
+    doChooseKan(card){
+        console.log(card)
+        for(let i=0;i<4;i++){
+            this.player[0].remove(card)
+            this.player[0].showlist.push(card)
         }
-     
-        console.log(0+"明槓")
-        this.player[this.now].ming_ker++;
-        this.canDo=[0,0,0,0]
-        this.show=false
+        this.player[0].dark_ker++;
+        console.log(this.now.toString()+"暗槓")
+        this.playerKan.splice(this.playerKan.indexOf(card),1)
+        
         this.now=0
-        this.draw()
+        console.log( this.player[0])
+        if(this.playerKan.length!=0){
+            
+        }else{
+            this.showKan=0
+            this.canDo=[0,0,0,0]
+            this.show=false
+        }
+        
         this.setState({
             change:true
         })
+    }
+    doKan(){
+        if(this.playerKan.length!=0){
+            console.log("按下槓")
+            this.showKan=1;
+            this.setState({
+                change:true
+            })
+            
+        }else{
+            let discard=this.state.card
+            console.log("玩家選擇槓");
+            for(let i=0;i<4;i++){//刪三張，顯示四張
+                if(i!=0)
+                    this.player[0].remove(discard)
+                this.player[0].showlist.push(discard)
+            }
+            this.showKan=0
+            console.log(0+"明槓")
+            this.player[this.now].ming_ker++;
+            this.canDo=[0,0,0,0]
+            this.show=false
+            this.now=0
+            this.draw()
+            this.setState({
+                change:true
+            })
+            
+            if(this.game_end)
+                return;
+        }
         
-        if(this.game_end)
-            return;
        
         
     }
@@ -1045,7 +1092,7 @@ class Game extends Component{
                 
                     <td class="tg-0pky" colspan="2" align = "center">
                     
-                <div key={Math.random()}>{this.Eat()}</div>{this.show?
+                    <div key={Math.random()}>{this.Kan()}</div><div key={Math.random()}>{this.Eat()}</div>{this.show?
             <div><Button key={Math.random()} variant="outline-primary"   onClick={()=>this.doEat()} disabled={!this.canDo[0]}>吃</Button>
                 <Button key={Math.random()} variant="outline-secondary" onClick={()=>this.doPon()} disabled={!this.canDo[1]}>碰</Button>
                 <Button key={Math.random()}variant="outline-success"  onClick={()=>this.doKan()} disabled={!this.canDo[2]}>槓</Button>
