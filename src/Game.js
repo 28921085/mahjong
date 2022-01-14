@@ -6,6 +6,7 @@ import Jay from './battle-background.jpg';
 import bgm from './進關.mp3'
 import bgm_listen from './聽牌.mp3'
 import FuncMenu from './FuncMenu';
+import Container from 'react-bootstrap/Container';
 //import $ from 'jquery';
 import Button from 'react-bootstrap/Button';
 import { findRenderedDOMComponentWithClass } from 'react-dom/cjs/react-dom-test-utils.production.min';
@@ -37,6 +38,8 @@ class Game extends Component{
         this.music_switch=1
         this.MIGI=1
         this.disable=false
+        this.result="<p></p>"//結算畫面
+    
         this.lastcard=34//上一個人打的牌
         this.game_record="遊戲開始\n"
         for(let i=0;i<34;i++)
@@ -60,17 +63,17 @@ class Game extends Component{
                 this.allCard[i*4+j]=i;
             }
         }
-         /*for(let i=0;i<136;i++){//洗牌
+         for(let i=0;i<136;i++){//洗牌
              let idx=Math.floor(Math.random()*136);
              [this.allCard[i],this.allCard[idx]]=[this.allCard[idx],this.allCard[i]];//swap
-         }*/
-           this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,7,32,
+         }
+          /* this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,7,32,
             1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,31,
             1,1,2,3,4,5,6,7,8,0,1,2,3,4,5,31,
             32,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17,
-            33,27,28,29,30,28,22,21,20,21,23,32,24]//測試case用
-         // this.player[0].skillID=4//韓國瑜
-         //this.player[1].skillID=3//柯文哲
+            33,27,28,29,30,28,22,21,20,21,23,32,24]//測試case用*/
+          this.player[0].skillID=4//韓國瑜
+         this.player[1].skillID=3//柯文哲
         this.player[0].playername="韓國瑜"
         this.player[1].playername="柯文哲"
         this.player[2].playername="AI1"
@@ -294,6 +297,7 @@ class Game extends Component{
                 for(let i=0;i<loglist.length;i++)
                     this.refresh(loglist[i]+"\n")
                 this.game_end=1
+                this.show_result(loglist)
                 this.setState({
                     change:false
                  })
@@ -701,6 +705,8 @@ class Game extends Component{
         let loglist=this.calculate_reward(this.state.card,this.now)
             for(let i=0;i<loglist.length;i++)
                 console.log(loglist[i])
+        this.game_end=1
+        this.show_result(loglist)
         //window.alert("玩家"+this.win.toString()+"胡牌 遊戲結束")
         this.setState({
             change:false
@@ -965,10 +971,32 @@ class Game extends Component{
             
         }
         this.refresh("總共 "+total+"台\n")
+        show.push("總共 "+total+"台")
         
         return show;
     }
-
+    show_result(show){
+        let cnt=0
+       
+        //let showResult=setInterval(function(){
+            console.log(this.result)
+        for(let i=0;i<show.length;i++){
+            this.setState({
+                change:false
+            })
+            this.result+="<p>"+show[cnt]+"</p>"
+            
+            cnt++
+            console.log(this.result)
+            this.setState({
+                change:false
+            })
+        }
+        //    if(cnt==show.length)
+        //        clearInterval(showResult)
+        //},800)
+        
+    }
 
     botsent(){
         
@@ -1032,6 +1060,7 @@ class Game extends Component{
                     for(let i=0;i<loglist.length;i++)
                         this.refresh(loglist[i]+"\n")
                     this.game_end=1
+                    this.show_result(loglist)
                     this.setState({
                         change:false
                      })
@@ -1155,6 +1184,7 @@ class Game extends Component{
             for(let i=0;i<loglist.length;i++)
                 this.refresh(loglist[i]+"\n")
             this.game_end=1
+            this.show_result(loglist)
             this.setState({
                 change:false
              })
@@ -1215,7 +1245,7 @@ class Game extends Component{
             }
             this.disable=false
          }
-
+         
         
    }
 //    btn_pon(){
@@ -1237,19 +1267,12 @@ class Game extends Component{
             //
             //console.log("render game")
             //this.now=this.now%4
-           /* let b=[],ccnt=0
-            if(this.game_end==1){
-                let show=setInterval(function(){
-                    let a=<div>end</div>;
-                    b.push(a)
-                    ccnt++;
-                    if(ccnt==5)
-                        clearInterval(show)
-                },1000)
+           
+            if(this.game_end){
                 
-                return [b]
+                return [<Container key={Math.random()}>{this.result}</Container>]
             }
-            else{*/
+            else{
                 return [
                 /*<h1>{(this.now)}</h1>,*/
                 //<th class="tg-0pky"></th>
@@ -1347,7 +1370,7 @@ class Game extends Component{
                 ,this.printArrayCard(this.dropedCard)]
             
             ]
-        //}
+        }
     }
      
 }
