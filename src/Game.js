@@ -82,14 +82,23 @@ class Game extends Component{
             33,27,28,29,30,32,22,21,20,21,23,32,24,15,15]//測試case用*/
   //   this.player[0].skillID=4//韓國瑜
   //  this.player[1].skillID=3//柯文哲
+        let allHP=[250,200,50,400,450,1000]
+        let allATK_base=[50,50,50,30,40,100] 
+        let allATK_add=[10,20,30,20,40,50]
         let characterName=JSON.parse(localStorage.getItem("characterName"))
+        console.log("charaname"+characterName)
         let skill=JSON.parse(localStorage.getItem("skill"))
+        console.log("skill"+skill)
         for(let setLocal=0;setLocal<4;setLocal++){
             this.player[setLocal].playername=characterName[setLocal]
             this.player[setLocal].skillID=skill[setLocal]
-
+            this.player[setLocal].HP=allHP[skill[setLocal]]
+            this.player[setLocal].ATK_base=allATK_base[skill[setLocal]]
+            this.player[setLocal].ATK_add=allATK_add[skill[setLocal]]
+            console.log("skillID="+this.player[setLocal].skillID)
         }
-        let picname=["","Jay.png","Wang.jpg","KP.jpg","Han.png","Tsai.jpg"]
+        
+        
         this.headpic=[]
         
        this.headpic.push(Jay)
