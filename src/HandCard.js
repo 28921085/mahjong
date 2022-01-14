@@ -16,6 +16,7 @@ class HandCard extends Component{
         this.num=[]//count card
         this.skillID=ID
         this.cover=[]
+        this.show=false
         //this.skillID=4//韓國榆
         this.showlist=[]//亮搭
         this.listenList=[]//聽牌名單
@@ -331,14 +332,14 @@ class HandCard extends Component{
             if(this.cover[i]==1)
             this.list.push(<Card show={true}id={"player"+this.playernum} disable={true} key={i+Math.random() }card={this.showlist[i]} playernum={this.playernum}  top={this.top}/>)
              else{
-                this.list.push(<Card show={false}id={"player"+this.playernum} disable={true} key={i+Math.random() }card={this.showlist[i]} playernum={this.playernum}  top={this.top}/>)
+                this.list.push(<Card show={false||this.show}id={"player"+this.playernum} disable={true} key={i+Math.random() }card={this.showlist[i]} playernum={this.playernum}  top={this.top}/>)
              
              }
          }
          this.list.push(<br/>)
          for(let i=0;i<this.have.length;i++){
             //  console.log(<Card  key={this.have[i] }card={this.have[i]} playernum={this.playernum}  top={this.top}/>)
-             this.list.push(<Card id={"player"+this.playernum} disable={!(now==this.playernum)||disable} key={i+Math.random() }card={this.have[i]} playernum={this.playernum}  top={this.top}/>)
+             this.list.push(<Card show={this.show} id={"player"+this.playernum} disable={!(now==this.playernum)||disable} key={i+Math.random() }card={this.have[i]} playernum={this.playernum}  top={this.top}/>)
              
          }
          this.list.push(<br/>)
