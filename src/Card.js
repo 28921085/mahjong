@@ -43,7 +43,7 @@ render(props){
         //    console.log("now="+this.now)
     }
 //}><img  key={Math.random()}  width='30px'height='39px'src={this.playernum==0||this.show?require('./static/card/'+this.dictionary[parseInt(this.card)]+'.png').default:require('./static/card/space.png').default} alt='prop.name'></img></button>
-}><img  key={Math.random()}  width='30px'height='39px'src={this.playernum==0||this.show?require('./static/card/'+this.dictionary[parseInt(this.card)]+'.png').default:require('./static/card/'+this.dictionary[parseInt(this.card)]+'.png').default} alt='prop.name'></img></button>
+}><img  key={Math.random()}  width='30px'height='39px'src={this.playernum==0||this.show?require('./static/card/'+this.dictionary[parseInt(this.card)]+'.png').default:require('./static/card/'+'space'+'.png').default} alt='prop.name'></img></button>
 
     )
 }

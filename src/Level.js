@@ -23,6 +23,8 @@ class Level extends Component{
             console.log("level 0")
             let chr=['韓國瑜','柯文哲','AI1','AI2']
             let skill=[4,3,0,0]
+            let hp=[]
+            let atk=[]
             localStorage.setItem("characterName",JSON.stringify(chr))
             localStorage.setItem("skill",JSON.stringify(skill))
             //TODO
