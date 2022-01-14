@@ -36,9 +36,10 @@ button{
   color: #ffc702;
 }
 .gamelog{
-  
+  position: absolute;
   width: 300px;
- 
+  top:500px;
+  left:0px;
   text-align: justify;
   font-family: "cwTeXFangSong",serif ;
   white-space: pre-wrap;

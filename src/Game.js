@@ -1286,11 +1286,7 @@ class Game extends Component{
             //console.log("render game")
             //this.now=this.now%4
         
-            if(this.game_end){
-
-                return [<Container key={Math.random()}>{this.result}</Container>]
-            }
-            else{
+            
                 return [
                 /*<h1>{(this.now)}</h1>,*/
                 //<th class="tg-0pky"></th>
@@ -1375,15 +1371,20 @@ class Game extends Component{
 
                             </div>
 
-                        <p class="gamelog" id="gamelog">
-                        <AutoScroll sa={this.game_record}/>
-
-                        </p>
+                        
 
                     </td>
                 </tr>
                 </tbody>
-                </table>
+                </table>,
+                <div class="log">
+                    <p class="gamelog" id="gamelog" >
+                        <AutoScroll sa={this.game_record}/>
+                    </p>          
+                </div>,
+                <div>
+                    <Container class="winlog" key={Math.random()}>{this.result}</Container>
+                </div>
                 ,<h1 align="center"></h1>
                 ,,<br/>
                 ,,<br/>
@@ -1394,7 +1395,7 @@ class Game extends Component{
 
             ]
         }
-    }
+    
 
 }
 export default Game
