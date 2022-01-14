@@ -5,10 +5,12 @@ import mp3 from './sleep.mp3'
 import Jay from './battle-background.jpg';
 import bgm from './進關.mp3'
 import bgm_listen from './聽牌.mp3'
+import AutoScroll from './AutoScroll'
 import FuncMenu from './FuncMenu';
 //import $ from 'jquery';
 import Button from 'react-bootstrap/Button';
 import { findRenderedDOMComponentWithClass } from 'react-dom/cjs/react-dom-test-utils.production.min';
+import ScrollToBottom from 'react-scroll-to-bottom';
 import { ButtonGroup } from 'react-bootstrap';
 class Game extends Component{
     constructor(props){
@@ -1250,6 +1252,11 @@ class Game extends Component{
                 return [b]
             }
             else{*/
+                // const ROOT_CSS = css({
+                //     behavior: 'auto'
+                    
+                //   });
+                  
                 return [
                 /*<h1>{(this.now)}</h1>,*/
                 //<th class="tg-0pky"></th>
@@ -1330,10 +1337,15 @@ class Game extends Component{
                 </tr>
                 <tr>
                     <td align="left" class="log">
+                        <div>
+                            
+                            </div>
+                      
                         <p class="gamelog" id="gamelog">
-                            {this.game_record}
+                        <AutoScroll sa={this.game_record}/>
                             
                         </p>
+                        
                     </td>
                 </tr>
                 </tbody>
