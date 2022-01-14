@@ -15,6 +15,7 @@ class HandCard extends Component{
         this.haveID=[]//no use
         this.num=[]//count card
         this.skillID=ID
+        this.cover=[]
         //this.skillID=4//韓國榆
         this.showlist=[]//亮搭
         this.listenList=[]//聽牌名單
@@ -327,8 +328,12 @@ class HandCard extends Component{
         this.list=[]
         this.list.push(<div/>);
         for(let i=0;i<this.showlist.length;i++){
-            this.list.push(<Card id={"player"+this.playernum} disable={true} key={i+Math.random() }card={this.showlist[i]} playernum={this.playernum}  top={this.top}/>)
+            if(this.cover[i]==1)
+            this.list.push(<Card show={true}id={"player"+this.playernum} disable={true} key={i+Math.random() }card={this.showlist[i]} playernum={this.playernum}  top={this.top}/>)
+             else{
+                this.list.push(<Card show={false}id={"player"+this.playernum} disable={true} key={i+Math.random() }card={this.showlist[i]} playernum={this.playernum}  top={this.top}/>)
              
+             }
          }
          this.list.push(<br/>)
          for(let i=0;i<this.have.length;i++){
