@@ -113,7 +113,7 @@ class Game extends Component{
 
       
 
-        console.log("把功能列藏起來")
+       
         this.draw()
 
     }
