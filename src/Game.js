@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import HandCard from './HandCard'
 import Card from './Card'
 import mp3 from './sleep.mp3'
-import Jay from './battle-background.jpg';
 import bgm from './進關.mp3'
 import bgm_listen from './聽牌.mp3'
 import AutoScroll from './AutoScroll'
@@ -14,6 +13,12 @@ import Button from 'react-bootstrap/Button';
 import { findRenderedDOMComponentWithClass } from 'react-dom/cjs/react-dom-test-utils.production.min';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import { ButtonGroup } from 'react-bootstrap';
+import Jay from './static/character/Jay.png';
+import Wang from './static/character/Wang.jpg';
+import KP from './static/character/KP.jpg';
+import Han from './static/character/Han.png';
+import Tsai from './static/character/Tsai.jpg';
+
 class Game extends Component{
     constructor(props){
         super(props)
@@ -42,7 +47,7 @@ class Game extends Component{
         this.MIGI=1
         this.disable=false
         this.result=[]//結算畫面
-
+        
         this.lastcard=34//上一個人打的牌
         this.game_record="遊戲開始\n"
         for(let i=0;i<34;i++)
@@ -75,14 +80,24 @@ class Game extends Component{
             1,1,2,3,8,8,8,8,0,1,2,3,4,5,31,9,
             32,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17,
             33,27,28,29,30,32,22,21,20,21,23,32,24,15,15]//測試case用*/
-      this.player[0].skillID=4//韓國瑜
-     this.player[1].skillID=3//柯文哲
+  //   this.player[0].skillID=4//韓國瑜
+  //  this.player[1].skillID=3//柯文哲
         let characterName=JSON.parse(localStorage.getItem("characterName"))
         let skill=JSON.parse(localStorage.getItem("skill"))
         for(let setLocal=0;setLocal<4;setLocal++){
             this.player[setLocal].playername=characterName[setLocal]
             this.player[setLocal].skillID=skill[setLocal]
+
         }
+        let picname=["","Jay.png","Wang.jpg","KP.jpg","Han.png","Tsai.jpg"]
+        this.headpic=[]
+        
+       this.headpic.push(Jay)
+       this.headpic.push(Jay)//ID=0暫時是結哥
+       this.headpic.push(Wang)
+       this.headpic.push(KP)
+       this.headpic.push(Han)
+       this.headpic.push(Tsai)
         
         
         for(let j=0;j<4;j++){
@@ -1454,12 +1469,28 @@ class Game extends Component{
                 <div>
                     <Container className="winlog" key={Math.random()}>{this.result}</Container>
                 </div>
+                ,<div class="player">
+                    <img class="head" src={this.headpic[this.player[0].skillID] }></img>,
+                    <div class="blood" width={this.player[0].HP.toString()+'px'}>{this.player[0].HP}</div>
+                </div>
+                ,<div class="enemy1">
+                    <img class="head" src={this.headpic[this.player[1].skillID] }></img>,
+                    <div class="blood" width={this.player[1].HP.toString()+'px'}>{this.player[1].HP}</div>
+                </div>
+                ,<div class="enemy2">
+                    <img class="head" src={this.headpic[this.player[2].skillID] }></img>,
+                    <div class="blood" width={this.player[2].HP.toString()+'px'}>{this.player[2].HP}</div>
+                </div>
+                ,<div class="enemy3">
+                    <img class="head" src={this.headpic[this.player[3].skillID] }></img>,
+                    <div class="blood" width={this.player[3].HP.toString()+'px'}>{this.player[3].HP}</div>
+                </div>
                 ,<h1 align="center"></h1>
                 ,,<br/>
                 ,,<br/>
                 ,,<br/>
                 ,,<hr></hr>
-            ],[this.printArrayCard(this.allCard,this.current),<br/>,<hr/>
+            ],[/*this.printArrayCard(this.allCard,this.current),*/<br/>,<hr/>
                 ,this.printArrayCard(this.dropedCard)]
 
             ]

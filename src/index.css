@@ -60,9 +60,39 @@ button{
   color:white;
   background-color: green;
   font-family: serif;
-  width:80px;
+  width:60px;
   text-shadow: -4px 4px 6px dimgray;
   width:100px;
+}
+.player{
+  position: absolute;
+  top:630px;
+  left:380px;
+} 
+.enemy1{
+  position: absolute;
+  top:350px;
+  left:1200px;
+}
+.enemy2{
+  position: absolute;
+  top:20px;
+  left:1050px;
+}
+.enemy3{
+  position: absolute;
+  top:350px;
+  left:200px;
+}
+.head{
+  width: 100px;
+  height: 100px;
+}
+.blood{
+  background-color: red;
+  height: 20px;
+  color: white;
+  text-align: center;
 }
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{height:auto;border-color:black;border-style:solid;border-width:0px;font-family:Arial, sans-serif;font-size:14px;
