@@ -12,6 +12,8 @@ import Dialog from './Dialog'
 import CharacterShop from './CharacterShop'
 import reportWebVitals from './reportWebVitals';
 import Level from './Level';
+import Test from './AutoScroll';
+import TestScroll from './TestScroll';
 // let dictionary=["1W","2W","3W","4W","5W","6W","7W","8W","9W","1T","2T","3T","4T","5T","6T","7T","8T","9T","1S","2S","3S","4S","5S","6S","7S","8S","9S","DONG","NAN","XI","BEI","ZHONG","FA","BAI","space"];
 
 
@@ -23,6 +25,8 @@ ReactDOM.render(
           <Routes>
               
               <Route exact path='/' element={<Start/>} />
+              <Route exact path='/TestScroll' element={<TestScroll/>} />
+              <Route exact path='/Test' element={<Test sa={"aaa"}/>} />
               <Route exact path='/Level' element={<Level/>} />
               <Route path='/Play' element={
               <div style={{ 

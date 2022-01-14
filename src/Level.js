@@ -19,6 +19,13 @@ class Level extends Component{
     }
     play(level){
         localStorage.setItem("level",level)
+        if(level==0){
+            //TODO
+        }else if(level==1){
+
+        }else if (level==2){
+            
+        }
     }
 }
 export default Level
