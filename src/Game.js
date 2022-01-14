@@ -71,6 +71,8 @@ class Game extends Component{
          this.player[1].skillID=3//柯文哲
         this.player[0].playername="韓國瑜"
         this.player[1].playername="柯文哲"
+        this.player[2].playername="AI1"
+        this.player[3].playername="AI2"
         for(let j=0;j<4;j++){
             for(let i=0;i<16;i++){
                 //純換牌操作
@@ -118,10 +120,10 @@ class Game extends Component{
 
     }
     refresh(str){
-        let tar=document.getElementById("gamelog")
+        //let tar=document.getElementById("gamelog")
         
         this.game_record+=str
-        tar.scrollTop = tar.scrollHeight;
+        //tar.scrollTop = tar.scrollHeight;
     }
     printAll(){
         let all=[]
@@ -586,7 +588,7 @@ class Game extends Component{
         }
         
         this.player[0].ming_ker++;
-        this.refresh(this.player[this.now].playername+"碰\n")
+        this.refresh(this.player[0].playername+"碰\n")
         this.canDo=[0,0,0,0]
 
         this.show=false
@@ -1289,6 +1291,7 @@ class Game extends Component{
                     <td align="left" class="log">
                         <p class="gamelog" id="gamelog">
                             {this.game_record}
+                            
                         </p>
                     </td>
                 </tr>
