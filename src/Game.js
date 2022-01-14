@@ -35,6 +35,8 @@ class Game extends Component{
         this.whoIsListen=[0,0,0,0]
         this.hasKaned=[]
         this.music_switch=1
+        this.MIGI=1
+        this.disable=false
         this.lastcard=34//上一個人打的牌
         this.game_record="遊戲開始\n"
         for(let i=0;i<34;i++)
@@ -58,17 +60,17 @@ class Game extends Component{
                 this.allCard[i*4+j]=i;
             }
         }
-         for(let i=0;i<136;i++){//洗牌
+         /*for(let i=0;i<136;i++){//洗牌
              let idx=Math.floor(Math.random()*136);
              [this.allCard[i],this.allCard[idx]]=[this.allCard[idx],this.allCard[i]];//swap
-         }
-           /*this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,7,32,
+         }*/
+           this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,7,32,
             1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,31,
             1,1,2,3,4,5,6,7,8,0,1,2,3,4,5,31,
             32,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17,
-            33,27,28,29,30,28,22,21,20,21,23,32,24]//測試case用*/
-          this.player[0].skillID=4//韓國瑜
-         this.player[1].skillID=3//柯文哲
+            33,27,28,29,30,28,22,21,20,21,23,32,24]//測試case用
+         // this.player[0].skillID=4//韓國瑜
+         //this.player[1].skillID=3//柯文哲
         this.player[0].playername="韓國瑜"
         this.player[1].playername="柯文哲"
         this.player[2].playername="AI1"
@@ -286,7 +288,7 @@ class Game extends Component{
             console.log(this.win)
             if(this.win!=-1){
                 //window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
-                this.refresh("玩家"+this.now.toString()+"自摸 遊戲結束"+"\n")
+                this.refresh("玩家"+this.now.toString()+"胡牌 遊戲結束"+"\n")
                 let loglist=this.calculate_reward(card,this.now)
                 
                 for(let i=0;i<loglist.length;i++)
@@ -302,6 +304,7 @@ class Game extends Component{
                 this.player[this.now].remove(this.kan)
                 this.player[this.now].showlist.push(this.kan)
                 this.refresh(this.player[0].playername+"明槓\n")
+                this.MIGI=0
                 this.player[this.now].generate_listenlist()
                 console.log("玩家聽"+this.player[this.now].listenList)
                 this.draw()
@@ -314,6 +317,7 @@ class Game extends Component{
                 this.player[this.now].dark_ker++;
                 this.player[this.now].generate_listenlist()
                 this.refresh(this.player[this.now].playername+"暗槓\n")
+                this.MIGI=0
                 console.log("玩家聽"+this.player[this.now].listenList)
                 this.draw()
             }
@@ -436,6 +440,7 @@ class Game extends Component{
         console.log(canDo)
         this.canDo=canDo
         this.show=1
+        this.disable=true
         this.setState({
             change:Math.random(),
             showFuncMenu:true,
@@ -555,11 +560,12 @@ class Game extends Component{
                         this.player[0].showlist.push(discard+2)
                     }
                     this.refresh(this.player[this.now].playername+"吃\n")
+                    this.MIGI=0
                     this.canDo=[0,0,0,0]
         this.showEat=false
         this.show=false
         this.now=0
-        
+        this.disable=false
         this.setState({
             change:true
         })
@@ -597,8 +603,9 @@ class Game extends Component{
         
         this.player[0].ming_ker++;
         this.refresh(this.player[0].playername+"碰\n")
+        this.MIGI=0
         this.canDo=[0,0,0,0]
-
+        this.disable=false
         this.show=false
         this.now=0
         
@@ -624,6 +631,7 @@ class Game extends Component{
             this.refresh(this.player[this.now].playername+"明槓\n")
         else
             this.refresh(this.player[this.now].playername+"暗槓\n")
+        this.MIGI=0
         console.log(this.playerKan)
         let tmpnew=[]
         for(let i=0;i<this.playerKan.length;i++)
@@ -648,6 +656,7 @@ class Game extends Component{
         })
     }
     doKan(){
+       
         if(this.playerKan.length!=0){
             console.log("按下槓")
             this.showKan=1;
@@ -665,11 +674,13 @@ class Game extends Component{
             }
             console.log(this.player[0].num)
             this.showKan=0
-            this.refresh(this.player[this.now].playername+"槓\n")
-            this.player[this.now].ming_ker++;
+            this.refresh(this.player[0].playername+"槓\n")
+            this.MIGI=0
+            this.player[0].ming_ker++;
             this.canDo=[0,0,0,0]
             this.show=false
             this.now=0
+            this.disable=false
             this.draw()
             this.setState({
                 change:true
@@ -703,8 +714,9 @@ class Game extends Component{
         this.now=this.tempNow
         console.log("玩家選擇取消");
         this.showEat=false
+        this.disable=false
         this.botsent()
-        
+        this.showKan=false
         this.setState({
             change:false
         })
@@ -712,7 +724,6 @@ class Game extends Component{
     //算台
     calculate_reward(card,who){//胡的那張牌 誰放槍
         let total=0,show=[],win=this.win;//win=誰胡牌
-        //*連莊
         let self=0,clear=0
         //自摸
         if(who==win){
@@ -860,8 +871,10 @@ class Game extends Component{
             total+=2
             show.push("平胡 2台")
         }
-        //*地聽
-        //*天聽
+        //地聽
+
+        //天聽
+        
         //大小四喜
         let dong=0,nan=0,xi=0,bei=0,donot=0;//27 28 29 30
         if(card==27)
@@ -925,7 +938,7 @@ class Game extends Component{
             show.push("字一色 16台")
         }
         //天地人胡
-        if(136-this.current==71){
+        if(136-this.current==71&&this.MIGI){
             if(who==win){//自摸天胡 非自摸人胡
                 total+=16
                 show.push("天胡 16台")
@@ -935,7 +948,7 @@ class Game extends Component{
                 show.push("人胡 16台")
             }
         }
-        else if(136-this.current>=68){
+        else if(136-this.current>=68&&this.MIGI){
             if(who==win){//自摸地胡 非自摸人胡
                 total+=16
                 show.push("地胡 16台")
@@ -1014,7 +1027,7 @@ class Game extends Component{
                 this.eat=this.next_can_eat(discard)
                 if(this.win!=-1){
                     //window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
-                    this.refresh("玩家"+this.now.toString()+"自摸 遊戲結束"+"\n")
+                    this.refresh("玩家"+this.now.toString()+"胡牌 遊戲結束"+"\n")
                     let loglist=this.calculate_reward(discard,this.now)
                     for(let i=0;i<loglist.length;i++)
                         this.refresh(loglist[i]+"\n")
@@ -1033,6 +1046,7 @@ class Game extends Component{
                     }
                     this.now=this.kan
                     this.refresh(this.player[this.now].playername+"明槓\n")
+                    this.MIGI=0
                     this.draw()
                     if(this.game_end)
                         return;
@@ -1046,6 +1060,7 @@ class Game extends Component{
                     }
                     this.now=this.pon
                     this.refresh(this.player[this.now].playername+"碰\n")
+                    this.MIGI=0
                     this.botsent()
                 }
                 else if(this.eat!=-1){
@@ -1075,6 +1090,7 @@ class Game extends Component{
                         this.player[this.now].showlist.push(discard+2)
                     }
                     this.refresh(this.player[this.now].playername+"吃\n")
+                    this.MIGI=0
                     this.botsent()
                 }
                 else{
@@ -1134,7 +1150,7 @@ class Game extends Component{
         //------------------切割成 按鈕後動作---------------------------------------
         if(this.win!=-1){
             //window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
-            this.refresh("玩家"+this.now.toString()+"自摸 遊戲結束"+"\n")
+            this.refresh("玩家"+this.win.toString()+"胡牌 遊戲結束"+"\n")
             let loglist=this.calculate_reward(card,this.now)
             for(let i=0;i<loglist.length;i++)
                 this.refresh(loglist[i]+"\n")
@@ -1152,7 +1168,8 @@ class Game extends Component{
                     this.player[this.kan].showlist.push(discard)
                 }
                 this.now=this.kan
-                this.refresh(this.player[this.now].playername+"明槓\n")
+                this.refresh(this.player[this.kan].playername+"明槓\n")
+                this.MIGI=0
                 this.draw()
                 if(this.game_end)
                     return;
@@ -1185,6 +1202,7 @@ class Game extends Component{
                     this.player[this.now].showlist.push(discard+2)
                 }
                 this.refresh(this.player[this.now].playername+"吃\n")
+                this.MIGI=0
                 this.botsent()
             }
             else{//完全沒事發生
@@ -1245,7 +1263,7 @@ class Game extends Component{
                 <tr>
                     
                     <td class="tg-0pky" colspan="2" align = "center" ><div id="player2">{this.player[2].render(this.now)}
-                    <div>{this.whoIsListen[2]?<Button key={Math.random()} variant="outline-dark" >聽</Button>:""}</div>
+                    <div>{this.whoIsListen[2]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div>
                     </div></td>
                     <td class="tg-0pky"></td>
                 </tr>
@@ -1268,10 +1286,10 @@ class Game extends Component{
                 </tr>
                 <tr>
                 <td class="tg-0pky" rowspan="2" width="50%"align="center"><div id="player1">{this.player[3].render(this.now)}
-                <div>{this.whoIsListen[3]?<Button key={Math.random()} variant="outline-dark" >聽</Button>:""}</div></div></td>
+                <div>{this.whoIsListen[3]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div></div></td>
                     
                     <td class="tg-0pky" rowspan="2" width="50%" align="center"><div id="player3">{this.player[1].render(this.now)}
-                    <div>{this.whoIsListen[1]?<Button key={Math.random()} variant="outline-dark" >聽</Button>:""}</div>
+                    <div>{this.whoIsListen[1]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div>
                     </div></td>
                 
                 </tr>
@@ -1298,15 +1316,15 @@ class Game extends Component{
                     <td class="tg-0pky" colspan="2" align = "center">
                     
                     <div key={Math.random()}>{this.Kan()}</div><div key={Math.random()}>{this.Eat()}</div>{this.show?
-            <div><Button key={Math.random()} variant="outline-primary"   onClick={()=>this.doEat()} disabled={!this.canDo[0]}>吃</Button>
-                <Button key={Math.random()} variant="outline-secondary" onClick={()=>this.doPon()} disabled={!this.canDo[1]}>碰</Button>
-                <Button key={Math.random()}variant="outline-success"  onClick={()=>this.doKan()} disabled={!this.canDo[2]}>槓</Button>
+            <div><Button key={Math.random()} variant="primary"   onClick={()=>this.doEat()} disabled={!this.canDo[0]}>吃</Button>
+                <Button key={Math.random()} variant="secondary" onClick={()=>this.doPon()} disabled={!this.canDo[1]}>碰</Button>
+                <Button key={Math.random()}variant="success"  onClick={()=>this.doKan()} disabled={!this.canDo[2]}>槓</Button>
                 
-                <Button key={Math.random()}variant="outline-danger"    onClick={()=>this.doWin()} disabled={!this.canDo[3]}>胡</Button>
-                <Button key={Math.random()}variant="outline-info"    onClick={()=>this.doCancel()}>取消</Button>
+                <Button key={Math.random()}variant="danger"    onClick={()=>this.doWin()} disabled={!this.canDo[3]}>胡</Button>
+                <Button key={Math.random()}variant="info"    onClick={()=>this.doCancel()}>取消</Button>
                 :<div></div></div>:''}
                         <div id="player0">{this.player[0].render(this.now,this.disable)}
-                    <div>{this.whoIsListen[0]?<Button key={Math.random()} variant="outline-dark" >聽</Button>:""}</div>
+                    <div>{this.whoIsListen[0]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div>
                     </div></td>
                     <td class="tg-0pky"></td>
                 </tr>

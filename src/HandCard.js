@@ -33,7 +33,7 @@ class HandCard extends Component{
         this.HP=0;//攻擊力and 血量
         this.playernum=props//who 打牌
         this.top=top
-        this.dsiable=props.disable
+        this.dsiable=top.disable
         this.state={
             have: this.have,
             key:this.playernum
