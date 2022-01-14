@@ -71,12 +71,12 @@ class Game extends Component{
              [this.allCard[i],this.allCard[idx]]=[this.allCard[idx],this.allCard[i]];//swap
          }
            /*this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,7,32,
-            1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,31,
-            1,1,2,3,4,5,6,7,8,0,1,2,3,4,5,31,
+            1,2,3,4,5,6,7,7,9,1,2,3,4,5,6,31,
+            1,1,2,3,8,8,8,8,0,1,2,3,4,5,31,9,
             32,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17,
             33,27,28,29,30,32,22,21,20,21,23,32,24,15,15]//測試case用*/
-        this.player[0].skillID=4//韓國瑜
-       this.player[1].skillID=3//柯文哲
+      this.player[0].skillID=4//韓國瑜
+     this.player[1].skillID=3//柯文哲
         let characterName=JSON.parse(localStorage.getItem("characterName"))
         let skill=JSON.parse(localStorage.getItem("skill"))
         for(let setLocal=0;setLocal<4;setLocal++){
@@ -503,6 +503,7 @@ class Game extends Component{
         return canDo;
     }
     doPlayerCanDo(card,func){//看看玩家能不能吃碰槓胡，不能的話繼續流程
+        
         this.tempNow=this.now;
         let canDo=this.playerCan(card)//偵測玩家能不能吃碰槓胡
         console.log("show="+this.show)
@@ -750,11 +751,20 @@ class Game extends Component{
     doCancel(){
         this.canDo=[0,0,0,0]
         this.show=false
-        this.now=this.tempNow
+        this.now=(this.tempNow+1)%4
         console.log("玩家選擇取消");
         this.showEat=false
         this.disable=false
-        this.botsent()
+        if(this.now){
+            this.draw()
+            this.botsent()
+        }
+        else {
+            this.eat=-1
+            this.pon=-1
+            this.draw()
+        }
+
         this.showKan=false
         this.setState({
             change:false
@@ -1014,13 +1024,14 @@ class Game extends Component{
         for(let i=0;i<4;i++){
             this.player[i].show=true
         }
+        this.result.push(<p class="title">統計結果</p>)
         //let showResult=setInterval(function(){
             console.log(this.result)
         for(let i=0;i<show.length;i++){
             this.setState({
                 change:false
             })
-            this.result.push(<p>{show[i]}</p>)
+            this.result.push(<p class="result">{show[i]}</p>)
 
             cnt++
             console.log(this.result)
@@ -1441,7 +1452,7 @@ class Game extends Component{
                     </p>          
                 </div>,
                 <div>
-                    <Container class="winlog" key={Math.random()}>{this.result}</Container>
+                    <Container className="winlog" key={Math.random()}>{this.result}</Container>
                 </div>
                 ,<h1 align="center"></h1>
                 ,,<br/>
