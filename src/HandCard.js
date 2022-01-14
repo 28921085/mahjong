@@ -24,6 +24,7 @@ class HandCard extends Component{
             this.ker.push(0)
         this.dark_ker=0//因暗槓產生的刻子
         this.ming_ker=0//因碰 名槓產生的刻子
+        this.playername="AI"
         for(let i=0;i<34;i++){
             this.num.push(0);
             this.alone.push(0);

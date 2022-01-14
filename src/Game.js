@@ -35,6 +35,8 @@ class Game extends Component{
         this.whoIsListen=[0,0,0,0]
         this.hasKaned=[]
         this.music_switch=1
+        this.lastcard=34//上一個人打的牌
+        this.game_record="遊戲開始\n"
         for(let i=0;i<34;i++)
             this.hasKaned.push(0)
         this.state={
@@ -67,9 +69,11 @@ class Game extends Component{
             33,27,28,29,30,28,22,21,20,21,23,32,24]//測試case用*/
           this.player[0].skillID=4//韓國瑜
          this.player[1].skillID=3//柯文哲
-
+        this.player[0].playername="韓國瑜"
+        this.player[1].playername="柯文哲"
         for(let j=0;j<4;j++){
             for(let i=0;i<16;i++){
+                //純換牌操作
                 if(this.player[j].skillID==4){//國榆
                     let skill=Math.floor(Math.random()*10)
                     let target=[18,19,20,21,22,23,24,25,26,32]//1S-9S FA
@@ -95,6 +99,7 @@ class Game extends Component{
                         console.log("垃圾不分藍綠發動失敗")
                     
                 }
+                //抽牌
                 this.player[j].haveID.push(this.current)
                 this.player[j].num[this.allCard[ this.current]]++
                 this.player[j].have.push(this.allCard[ this.current++])
@@ -208,6 +213,7 @@ class Game extends Component{
         console.log(this.dictionary[this.allCard[this.current]]+"被換到了前面")
     }
     draw(){
+        this.game_record+=this.player[this.now].playername+"抽牌\n"
         this.player[this.now].generate_listenlist()
         if(this.now==0){
             if(this.player[0].listenList.length&&this.music_switch){
@@ -233,6 +239,7 @@ class Game extends Component{
             let index=this.find_these_card(target)
             if(skill<7&&index!=-1){
                 console.log("高雄發大財技能發動")
+                this.game_record+="高雄發大財技能發動\n"
                 this.switch_card(index)
             }
             else 
@@ -246,6 +253,7 @@ class Game extends Component{
             let index=this.find_these_card(target)
             if(skill<7&&index!=-1){
                 console.log("垃圾不分藍綠技能發動")
+                this.game_record+="垃圾不分藍綠技能發動\n"
                 this.switch_card(index)
             }
             else 
@@ -266,9 +274,10 @@ class Game extends Component{
             console.log(this.win)
             if(this.win!=-1){
                 window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
+                this.game_record+="玩家"+this.now.toString()+"自摸 遊戲結束"+"\n"
                 let loglist=this.calculate_reward(card,this.now)
                 for(let i=0;i<loglist.length;i++)
-                    console.log(loglist[i])
+                    this.game_record+=loglist[i]+"\n"
                 this.game_end=1
                 return
                 //結算畫面
@@ -276,7 +285,7 @@ class Game extends Component{
             else if(this.kan!=-1){
                 this.player[this.now].remove(this.kan)
                 this.player[this.now].showlist.push(this.kan)
-                console.log(this.now.toString()+"明槓")
+                this.game_record+=this.player[this.now].playername+"明槓\n"
                 this.player[this.now].generate_listenlist()
                 console.log("玩家聽"+this.player[this.now].listenList)
                 this.draw()
@@ -288,7 +297,7 @@ class Game extends Component{
                 }
                 this.player[this.now].dark_ker++;
                 this.player[this.now].generate_listenlist()
-                console.log(this.now.toString()+"暗槓")
+                this.game_record+=this.player[this.now].playername+"暗槓\n"
                 console.log("玩家聽"+this.player[this.now].listenList)
                 this.draw()
             }
@@ -529,7 +538,7 @@ class Game extends Component{
                         this.player[0].remove(discard+2)
                         this.player[0].showlist.push(discard+2)
                     }
-                    console.log(this.now+"吃 type = "+choice.toString())
+                    this.game_record+=this.player[this.now].playername+"吃\n"
                     this.canDo=[0,0,0,0]
         this.showEat=false
         this.show=false
@@ -571,7 +580,7 @@ class Game extends Component{
         }
         
         this.player[0].ming_ker++;
-        console.log("0"+"碰")
+        this.game_record+=this.player[this.now].playername+"碰\n"
         this.canDo=[0,0,0,0]
 
         this.show=false
@@ -596,9 +605,9 @@ class Game extends Component{
         }
         this.player[0].dark_ker++;
         if(type==0)
-            console.log(this.now.toString()+"暗槓")
+            this.game_record+=this.player[this.now].playername+"明槓\n"
         else
-            console.log(this.now.toString()+"明槓")
+            this.game_record+=this.player[this.now].playername+"暗槓\n"
         console.log(this.playerKan)
         let tmpnew=[]
         for(let i=0;i<this.playerKan.length;i++)
@@ -633,16 +642,14 @@ class Game extends Component{
         }else{
             let discard=this.state.card
             console.log("玩家選擇槓");
-            console.log("456126845213894652485612")
             for(let i=0;i<4;i++){//刪三張，顯示四張
                 if(i!=0)
                     this.player[0].remove(discard)
                 this.player[0].showlist.push(discard)
             }
-            console.log("fsdjfajfdfjasdjfasfasd")
             console.log(this.player[0].num)
             this.showKan=0
-            console.log(0+"明槓")
+            this.game_record+=this.player[this.now].playername+"槓\n"
             this.player[this.now].ming_ker++;
             this.canDo=[0,0,0,0]
             this.show=false
@@ -667,6 +674,7 @@ class Game extends Component{
             for(let i=0;i<loglist.length;i++)
                 console.log(loglist[i])
         window.alert("玩家"+this.win.toString()+"胡牌 遊戲結束")
+        this.game_record+=this.player[this.now].playername+"胡牌 遊戲結束\n"
         //TODO
     }
     doCancel(){
@@ -949,6 +957,8 @@ class Game extends Component{
             else{//如果聽牌的話，只看拿到的牌有沒有在聽牌名單中
                 discard=this.player[this.now].have[this.player[this.now].have.length-1]
             }
+            this.lastcard=discard
+            this.game_record+=this.player[this.now].playername+"打出"+this.dictionary[discard]+"\n"
             this.dropedCard.push(discard)   
             this.player[this.now].remove(discard)
         
@@ -978,11 +988,12 @@ class Game extends Component{
                 this.pon=this.someone_can_pon(discard)
                 this.eat=this.next_can_eat(discard)
                 if(this.win!=-1){
-                    window.alert("玩家"+this.win.toString()+"胡牌 遊戲結束")
+                    window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
+                    this.game_record+="玩家"+this.now.toString()+"自摸 遊戲結束"+"\n"
                     let loglist=this.calculate_reward(discard,this.now)
                     for(let i=0;i<loglist.length;i++)
-                        console.log(loglist[i])
-                    this.game_end=1;
+                        this.game_record+=loglist[i]+"\n"
+                    this.game_end=1
                     return
                     //結算畫面
                 }
@@ -993,7 +1004,7 @@ class Game extends Component{
                         this.player[this.kan].showlist.push(discard)
                     }
                     this.now=this.kan
-                    console.log(this.kan+"明槓")
+                    this.game_record+=this.player[this.now].playername+"明槓\n"
                     this.draw()
                     if(this.game_end)
                         return;
@@ -1006,7 +1017,7 @@ class Game extends Component{
                         this.player[this.pon].showlist.push(discard)
                     }
                     this.now=this.pon
-                    console.log(this.pon+"碰")
+                    this.game_record+=this.player[this.now].playername+"碰\n"
                     this.botsent()
                 }
                 else if(this.eat!=-1){
@@ -1035,7 +1046,7 @@ class Game extends Component{
                         this.player[this.now].remove(discard+2)
                         this.player[this.now].showlist.push(discard+2)
                     }
-                    console.log(this.now+"吃 type = "+this.eat.toString())
+                    this.game_record+=this.player[this.now].playername+"吃\n"
                     this.botsent()
                 }
                 else{
@@ -1055,6 +1066,7 @@ class Game extends Component{
  
     sent(card,playernum){
         this.disable=true
+        this.lastcard=card
         const music=new Audio(mp3);
         music.play();
         this.player[playernum].remove(card)
@@ -1066,6 +1078,7 @@ class Game extends Component{
        
            // this.player[playernum].have[this.player[playernum].have.indexOf(card),1]=1
         let discard=card
+        this.game_record+=this.player[this.now].playername+"打出"+ this.dictionary[discard]+"\n"
         this.dropedCard.push(card)
         this.player[this.now].generate_listenlist()
         if(this.now==0){
@@ -1091,15 +1104,16 @@ class Game extends Component{
         this.eat=this.next_can_eat(discard)
         console.log(discard)
         //------------------切割成 按鈕後動作---------------------------------------
-            if(this.win!=-1){
-                window.alert("玩家"+this.win.toString()+"胡牌 遊戲結束")
-                let loglist=this.calculate_reward(discard,this.now)
-                for(let i=0;i<loglist.length;i++)
-                    console.log(loglist[i])
-                this.game_end=1;
-                return
-                //結算畫面
-            }
+        if(this.win!=-1){
+            window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
+            this.game_record+="玩家"+this.now.toString()+"自摸 遊戲結束"+"\n"
+            let loglist=this.calculate_reward(card,this.now)
+            for(let i=0;i<loglist.length;i++)
+                this.game_record+=loglist[i]+"\n"
+            this.game_end=1
+            return
+            //結算畫面
+        }
             else if(this.kan!=-1){
                 for(let i=0;i<4;i++){//刪三張，顯示四張
                     if(i!=0)
@@ -1107,7 +1121,7 @@ class Game extends Component{
                     this.player[this.kan].showlist.push(discard)
                 }
                 this.now=this.kan
-                console.log(this.kan+"明槓")
+                this.game_record+=this.player[this.now].playername+"明槓\n"
                 this.draw()
                 if(this.game_end)
                     return;
@@ -1139,12 +1153,12 @@ class Game extends Component{
                     this.player[this.now].remove(discard+2)
                     this.player[this.now].showlist.push(discard+2)
                 }
-                console.log(this.now+"吃 type = "+this.eat.toString())
+                this.game_record+=this.player[this.now].playername+"吃\n"
                 this.botsent()
             }
             else{//完全沒事發生
                 this.now=(this.now+1)%4;
-                
+                //this.game_record+=this.player[this.now].playername+"抽牌<br>"
                 this.draw()
                 if(this.game_end)
                     return;
@@ -1217,8 +1231,10 @@ class Game extends Component{
                 <td>.</td>
                     </tr>
                 <tr>
-                <td>.</td>
-                    </tr>
+                    <td align='right' class="log">當前打出:
+                    {<Card id={"player0"} disable={true} key={Math.random() }card={this.lastcard} playernum={0}  />}
+                    </td>
+                </tr>
                 <tr>
                 <td class="tg-0pky" rowspan="2" width="50%"align="center"><div id="player1">{this.player[3].render(this.now)}
                 <div>{this.whoIsListen[3]?<Button key={Math.random()} variant="outline-dark" >聽</Button>:""}</div></div></td>
@@ -1262,6 +1278,13 @@ class Game extends Component{
                     <div>{this.whoIsListen[0]?<Button key={Math.random()} variant="outline-dark" >聽</Button>:""}</div>
                     </div></td>
                     <td class="tg-0pky"></td>
+                </tr>
+                <tr>
+                    <td align="left" class="log">
+                        <p class="gamelog">
+                            {this.game_record}
+                        </p>
+                    </td>
                 </tr>
                 </tbody>
                 </table>

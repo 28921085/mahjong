@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Background from './battle-background.jpg';
+import Background from './battle-background.png';
 import {
   BrowserRouter as Router, Routes, Route, Link
 } from "react-router-dom";
