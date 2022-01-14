@@ -8,6 +8,7 @@ import bgm_listen from './聽牌.mp3'
 import AutoScroll from './AutoScroll'
 import FuncMenu from './FuncMenu';
 import Container from 'react-bootstrap/Container';
+import Background from './battle-background.png';
 //import $ from 'jquery';
 import Button from 'react-bootstrap/Button';
 import { findRenderedDOMComponentWithClass } from 'react-dom/cjs/react-dom-test-utils.production.min';
@@ -76,10 +77,14 @@ class Game extends Component{
             33,27,28,29,30,32,22,21,20,21,23,32,24,15,15]//測試case用
       //  this.player[0].skillID=4//韓國瑜
       // this.player[1].skillID=3//柯文哲
-        this.player[0].playername="韓國瑜"
-        this.player[1].playername="柯文哲"
-        this.player[2].playername="AI1"
-        this.player[3].playername="AI2"
+        let characterName=JSON.parse(localStorage.getItem("characterName"))
+        let skill=JSON.parse(localStorage.getItem("skill"))
+        for(let setLocal=0;setLocal<4;setLocal++){
+            this.player[setLocal].playername=characterName[setLocal]
+            this.player[setLocal].skillID=skill[setLocal]
+        }
+        
+        
         for(let j=0;j<4;j++){
             for(let i=0;i<16;i++){
                 //純換牌操作

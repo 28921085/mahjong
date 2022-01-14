@@ -20,11 +20,16 @@ class Level extends Component{
     play(level){
         localStorage.setItem("level",level)
         if(level==0){
+            console.log("level 0")
+            let chr=['韓國瑜','柯文哲','AI1','AI2']
+            let skill=[4,3,0,0]
+            localStorage.setItem("characterName",JSON.stringify(chr))
+            localStorage.setItem("skill",JSON.stringify(skill))
             //TODO
         }else if(level==1){
 
         }else if (level==2){
-            
+
         }
     }
 }
