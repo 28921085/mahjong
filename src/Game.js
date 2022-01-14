@@ -576,10 +576,13 @@ class Game extends Component{
                     else if(choice==2){
                         this.player[0].remove(discard+1)
                         this.player[0].showlist.push(discard+1)
+                        this.player[0].cover.push(1)
                        //this.player[this.now].remove(discard)
                         this.player[0].showlist.push(discard)
+                        this.player[0].cover.push(1)
                         this.player[0].remove(discard+2)
                         this.player[0].showlist.push(discard+2)
+                        this.player[0].cover.push(1)
                     }
                     this.refresh(this.player[this.now].playername+"吃\n")
                     this.MIGI=0
@@ -621,6 +624,7 @@ class Game extends Component{
             if(i!=0)
                 this.player[0].remove(this.state.card);
             this.player[0].showlist.push(this.state.card)
+            this.player[0].cover.push(1)
         }
 
         this.player[0].ming_ker++;
@@ -642,11 +646,13 @@ class Game extends Component{
             for(let i=0;i<4;i++){
                 this.player[0].remove(card)
                 this.player[0].showlist.push(card)
+                this.player[0].cover.push(0)
             }
         }
         else{
             this.player[0].remove(card)
             this.player[0].showlist.push(card)
+            this.player[0].cover.push(1)
         }
         this.pon=-1
         this.eat=-1
@@ -701,6 +707,7 @@ class Game extends Component{
                 if(i!=0)
                     this.player[0].remove(discard)
                 this.player[0].showlist.push(discard)
+                this.player[0].cover.push(1)
             }
             console.log(this.player[0].num)
             this.showKan=0
@@ -1098,6 +1105,7 @@ class Game extends Component{
                         if(i!=0)
                             this.player[this.kan].remove(discard)
                         this.player[this.kan].showlist.push(discard)
+                        this.player[this.kan].cover.push(1)
                     }
                     this.now=this.kan
                     this.refresh(this.player[this.now].playername+"明槓\n")
@@ -1112,6 +1120,7 @@ class Game extends Component{
                         if(i!=0)
                             this.player[this.pon].remove(discard)
                         this.player[this.pon].showlist.push(discard)
+                        this.player[this.pon].cover.push(1)
                     }
                     this.now=this.pon
                     this.refresh(this.player[this.now].playername+"碰\n")
@@ -1123,26 +1132,35 @@ class Game extends Component{
                     if(this.eat==0){
                         this.player[this.now].remove(discard-2)
                         this.player[this.now].showlist.push(discard-2)
+                        this.player[this.now].cover.push(1)
                         //this.player[this.now].remove(discard)
                         this.player[this.now].showlist.push(discard)
+                        this.player[this.now].cover.push(1)
                         this.player[this.now].remove(discard-1)
                         this.player[this.now].showlist.push(discard-1)
+                        this.player[this.now].cover.push(1)
                     }
                     else if(this.eat==1){
                         this.player[this.now].remove(discard-1)
                         this.player[this.now].showlist.push(discard-1)
+                        this.player[this.now].cover.push(1)
                         //this.player[this.now].remove(discard)
                         this.player[this.now].showlist.push(discard)
+                        this.player[this.now].cover.push(1)
                         this.player[this.now].remove(discard+1)
                         this.player[this.now].showlist.push(discard+1)
+                        this.player[this.now].cover.push(1)
                     }
                     else if(this.eat==2){
                         this.player[this.now].remove(discard+1)
                         this.player[this.now].showlist.push(discard+1)
+                        this.player[this.now].cover.push(1)
                        //this.player[this.now].remove(discard)
                         this.player[this.now].showlist.push(discard)
+                        this.player[this.now].cover.push(1)
                         this.player[this.now].remove(discard+2)
                         this.player[this.now].showlist.push(discard+2)
+                        this.player[this.now].cover.push(1)
                     }
                     this.refresh(this.player[this.now].playername+"吃\n")
                     this.MIGI=0
@@ -1223,6 +1241,7 @@ class Game extends Component{
                 if(i!=0)
                     this.player[this.pon].remove(discard)
                 this.player[this.pon].showlist.push(discard)
+                this.player[this.pon].cover.push(1)
             }
             this.now=this.pon
             this.MIGI=0
@@ -1240,6 +1259,7 @@ class Game extends Component{
                     if(i!=0)
                         this.player[this.kan].remove(discard)
                     this.player[this.kan].showlist.push(discard)
+                    this.player[this.kan].cover.push(1)
                 }
                 this.now=this.kan
                 this.refresh(this.player[this.kan].playername+"明槓\n")
@@ -1254,26 +1274,35 @@ class Game extends Component{
                 if(this.eat==0){
                     this.player[this.now].remove(discard-2)
                     this.player[this.now].showlist.push(discard-2)
+                    this.player[this.now].cover.push(1)
                     //this.player[this.now].remove(discard) 這張根本沒進手牌 不能移
                     this.player[this.now].showlist.push(discard)
+                    this.player[this.now].cover.push(1)
                     this.player[this.now].remove(discard-1)
                     this.player[this.now].showlist.push(discard-1)
+                    this.player[this.now].cover.push(1)
                 }
                 else if(this.eat==1){
                     this.player[this.now].remove(discard-1)
                     this.player[this.now].showlist.push(discard-1)
+                    this.player[this.now].cover.push(1)
                     //this.player[this.now].remove(discard)
                     this.player[this.now].showlist.push(discard)
+                    this.player[this.now].cover.push(1)
                     this.player[this.now].remove(discard+1)
                     this.player[this.now].showlist.push(discard+1)
+                    this.player[this.now].cover.push(1)
                 }
                 else if(this.eat==2){
                     this.player[this.now].remove(discard+1)
                     this.player[this.now].showlist.push(discard+1)
+                    this.player[this.now].cover.push(1)
                     //this.player[this.now].remove(discard)
                     this.player[this.now].showlist.push(discard)
+                    this.player[this.now].cover.push(1)
                     this.player[this.now].remove(discard+2)
                     this.player[this.now].showlist.push(discard+2)
+                    this.player[this.now].cover.push(1)
                 }
                 this.refresh(this.player[this.now].playername+"吃\n")
                 this.MIGI=0
