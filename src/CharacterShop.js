@@ -3,6 +3,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Row from 'react-bootstrap/Row';
 class CharacterShop extends Component{
     constructor(props){
         super(props)
@@ -47,7 +48,7 @@ class CharacterShop extends Component{
     makeCharacter(img,name,descr,power,no,lock=false){
       
       return <div class="">
-      <Card style={{ width: '18rem' }}>
+      <Card style={{ width: '18rem' }}className="text-center">
        <Card.Img style={!lock?{filter: "blur(" + `8` + "px) brightness(0.7)",height:'200px'}:{height:'200px'}} variant="top" src={
        require('./static/character/'+img).default
       } />
@@ -72,8 +73,8 @@ class CharacterShop extends Component{
     }
     makeMyself(img,name,descr){
       
-      return <div class="">
-      <Card style={{ width: '18rem' }}>
+      return      <Card style={{ width: '18rem' }}className="text-center">
+        
        <Card.Img style={{height:'200px'}} variant="top" src={
        require('./static/character/'+img).default
       } />
@@ -94,7 +95,7 @@ class CharacterShop extends Component{
        </Card.Body> */}
        
      </Card>
-      </div>
+      
 
     }
     getMoney(){
@@ -120,23 +121,32 @@ render(props){
   console.log("rerender")
   let chrname=['Jay.png','Wang.jpg','KP.jpg','Han.png']
   let name=['阿傑', '王世堅' , '柯文哲' , '韓國瑜']  
+  let tmpstyle={width:"18rem"}
     return  [<div class="container">
-      <div class="row">
+      
+      <div class="row ">
     <div class="col-sm-4">
+    <Row xs={1} md={2} className="g-4">
+    
       {this.makeMyself(chrname[this.now],name[this.now],'傑哥不要!!')}
+      <Button style={tmpstyle} href="/">回首頁</Button>
+      </Row>
       </div>
-      <div class="col-sm-8">
       
-      {this.makeCharacter(chrname[0],name[0],'傑哥不要!!',['知男而上','讓我看看'],0,true)}
-      
+      <div class="col-sm-8 float-left ">
+        
+        <Row xs={1} md={2} className="g-4">
+        {this.makeCharacter(chrname[0],name[0],'傑哥不要!!',['知男而上','讓我看看'],0,true)}
       {this.makeCharacter(chrname[1],name[1],'傑哥不要!!',['Over my dead body','前後為難'],1,this.lock>=1)}
       {this.makeCharacter(chrname[2],name[2],'傑哥不要!!',['知難而上','前後為難'],2,this.lock>=2)}
       {this.makeCharacter(chrname[3],name[3],'傑哥不要!!',['高雄發大財','烙跑市長'],3,this.lock>=3)}
+      </Row>
+      </div>
+      
       </div>
       </div>
       
-      </div>
-      
+     
     
    
      
