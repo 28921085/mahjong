@@ -35,7 +35,7 @@ export default function Dialog(props) {
   // setNow(0)
   return (
     <>
-      <Button variant="primary" onClick={handleShow} >
+      <Button variant="primary"disabled={!props.disabled} onClick={handleShow} >
        {props.title}
       </Button>
       {/* {gerObj()} */}
