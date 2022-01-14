@@ -36,7 +36,7 @@ button{
   color: #ffc702;
 }
 .gamelog{
-  height: 100px;
+  height: 200px;
   width: 300px;
   overflow: scroll;
   text-align: justify;

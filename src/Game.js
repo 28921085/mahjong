@@ -237,8 +237,12 @@ class Game extends Component{
         })
         if(this.allCard.length-this.current==16){//16
             window.alert("流局 遊戲結束")
+            this.refresh("流局 遊戲結束")
             this.game_end=1;
             //結算
+            this.setState({
+                change:false
+             })
             return;
         }
         if(this.player[this.now].skillID==4){//國榆
@@ -281,19 +285,23 @@ class Game extends Component{
         this.doPlayerCanDo(card,()=>{
             console.log(this.win)
             if(this.win!=-1){
-                window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
+                //window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
                 this.refresh("玩家"+this.now.toString()+"自摸 遊戲結束"+"\n")
                 let loglist=this.calculate_reward(card,this.now)
+                
                 for(let i=0;i<loglist.length;i++)
-                this.refresh(loglist[i]+"\n")
+                    this.refresh(loglist[i]+"\n")
                 this.game_end=1
+                this.setState({
+                    change:false
+                 })
                 return
                 //結算畫面
             }
             else if(this.kan!=-1){
                 this.player[this.now].remove(this.kan)
                 this.player[this.now].showlist.push(this.kan)
-                this.refresh(this.player[this.now].playername+"明槓\n")
+                this.refresh(this.player[0].playername+"明槓\n")
                 this.player[this.now].generate_listenlist()
                 console.log("玩家聽"+this.player[this.now].listenList)
                 this.draw()
@@ -678,11 +686,15 @@ class Game extends Component{
         this.canDo=[0,0,0,0]
         this.show=false
         console.log("玩家選擇胡");
+        this.refresh(this.player[this.now].playername+"胡牌 遊戲結束\n")
         let loglist=this.calculate_reward(this.state.card,this.now)
             for(let i=0;i<loglist.length;i++)
                 console.log(loglist[i])
-        window.alert("玩家"+this.win.toString()+"胡牌 遊戲結束")
-        this.refresh(this.player[this.now].playername+"胡牌 遊戲結束\n")
+        //window.alert("玩家"+this.win.toString()+"胡牌 遊戲結束")
+        this.setState({
+            change:false
+         })
+        
         //TODO
     }
     doCancel(){
@@ -935,7 +947,12 @@ class Game extends Component{
         }
         if(total==0)
             show.push("屁胡 0台")
-        console.log("總共 "+total+"台")
+        for(let i=0;i<show.length;i++){
+            this.refresh(show[i]+"\n")
+            
+        }
+        this.refresh("總共 "+total+"台\n")
+        
         return show;
     }
 
@@ -996,12 +1013,15 @@ class Game extends Component{
                 this.pon=this.someone_can_pon(discard)
                 this.eat=this.next_can_eat(discard)
                 if(this.win!=-1){
-                    window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
+                    //window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
                     this.refresh("玩家"+this.now.toString()+"自摸 遊戲結束"+"\n")
                     let loglist=this.calculate_reward(discard,this.now)
                     for(let i=0;i<loglist.length;i++)
                         this.refresh(loglist[i]+"\n")
                     this.game_end=1
+                    this.setState({
+                        change:false
+                     })
                     return
                     //結算畫面
                 }
@@ -1113,12 +1133,15 @@ class Game extends Component{
         console.log(discard)
         //------------------切割成 按鈕後動作---------------------------------------
         if(this.win!=-1){
-            window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
+            //window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
             this.refresh("玩家"+this.now.toString()+"自摸 遊戲結束"+"\n")
             let loglist=this.calculate_reward(card,this.now)
             for(let i=0;i<loglist.length;i++)
                 this.refresh(loglist[i]+"\n")
             this.game_end=1
+            this.setState({
+                change:false
+             })
             return
             //結算畫面
         }
