@@ -734,8 +734,8 @@ class Game extends Component{
         this.canDo=[0,0,0,0]
         this.show=false
         console.log("玩家選擇胡");
-        this.refresh(this.player[this.now].playername+"胡牌 遊戲結束\n")
-        let loglist=this.calculate_reward(this.state.card,this.now)
+        this.refresh(this.player[0].playername+"胡牌 遊戲結束\n")
+        let loglist=this.calculate_reward(this.state.card,0)
             for(let i=0;i<loglist.length;i++)
                 console.log(loglist[i])
         this.game_end=1
