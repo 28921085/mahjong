@@ -70,13 +70,13 @@ class Game extends Component{
              let idx=Math.floor(Math.random()*136);
              [this.allCard[i],this.allCard[idx]]=[this.allCard[idx],this.allCard[i]];//swap
          }
-           this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,7,32,
+           /*this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,7,32,
             1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,31,
             1,1,2,3,4,5,6,7,8,0,1,2,3,4,5,31,
             32,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17,
-            33,27,28,29,30,32,22,21,20,21,23,32,24,15,15]//測試case用
-      //  this.player[0].skillID=4//韓國瑜
-      // this.player[1].skillID=3//柯文哲
+            33,27,28,29,30,32,22,21,20,21,23,32,24,15,15]//測試case用*/
+        this.player[0].skillID=4//韓國瑜
+       this.player[1].skillID=3//柯文哲
         let characterName=JSON.parse(localStorage.getItem("characterName"))
         let skill=JSON.parse(localStorage.getItem("skill"))
         for(let setLocal=0;setLocal<4;setLocal++){
@@ -314,6 +314,7 @@ class Game extends Component{
             else if(this.kan!=-1){
                 this.player[this.now].remove(this.kan)
                 this.player[this.now].showlist.push(this.kan)
+                this.player[this.now].cover.push(1)
                 this.refresh(this.player[0].playername+"明槓\n")
                 this.MIGI=0
                 this.player[this.now].generate_listenlist()
@@ -324,6 +325,7 @@ class Game extends Component{
                 for(let i=0;i<4;i++){
                     this.player[this.now].remove(this._kan)
                     this.player[this.now].showlist.push(this._kan)
+                    this.player[this.now].cover.push(0)
                 }
                 this.player[this.now].dark_ker++;
                 this.player[this.now].generate_listenlist()
@@ -552,18 +554,24 @@ class Game extends Component{
                     if(choice==0){
                         this.player[0].remove(discard-2)
                         this.player[0].showlist.push(discard-2)
+                        this.player[0].cover.push(1)
                         //this.player[this.now].remove(discard)
                         this.player[0].showlist.push(discard)
+                        this.player[0].cover.push(1)
                         this.player[0].remove(discard-1)
                         this.player[0].showlist.push(discard-1)
+                        this.player[0].cover.push(1)
                     }
                     else if(choice==1){
                         this.player[0].remove(discard-1)
                         this.player[0].showlist.push(discard-1)
+                        this.player[0].cover.push(1)
                         //this.player[this.now].remove(discard)
                         this.player[0].showlist.push(discard)
+                        this.player[0].cover.push(1)
                         this.player[0].remove(discard+1)
                         this.player[0].showlist.push(discard+1)
+                        this.player[0].cover.push(1)
                     }
                     else if(choice==2){
                         this.player[0].remove(discard+1)
@@ -1193,6 +1201,7 @@ class Game extends Component{
         this.kan=this.someone_can_kan(discard)
         this.pon=this.someone_can_pon(discard)
         this.eat=this.next_can_eat(discard)
+        console.log("電腦碰"+this.pon)
         console.log(discard)
         //------------------切割成 按鈕後動作---------------------------------------
         if(this.win!=-1){
@@ -1208,6 +1217,23 @@ class Game extends Component{
              })
             
             //結算畫面
+        }
+        else if(this.pon!=-1){
+            for(let i=0;i<3;i++){//刪二張，顯示三張
+                if(i!=0)
+                    this.player[this.pon].remove(discard)
+                this.player[this.pon].showlist.push(discard)
+            }
+            this.now=this.pon
+            this.MIGI=0
+            this.refresh(this.player[this.pon].playername+"碰\n")
+            this.botsent()
+            this.setState({
+                change:false
+                })
+            
+            //結算畫面
+          
         }
             else if(this.kan!=-1){
                 for(let i=0;i<4;i++){//刪三張，顯示四張

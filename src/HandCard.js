@@ -17,6 +17,7 @@ class HandCard extends Component{
         this.skillID=ID
         //this.skillID=4//韓國榆
         this.showlist=[]//亮搭
+        this.cover=[]//判斷要不要蓋
         this.listenList=[]//聽牌名單
         this.alone=[]//孤張指數 電腦打牌用
         this.ker=[]//幾個刻子 判斷聽牌用 (手牌)
