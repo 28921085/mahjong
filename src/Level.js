@@ -9,6 +9,10 @@ class Level extends Component{
             localStorage.setItem("lock",0)
         }
         this.lock=localStorage.getItem("lock")
+        if(localStorage.getItem("character")==null){
+          localStorage.setItem("character",0)
+      }
+        this.now=localStorage.getItem("character")
     }
     render(){
         return <div>
@@ -24,7 +28,7 @@ class Level extends Component{
         let chr=['','','小弟1','小弟2']
         let hplist=[200,50,400,450]
         let atklist=[[50,20],[50,30],[30,20],[40,40]]
-        let skill=[0,0,0,0]
+        let skill=[1,0,2,0]
         let HP=[200,200,200,200]
         let ATK=[[50,20],[50,20],[50,20],[50,20]]
         chr[0]=playercharacterlist[Number(localStorage.getItem("character"))]
@@ -34,7 +38,7 @@ class Level extends Component{
             chr[1]=enemylist[0]
             ATK[1]=atklist[1]
             HP[1]=hplist[1]
-            skill[1]=1
+            skill[2]=2
             localStorage.setItem("characterName",JSON.stringify(chr))
             localStorage.setItem("skill",JSON.stringify(skill))
             localStorage.setItem("HP",JSON.stringify(HP))
@@ -45,7 +49,7 @@ class Level extends Component{
             chr[1]=enemylist[1]
             ATK[1]=atklist[2]
             HP[1]=hplist[2]
-            skill[1]=2
+            skill[2]=3
             localStorage.setItem("characterName",JSON.stringify(chr))
             localStorage.setItem("skill",JSON.stringify(skill))
             localStorage.setItem("HP",JSON.stringify(HP))
@@ -55,7 +59,7 @@ class Level extends Component{
             chr[1]=enemylist[2]
             ATK[1]=atklist[3]
             HP[1]=hplist[3]
-            skill[1]=3
+            skill[2]=4
             localStorage.setItem("characterName",JSON.stringify(chr))
             localStorage.setItem("skill",JSON.stringify(skill))
             localStorage.setItem("HP",JSON.stringify(HP))
