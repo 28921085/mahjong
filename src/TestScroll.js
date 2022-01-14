@@ -18,7 +18,7 @@ class TestScroll extends Component{
     render(){
        return <div>
         <button onClick={()=>this.add()}>加加加</button>
-        <Test sa={this.check}></Test>
+        
         </div>
     }
 }

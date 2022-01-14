@@ -69,13 +69,13 @@ class Game extends Component{
              let idx=Math.floor(Math.random()*136);
              [this.allCard[i],this.allCard[idx]]=[this.allCard[idx],this.allCard[i]];//swap
          }
-          /* this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,7,32,
+           this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,7,32,
             1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,31,
             1,1,2,3,4,5,6,7,8,0,1,2,3,4,5,31,
             32,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17,
-            33,27,28,29,30,28,22,21,20,21,23,32,24]//測試case用*/
-          this.player[0].skillID=4//韓國瑜
-         this.player[1].skillID=3//柯文哲
+            33,27,28,29,30,28,22,21,20,21,23,32,24,15,15]//測試case用
+      //  this.player[0].skillID=4//韓國瑜
+      // this.player[1].skillID=3//柯文哲
         this.player[0].playername="韓國瑜"
         this.player[1].playername="柯文哲"
         this.player[2].playername="AI1"
@@ -476,16 +476,19 @@ class Game extends Component{
         }
         if(this.kan==0){//ming_kan
             canDo[2]=1;
-
+            //console.log("this.kan="+this.kan)
         }
         else if(this.now==0&&this.playerKan.length){//dark kan
-
+            //console.log("this.playerkan="+this.playerKan)
             canDo[2]=1;
 
         }
         if(this.win==0){
             canDo[3]=1;
         }
+        this.setState({
+            change:true
+        })
         console.log(canDo)
         if(canDo[0]==0&&canDo[1]==0&&canDo[2]==0&&canDo[3]==0)
         return null
@@ -654,7 +657,7 @@ class Game extends Component{
         if(this.playerKan.length!=0){
 
         }else{
-
+            this.showKan=0
         }
 
         this.setState({
