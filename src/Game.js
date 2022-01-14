@@ -648,7 +648,7 @@ class Game extends Component{
         console.log(this.playerKan)
         this.now=0
 
-        this.draw()
+        this.draw();
 
         console.log( this.player[0])
         if(this.playerKan.length!=0){
