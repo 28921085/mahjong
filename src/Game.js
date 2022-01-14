@@ -40,7 +40,7 @@ class Game extends Component{
         this.music_switch=1
         this.MIGI=1
         this.disable=false
-        this.result="<p></p>"//結算畫面
+        this.result=[]//結算畫面
 
         this.lastcard=34//上一個人打的牌
         this.game_record="遊戲開始\n"
@@ -73,7 +73,7 @@ class Game extends Component{
             1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,31,
             1,1,2,3,4,5,6,7,8,0,1,2,3,4,5,31,
             32,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17,
-            33,27,28,29,30,28,22,21,20,21,23,32,24,15,15]//測試case用
+            33,27,28,29,30,32,22,21,20,21,23,32,24,15,15]//測試case用
       //  this.player[0].skillID=4//韓國瑜
       // this.player[1].skillID=3//柯文哲
         this.player[0].playername="韓國瑜"
@@ -303,7 +303,7 @@ class Game extends Component{
                 this.setState({
                     change:false
                  })
-                return
+                
                 //結算畫面
             }
             else if(this.kan!=-1){
@@ -635,11 +635,13 @@ class Game extends Component{
             this.player[0].remove(card)
             this.player[0].showlist.push(card)
         }
+        this.pon=-1
+        this.eat=-1
         this.player[0].dark_ker++;
         if(type==0)
-            this.refresh(this.player[this.now].playername+"明槓\n")
-        else
             this.refresh(this.player[this.now].playername+"暗槓\n")
+        else
+            this.refresh(this.player[this.now].playername+"明槓\n")
         this.MIGI=0
         console.log(this.playerKan)
         let tmpnew=[]
@@ -648,24 +650,30 @@ class Game extends Component{
                 tmpnew.push(this.playerKan[i])
         this.playerKan=tmpnew
         //this.playerKan.splice(this.playerKan.indexOf(card),1)
+        this.canDo=[0,0,0,0]
+        this.show=0
+        this.disable=false
         console.log(this.playerKan)
-        this.now=0
-
-        this.draw();
-
         console.log( this.player[0])
         if(this.playerKan.length!=0){
 
         }else{
             this.showKan=0
         }
+        this.now=0
+        
+        this.draw();
+
+        
 
         this.setState({
             change:true
         })
     }
     doKan(){
-
+        this.setState({
+            change:true
+        })
         if(this.playerKan.length!=0){
             console.log("按下槓")
             this.showKan=1;
@@ -673,7 +681,7 @@ class Game extends Component{
                 change:true
             })
 
-        }else{
+        }else if(this.kan!=-1){
             let discard=this.state.card
             console.log("玩家選擇槓");
             for(let i=0;i<4;i++){//刪三張，顯示四張
@@ -989,7 +997,7 @@ class Game extends Component{
             this.setState({
                 change:false
             })
-            this.result+="<p>"+show[cnt]+"</p>"
+            this.result.push(<p>{show[i]}</p>)
 
             cnt++
             console.log(this.result)
@@ -1069,7 +1077,7 @@ class Game extends Component{
                     this.setState({
                         change:false
                      })
-                    return
+                    
                     //結算畫面
                 }
                 else if(this.kan!=-1){
@@ -1193,7 +1201,7 @@ class Game extends Component{
             this.setState({
                 change:false
              })
-            return
+            
             //結算畫面
         }
             else if(this.kan!=-1){
@@ -1272,7 +1280,7 @@ class Game extends Component{
             //
             //console.log("render game")
             //this.now=this.now%4
-
+        
             if(this.game_end){
 
                 return [<Container key={Math.random()}>{this.result}</Container>]
