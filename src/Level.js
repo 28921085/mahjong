@@ -12,7 +12,7 @@ class Level extends Component{
     }
     render(){
         return <div>
-            <Dialog say={["安安","2","3"]} title='第一關' onClick={()=>this.play(0)}></Dialog>
+            <Dialog say={["安安","2","3"]} title='第一關'disabled={false} onClick={()=>this.play(0)}></Dialog>
             <Dialog say={["安安","2","3"]} title='第二關' disabled={this.lock>=1}onClick={()=>this.play(1)}></Dialog>
             <Dialog say={["安安","2","3"]} title='第三關' disabled={this.lock>=2}onClick={()=>this.play(2)}></Dialog>
             </div>;
