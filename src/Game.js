@@ -1010,7 +1010,10 @@ class Game extends Component{
     }
     show_result(show){
         let cnt=0
-
+        this.showTotal=true
+        for(let i=0;i<4;i++){
+            this.player[i].show=true
+        }
         //let showResult=setInterval(function(){
             console.log(this.result)
         for(let i=0;i<show.length;i++){
