@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Stack from 'react-bootstrap/Stack';
-import Badge from 'react-bootstrap/Badge';
+import Dialog from './Dialog';
 import Button from 'react-bootstrap/Button';
 class Level extends Component{
     constructor(props){
@@ -12,9 +12,9 @@ class Level extends Component{
     }
     render(){
         return <div>
-            <Button href='/Play'onClick={()=>this.play(0)} >第一關</Button>
-            <Button href='/Play'onClick={()=>this.play(1)}disabled={(this.lock>=1)?0:1}>第二關</Button>
-            <Button href='/Play'onClick={()=>this.play(2)}disabled={(this.lock>=2)?0:1}>第三關</Button>
+            <Dialog say={["安安","2","3"]} title='第一關' onClick={()=>this.play(0)}></Dialog>
+            <Dialog say={["安安","2","3"]} title='第二關' onClick={()=>this.play(1)}></Dialog>
+            <Dialog say={["安安","2","3"]} title='第三關' onClick={()=>this.play(2)}></Dialog>
             </div>;
     }
     play(level){
