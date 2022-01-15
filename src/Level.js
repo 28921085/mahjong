@@ -55,13 +55,65 @@ class Level extends Component{
                 </h1></Row>
             <Row className="justify-content-md-center">
             <Col style={this.getStyle(0)}>
-            <Dialog say={["安安","2","3"]} title='第一關'disabled={true} onClick={()=>this.play(0)}></Dialog>
+            <Dialog say={
+                ["故事是發生在傑哥遇到阿偉後，傑哥希望立法院能修法通過同志法，但他走錯地方了來到台北市議會",
+                "叫你們負責人給我出來",
+                "給我出來(摔東西)",
+                "你誰啊",
+                "現在都是流氓當家，黑道治國嗎",
+                "別著急阿",
+                "只要這個法過了",
+                "我就給你看些好康的",
+                "我這邊有麵包跟水，要不要來我房間喝",
+                "流氓都可以喝水的阿",
+                "那你要不要先吞曲棍球",
+                "我跟你沒甚麼好溝通的了",
+                "直接開始吧",
+                "讓我看看!!"
+            ]
+                } 
+                whosay={
+                    ["前情題要",
+                    "傑哥",
+                    "傑哥",
+                    "王世堅",
+                    "王世堅",
+                    "傑哥",
+                    "傑哥",
+                    "傑哥",
+                    "傑哥",
+                    "王世堅",
+                    "王世堅",
+                    "傑哥",
+                    "傑哥",
+                    "傑哥"
+                ]
+                }
+                title='第一關'disabled={true} onClick={()=>this.play(0)}></Dialog>
             </Col>
             <Col style={this.getStyle(1)}>
-            <Dialog say={["安安","2","3"]} title='第二關' disabled={this.lock>=1}onClick={()=>this.play(1)}></Dialog>
+            <Dialog say={
+                ["安安",
+                "2",
+                "3"]
+                } 
+                whosay={
+                    ["傑哥",
+                    "王世堅",
+                    "傑哥"]
+                } title='第二關' disabled={this.lock>=1}onClick={()=>this.play(1)}></Dialog>
             </Col>
             <Col style={this.getStyle(2)}>
-            <Dialog say={["安安","2","3"]} title='第三關' disabled={this.lock>=2}onClick={()=>this.play(2)}></Dialog>
+            <Dialog say={
+                ["安安",
+                "2",
+                "3"]
+                } 
+                whosay={
+                    ["傑哥",
+                    "王世堅",
+                    "傑哥"]
+                } title='第三關' disabled={this.lock>=2}onClick={()=>this.play(2)}></Dialog>
             </Col >
             </Row>
            

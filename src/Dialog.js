@@ -45,7 +45,7 @@ export default function Dialog(props) {
       {/* {gerObj()} */}
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>{props.whosay[now]}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{props.say[now]}</Modal.Body>
         <Modal.Footer>
