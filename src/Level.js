@@ -75,8 +75,8 @@ class Level extends Component{
         let hplist=[200,50,400,450]
         let atklist=[[50,20],[50,30],[30,20],[40,40]]
         let skill=[1,0,2,0]
-        let HP=[200,200,200,200]
-        let ATK=[[50,20],[50,20],[50,20],[50,20]]
+        let HP=[200+Number(localStorage.getItem("bonusHp")),200,200,200]
+        let ATK=[[50+Number(localStorage.getItem("bonusAtk")*2),20+Number(localStorage.getItem("bonusAtk"))],[50,20],[50,20],[50,20]]
         chr[0]=playercharacterlist[Number(localStorage.getItem("character"))]
        
         if(level==0){
