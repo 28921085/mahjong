@@ -47,7 +47,7 @@ class Game extends Component{
         this.MIGI=1
         this.disable=false
         this.result=[]//結算畫面
-        
+        this.currentRound=1//當前地幾局
         this.lastcard=34//上一個人打的牌
         this.game_record="遊戲開始\n"
         for(let i=0;i<34;i++)
@@ -275,6 +275,7 @@ class Game extends Component{
             window.alert("流局 遊戲結束")
             this.refresh("流局 遊戲結束")
             this.game_end=1;
+            this.show_result()
             //結算
             this.setState({
                 change:false
@@ -329,9 +330,7 @@ class Game extends Component{
                     this.refresh(loglist[i]+"\n")
                 this.game_end=1
                 this.show_result(loglist)
-                this.setState({
-                    change:false
-                 })
+                
                 
                 //結算畫面
             }
@@ -766,9 +765,7 @@ class Game extends Component{
         this.game_end=1
         this.show_result(loglist)
         //window.alert("玩家"+this.win.toString()+"胡牌 遊戲結束")
-        this.setState({
-            change:false
-         })
+       
 
         //TODO
     }
@@ -798,248 +795,253 @@ class Game extends Component{
     calculate_reward(card,who){//胡的那張牌 誰放槍
         let total=0,show=[],win=this.win;//win=誰胡牌
         let self=0,clear=0
-        //自摸
-        if(who==win){
-            total++;
-            show.push("自摸 1台")
-            self=1
+        if(this.allCard.length-this.current==16){
+            show.push("流局")
         }
-        //門清
-        console.log(win);
-        if(this.player[win].showlist.length==0){
-            total++;
-            show.push("門清 1台")
-            clear=1
-        }
-        //不求人
-        if(self&&clear){
-            total++;
-            show.push("不求人 1台")
-        }
-        //單吊/獨聽  (邊張 中洞我懶得寫)
-        if(this.player[win].listenList.length==1){
-            total++
-            show.push("獨聽 1台")
-        }
-        //*搶槓
-        //*槓上開花
-        //海底
-        if(136-this.current==60){
-            total++
-            show.push("海底撈月 1台")
-        }
-        //全求人
-        if(this.player[win].have.length==1&&win!=who){
-            total+=2
-            show.push("全求人 2台")
-        }
-        let all_ker=this.player[win].ming_ker+this.player[win].dark_ker+this.player[win].ker[card];
-        let all_dark_ker=all_ker-this.player[win].ming_ker;
-        //三四五案刻
-        if(all_dark_ker==5){
-            total+=8
-            show.push("五暗刻 8台")
-        }
-        else if(all_dark_ker==4){
-            total+=5
-            show.push("四暗刻 5台")
-        }
-        else if(all_dark_ker==3){
-            total+=2
-            show.push("三暗刻 2台")
-        }
-        //碰碰胡
-        if(all_ker==5){
-            total+=4
-            show.push("碰碰胡 4台")
-        }
+        else{
+            //自摸
+            if(who==win){
+                total++;
+                show.push("自摸 1台")
+                self=1
+            }
+            //門清
+            console.log(win);
+            if(this.player[win].showlist.length==0){
+                total++;
+                show.push("門清 1台")
+                clear=1
+            }
+            //不求人
+            if(self&&clear){
+                total++;
+                show.push("不求人 1台")
+            }
+            //單吊/獨聽  (邊張 中洞我懶得寫)
+            if(this.player[win].listenList.length==1){
+                total++
+                show.push("獨聽 1台")
+            }
+            //*搶槓
+            //*槓上開花
+            //海底
+            if(136-this.current==60){
+                total++
+                show.push("海底撈月 1台")
+            }
+            //全求人
+            if(this.player[win].have.length==1&&win!=who){
+                total+=2
+                show.push("全求人 2台")
+            }
+            let all_ker=this.player[win].ming_ker+this.player[win].dark_ker+this.player[win].ker[card];
+            let all_dark_ker=all_ker-this.player[win].ming_ker;
+            //三四五案刻
+            if(all_dark_ker==5){
+                total+=8
+                show.push("五暗刻 8台")
+            }
+            else if(all_dark_ker==4){
+                total+=5
+                show.push("四暗刻 5台")
+            }
+            else if(all_dark_ker==3){
+                total+=2
+                show.push("三暗刻 2台")
+            }
+            //碰碰胡
+            if(all_ker==5){
+                total+=4
+                show.push("碰碰胡 4台")
+            }
 
 
-        let word=0,wan=0,sol=0,ton=0
-        //混一色
-        for(let i=27;i<34;i++)
-            word+=this.player[win].num[i];
-        if(card>=27&&card<34)
-            word++
-        for(let i=0;i<9;i++)
-            wan+=this.player[win].num[i];
-        if(card>=0&&card<9)
-            wan++
-        for(let i=9;i<18;i++)
-            ton+=this.player[win].num[i];
-        if(card>=9&&card<18)
-            ton++
-        for(let i=18;i<27;i++)
-            sol+=this.player[win].num[i];
-        if(card>=18&&card<27)
-            sol++
-        for(let i=0;i<this.player[win].showlist.length;i++){
-            if(this.player[win].showlist[i]<9)
+            let word=0,wan=0,sol=0,ton=0
+            //混一色
+            for(let i=27;i<34;i++)
+                word+=this.player[win].num[i];
+            if(card>=27&&card<34)
+                word++
+            for(let i=0;i<9;i++)
+                wan+=this.player[win].num[i];
+            if(card>=0&&card<9)
                 wan++
-            else if(this.player[win].showlist[i]<18)
+            for(let i=9;i<18;i++)
+                ton+=this.player[win].num[i];
+            if(card>=9&&card<18)
                 ton++
-            else if(this.player[win].showlist[i]<27)
+            for(let i=18;i<27;i++)
+                sol+=this.player[win].num[i];
+            if(card>=18&&card<27)
                 sol++
-            else
-                word++;
-        }
-        //要有字 然後其餘的牌為萬桶條其中一個
-        if(word&&((wan&&!sol&&!ton)||(!wan&&sol&&!ton)||(!wan&&!sol&&ton))){
-            total+=4
-            show.push("混一色 4台")
-        }
-        //清一色
-        if(!word&&((wan&&!sol&&!ton)||(!wan&&sol&&!ton)||(!wan&&!sol&&ton))){
-            total+=8
-            show.push("清一色 8台")
-        }
-        //大小三元
-        let zhong=0,fa=0,bai=0,dont=0
-        if(card==31)
-            zhong++
-        zhong+=this.player[win].num[31]
-        for(let i=0;i<this.player[win].showlist.length;i++)
-            if(this.player[win].showlist[i]==31)
+            for(let i=0;i<this.player[win].showlist.length;i++){
+                if(this.player[win].showlist[i]<9)
+                    wan++
+                else if(this.player[win].showlist[i]<18)
+                    ton++
+                else if(this.player[win].showlist[i]<27)
+                    sol++
+                else
+                    word++;
+            }
+            //要有字 然後其餘的牌為萬桶條其中一個
+            if(word&&((wan&&!sol&&!ton)||(!wan&&sol&&!ton)||(!wan&&!sol&&ton))){
+                total+=4
+                show.push("混一色 4台")
+            }
+            //清一色
+            if(!word&&((wan&&!sol&&!ton)||(!wan&&sol&&!ton)||(!wan&&!sol&&ton))){
+                total+=8
+                show.push("清一色 8台")
+            }
+            //大小三元
+            let zhong=0,fa=0,bai=0,dont=0
+            if(card==31)
                 zhong++
-        if(card==32)
-            fa++
-        fa+=this.player[win].num[32]
-        for(let i=0;i<this.player[win].showlist.length;i++)
-            if(this.player[win].showlist[i]==32)
-                fa++;
-        if(card==33)
-            bai++
-        bai+=this.player[win].num[33]
-        for(let i=0;i<this.player[win].showlist.length;i++)
-            if(this.player[win].showlist[i]==33)
-                bai++;
+            zhong+=this.player[win].num[31]
+            for(let i=0;i<this.player[win].showlist.length;i++)
+                if(this.player[win].showlist[i]==31)
+                    zhong++
+            if(card==32)
+                fa++
+            fa+=this.player[win].num[32]
+            for(let i=0;i<this.player[win].showlist.length;i++)
+                if(this.player[win].showlist[i]==32)
+                    fa++;
+            if(card==33)
+                bai++
+            bai+=this.player[win].num[33]
+            for(let i=0;i<this.player[win].showlist.length;i++)
+                if(this.player[win].showlist[i]==33)
+                    bai++;
 
-        if(zhong>=3&&fa>=3&&bai>=3){
-            total+=8
-            show.push("大三元 8台")
-            dont=1
-        }
-        else if(zhong>=2&&fa>=2&&bai>=2){//因為如果有兩個為2不會糊牌，故這樣判斷就好
-            total+=4
-            show.push("小三元 4台")
-            dont=1
-        }
-        //中發白 大小三元後不用判斷
-        if(!dont){
-            if(zhong>=3){
-                total++
-                show.push("紅中 1台")
+            if(zhong>=3&&fa>=3&&bai>=3){
+                total+=8
+                show.push("大三元 8台")
+                dont=1
             }
-            if(fa>=3){
-                total++
-                show.push("發財 1台")
+            else if(zhong>=2&&fa>=2&&bai>=2){//因為如果有兩個為2不會糊牌，故這樣判斷就好
+                total+=4
+                show.push("小三元 4台")
+                dont=1
             }
-            if(bai>=3){
-                total++
-                show.push("白板 1台")
+            //中發白 大小三元後不用判斷
+            if(!dont){
+                if(zhong>=3){
+                    total++
+                    show.push("紅中 1台")
+                }
+                if(fa>=3){
+                    total++
+                    show.push("發財 1台")
+                }
+                if(bai>=3){
+                    total++
+                    show.push("白板 1台")
+                }
             }
-        }
-        //平胡
-        if(all_ker==0&&this.player[win].listenList.length==2&&word==0){//無字無刻聽兩面
-            total+=2
-            show.push("平胡 2台")
-        }
-        //地聽
+            //平胡
+            if(all_ker==0&&this.player[win].listenList.length==2&&word==0){//無字無刻聽兩面
+                total+=2
+                show.push("平胡 2台")
+            }
+            //地聽
 
-        //天聽
+            //天聽
 
-        //大小四喜
-        let dong=0,nan=0,xi=0,bei=0,donot=0;//27 28 29 30
-        if(card==27)
-            dong++
-        dong+=this.player[win].num[27]
-        for(let i=0;i<this.player[win].showlist.length;i++)
-            if(this.player[win].showlist[i]==27)
+            //大小四喜
+            let dong=0,nan=0,xi=0,bei=0,donot=0;//27 28 29 30
+            if(card==27)
                 dong++
-        if(card==28)
-            nan++
-        nan+=this.player[win].num[28]
-        for(let i=0;i<this.player[win].showlist.length;i++)
-            if(this.player[win].showlist[i]==28)
-                nan++;
-        if(card==29)
-            xi++
-        xi+=this.player[win].num[29]
-        for(let i=0;i<this.player[win].showlist.length;i++)
-            if(this.player[win].showlist[i]==29)
-                xi++;
-        if(card==30)
-            bei++
-        bei+=this.player[win].num[30]
-        for(let i=0;i<this.player[win].showlist.length;i++)
-            if(this.player[win].showlist[i]==30)
-                bei++;
-        if(dong>=3&&nan>=3&&xi>=3&&bei>=3){
-            total+=16
-            show.push("大四喜 16台")
-            donot=1
-        }
-        else if(dong>=2&&nan>=2&&xi>=2&&bei>=2){//因為如果有兩個為2不會糊牌，故這樣判斷就好
-            total+=8
-            show.push("小四喜 8台")
-            donot=1
-        }
-        //東南西北 見字 大小四喜後不用判斷
-        if(!donot){
-            if(dong>=3){
-                total++
-                show.push("東風 1台")
+            dong+=this.player[win].num[27]
+            for(let i=0;i<this.player[win].showlist.length;i++)
+                if(this.player[win].showlist[i]==27)
+                    dong++
+            if(card==28)
+                nan++
+            nan+=this.player[win].num[28]
+            for(let i=0;i<this.player[win].showlist.length;i++)
+                if(this.player[win].showlist[i]==28)
+                    nan++;
+            if(card==29)
+                xi++
+            xi+=this.player[win].num[29]
+            for(let i=0;i<this.player[win].showlist.length;i++)
+                if(this.player[win].showlist[i]==29)
+                    xi++;
+            if(card==30)
+                bei++
+            bei+=this.player[win].num[30]
+            for(let i=0;i<this.player[win].showlist.length;i++)
+                if(this.player[win].showlist[i]==30)
+                    bei++;
+            if(dong>=3&&nan>=3&&xi>=3&&bei>=3){
+                total+=16
+                show.push("大四喜 16台")
+                donot=1
             }
-            if(xi>=3){
-                total++
-                show.push("西風 1台")
+            else if(dong>=2&&nan>=2&&xi>=2&&bei>=2){//因為如果有兩個為2不會糊牌，故這樣判斷就好
+                total+=8
+                show.push("小四喜 8台")
+                donot=1
             }
-            if(nan>=3){
-                total++
-                show.push("南風 1台")
+            //東南西北 見字 大小四喜後不用判斷
+            if(!donot){
+                if(dong>=3){
+                    total++
+                    show.push("東風 1台")
+                }
+                if(xi>=3){
+                    total++
+                    show.push("西風 1台")
+                }
+                if(nan>=3){
+                    total++
+                    show.push("南風 1台")
+                }
+                if(bei>=3){
+                    total++
+                    show.push("北風 1台")
+                }
             }
-            if(bei>=3){
-                total++
-                show.push("北風 1台")
-            }
-        }
 
 
-        //自一色
-        if(word&&!wan&&!sol&&!ton){
-            total+=16
-            show.push("字一色 16台")
-        }
-        //天地人胡
-        if(136-this.current==71&&this.MIGI){
-            if(who==win){//自摸天胡 非自摸人胡
+            //自一色
+            if(word&&!wan&&!sol&&!ton){
                 total+=16
-                show.push("天胡 16台")
+                show.push("字一色 16台")
             }
-            else{
-                total+=16
-                show.push("人胡 16台")
+            //天地人胡
+            if(136-this.current==71&&this.MIGI){
+                if(who==win){//自摸天胡 非自摸人胡
+                    total+=16
+                    show.push("天胡 16台")
+                }
+                else{
+                    total+=16
+                    show.push("人胡 16台")
+                }
             }
-        }
-        else if(136-this.current>=68&&this.MIGI){
-            if(who==win){//自摸地胡 非自摸人胡
-                total+=16
-                show.push("地胡 16台")
+            else if(136-this.current>=68&&this.MIGI){
+                if(who==win){//自摸地胡 非自摸人胡
+                    total+=16
+                    show.push("地胡 16台")
+                }
+                else{
+                    total+=16
+                    show.push("人胡 16台")
+                }
             }
-            else{
-                total+=16
-                show.push("人胡 16台")
-            }
-        }
-        if(total==0)
-            show.push("屁胡 0台")
-        for(let i=0;i<show.length;i++){
-            this.refresh(show[i]+"\n")
+        
+            if(total==0)
+                show.push("屁胡 0台")
+            for(let i=0;i<show.length;i++){
+                this.refresh(show[i]+"\n")
 
+            }
+            this.refresh("總共 "+total+"台\n")
+            show.push("總共 "+total+"台")
         }
-        this.refresh("總共 "+total+"台\n")
-        show.push("總共 "+total+"台")
-
         return show;
     }
     show_result(show){
@@ -1051,6 +1053,11 @@ class Game extends Component{
         this.result.push(<p class="title">統計結果</p>)
         //let showResult=setInterval(function(){
             console.log(this.result)
+        if(this.currentRound==4)
+            this.result.push(<input type="button" onClick={this.back()}>返回選關</input>)
+        else
+            this.result.push(<input type="button" onClick={this.next_round()}>下一回合</input>)
+        this.currentRound++
         for(let i=0;i<show.length;i++){
             this.setState({
                 change:false
@@ -1063,12 +1070,20 @@ class Game extends Component{
                 change:false
             })
         }
-        //    if(cnt==show.length)
-        //        clearInterval(showResult)
-        //},800)
+        
+        
 
     }
-
+    next_round(){
+        this.setState({
+            change:false
+        })
+    }
+    back(){
+        this.setState({
+            change:false
+        })
+    }
     botsent(){
 
         if(this.now==0)
@@ -1132,9 +1147,7 @@ class Game extends Component{
                         this.refresh(loglist[i]+"\n")
                     this.game_end=1
                     this.show_result(loglist)
-                    this.setState({
-                        change:false
-                     })
+                  
                     
                     //結算畫面
                 }
@@ -1268,9 +1281,7 @@ class Game extends Component{
                 this.refresh(loglist[i]+"\n")
             this.game_end=1
             this.show_result(loglist)
-            this.setState({
-                change:false
-             })
+           
             
             //結算畫面
         }
