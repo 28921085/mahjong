@@ -196,8 +196,8 @@ render(props){
         <Row xs={1} md={2} className="g-4">
       {this.makeCharacter(chrname[0],name[0],'傑哥不要!!',['知男而上：對男生腳色的傷害x2','讓我看看：一回合內可以看到敵人的牌冷卻:1場'],0,true)}
       {this.makeCharacter(chrname[1],name[1],'中華民國立法委員',['over my dead body：當自身HP<=0時隊友攻擊力X2','大聲問政：當自身吃/碰/槓(喊聲)時，對所有敵方造成30點傷害'],1,this.lock>=1)}
-      {this.makeCharacter(chrname[2],name[2],'台北市市長',['垃圾不分藍綠：摸到索牌及萬牌的機會減少(減少30%)','歪頭燦笑:：胡牌時，施以燦爛的笑容來躲過傷害'],2,this.lock>=2)}
-      {this.makeCharacter(chrname[3],name[3],'前高雄市市長',['高雄發大財：摸到索牌及發財的機率增加30%','烙跑市長：當韓國瑜放槍時可以烙跑，使結算結果變成流局冷卻:4回合'],3,this.lock>=3)}
+      {this.makeCharacter(chrname[2],name[2],'台北市市長',['垃圾不分藍綠：摸到索牌及萬牌的機會減少(減少70%)','歪頭燦笑:：胡牌時，施以燦爛的笑容來躲過傷害'],2,this.lock>=2)}
+      {this.makeCharacter(chrname[3],name[3],'前高雄市市長',['高雄發大財：摸到索牌及發財的機率增加70%','國瑜發大財：結算的時候金錢一律兩倍'],3,this.lock>=3)}
       </Row>
       </div>
       

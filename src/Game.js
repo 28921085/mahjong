@@ -1150,10 +1150,16 @@ class Game extends Component{
 
         }
         if(this.currentRound>=4){
-            if(HPlist[1]<0&&HPlist[2]<0&&HPlist[3]<0){
+            if(HPlist[1]<0&&HPlist[2]<0&&HPlist[3]<0&&HPlist[0]>0){
                 console.log("勝利")
                 this.result.push(<p class="title">勝利!</p>)
-                localStorage.setItem("money",Number(localStorage.getItem("money"))+1000)
+                if(this.player[0].skillID==4){
+                    this.result(<p class="title">國瑜發大財發動</p>)
+                    localStorage.setItem("money",Number(localStorage.getItem("money"))+2000)
+                }else{
+
+                    localStorage.setItem("money",Number(localStorage.getItem("money"))+1000)
+                }
             }else{
                 this.result.push(<p class="title">失敗!</p>)
                 console.log("失敗")
