@@ -3,6 +3,7 @@ import HandCard from './HandCard'
 import Card from './Card'
 import mp3 from './sleep.mp3'
 import bgm from './進關.mp3'
+import JayGer from './Jay.mp3'
 import bgm_listen from './聽牌.mp3'
 import AutoScroll from './AutoScroll'
 import FuncMenu from './FuncMenu';
@@ -23,6 +24,7 @@ import Tsai from './static/character/Tsai.jpg';
 class Game extends Component{
     constructor(props){
         super(props)
+        this.Jayuseskill=false
         this.dictionary=["1W","2W","3W","4W","5W","6W","7W","8W","9W","1T","2T","3T","4T","5T","6T","7T","8T","9T","1S","2S","3S","4S","5S","6S","7S","8S","9S","DONG","NAN","XI","BEI","ZHONG","FA","BAI","space"];
         this.storeNow=0;//保存現在輪到誰
         this.canDo=[];
@@ -1475,6 +1477,27 @@ class Game extends Component{
 //     }
 
 // }
+JayShow(){
+    let JayMusic=new Audio(JayGer)
+    JayMusic.play()
+    this.tempJayShow=[]
+    for(let i=0;i<4;i++){
+        this.tempJayShow[i]=this.player[i].show
+        this.player[i].show=1
+    } this.forceUpdate()
+    this.Jayuseskill=true
+    setTimeout(() => {
+        this.JayClose()
+    }, 10000);
+   
+}
+JayClose(){
+    for(let i=0;i<4;i++){
+        
+        this.player[i].show=this.tempJayShow[i]
+    }
+    this.forceUpdate()
+}
     render(props){
             // for(let i=0;i<4;i++)
             // console.log("player"+i+"="+this.player[i].have)
@@ -1547,7 +1570,7 @@ class Game extends Component{
                 <tr>
 
                     <td class="tg-0pky" colspan="2" align = "center">
-
+                    {(!(this.Jayuseskill)&&this.player[0].skillID==1)?<Button onClick={()=>this.JayShow()}>發動技能</Button>:<p></p>}
                     <div key={Math.random()}>{this.Kan()}</div><div key={Math.random()}>{this.Eat()}</div>{this.show?
             <div><Button key={Math.random()} variant="primary"   onClick={()=>this.doEat()} disabled={!this.canDo[0]}>吃</Button>
                 <Button key={Math.random()} variant="secondary" onClick={()=>this.doPon()} disabled={!this.canDo[1]}>碰</Button>
