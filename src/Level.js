@@ -121,14 +121,44 @@ class Level extends Component{
             </Col>
             <Col style={this.getStyle(2)}>
             <Dialog say={
-                ["安安",
-                "2",
-                "3"]
+                ["後來因為在台北遇到太多怪人，韓國榆決定去高雄走走",
+                "結果發現了一個禿子在愛河蓋摩天輪，傑哥決定跟蹤他",
+                "(過了很久)",
+                "人家都說禿子跟著月亮走，現在怎麼是有一個胖子在跟著禿子走",
+                "我這裡有剛出爐的麵包，請問你要吃嗎",
+                "這看裡來像是放了三天的麵包",
+                "如果是愛情摩天輪和麵包，我一定毫不猶豫選擇愛情摩天輪",
+                "我看你是不懂喔",
+                "這麵包是我親手做的",
+                "裡面有我滿滿的愛心",
+                "你知道三立電視台為什麼會變成兩立嗎",
+                "因為少了一粒良心",
+                "而你現在在做的事就像三立電視台",
+                "你很勇喔",
+                "我跟你沒甚麼好溝通的了",
+                "直接開始吧",
+                "讓我看看!!"
+            ]
                 } 
                 whosay={
-                    ["傑哥",
-                    "王世堅",
-                    "傑哥"]
+                    ["前情提要",
+                    "前情提要",
+                    "",
+                    "韓國瑜",
+                    "傑哥",
+                    "韓國瑜",
+                    "韓國瑜",
+                    "傑哥",
+                    "傑哥",
+                    "傑哥",
+                    "韓國瑜",
+                    "韓國瑜",
+                    "韓國瑜",
+                    "傑哥",
+                    "傑哥",
+                    "傑哥",
+                    "傑哥"
+                ]
                 } title='第三關' disabled={this.lock>=2}onClick={()=>this.play(2)}></Dialog>
             </Col >
             </Row>
@@ -147,7 +177,6 @@ class Level extends Component{
         let ATK=[[50+Number(localStorage.getItem("bonusAtk")*2),20+Number(localStorage.getItem("bonusAtk"))],[50,20],[50,20],[50,20]]
         chr[0]=playercharacterlist[Number(localStorage.getItem("character"))]
         localStorage.setItem("round",JSON.stringify(1))
-        skill[0]=Number(localStorage.getItem("character"))+1
         if(level==0){
             console.log("level 0")
             chr[2]=enemylist[0]
