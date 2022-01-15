@@ -1146,7 +1146,15 @@ class Game extends Component{
         else{
 
         }
-        if(this.currentRound==4){
+        if(this.currentRound>=4){
+            if(HPlist[1]<0&&HPlist[2]<0&&HPlist[3]<0){
+                console.log("勝利")
+                this.result.push(<p class="title">勝利!</p>)
+                localStorage.setItem("money",Number(localStorage.getItem("money"))+1000)
+            }else{
+                this.result.push(<p class="title">失敗!</p>)
+                console.log("失敗")
+            }
             this.result.push(<Button type="button" href="/Level">返回選關</Button>)
             let stage=parseInt(JSON.parse(localStorage.getItem("level")))
             let lock=parseInt(JSON.parse(localStorage.getItem("lock")))+1
