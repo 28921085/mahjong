@@ -33,9 +33,13 @@ export default function Dialog(props) {
     // return temp
   }
   // setNow(0)
+  const style={
+    
+    width:"100%"
+  }
   return (
     <>
-      <Button variant="primary"disabled={!props.disabled} onClick={handleShow} >
+      <Button variant="primary"disabled={!props.disabled} onClick={handleShow} style={style}>
        {props.title}
       </Button>
       {/* {gerObj()} */}
