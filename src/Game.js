@@ -1110,6 +1110,7 @@ class Game extends Component{
         this.result.push(<p class="title">血量變更</p>)
         let damage=0
         let HPlist=[]
+        let doge=JSON.parse(localStorage.getItem("doge"))
         for(let i=0;i<4;i++){
             if(this.player[i].canATK){
                 damage=this.final_total*this.player[i].ATK_add+this.player[i].ATK_base
@@ -1118,9 +1119,15 @@ class Game extends Component{
             }
         }
         for(let i=0;i<4;i++){
-            if(this.player[i].beATK&&!this.player[i].canATK){
-                this.result.push(<p class="result">{this.player[i].HP}->{this.player[i].HP-damage}</p>)
-                this.player[i].HP-=damage
+            if((this.player[i].beATK&&!this.player[i].canATK)){
+                if(this.player[i].skillID==3&&doge==1){
+                    this.result.push(<p class="result">{this.player[i].HP}->{this.player[i].HP}</p>)
+                    localStorage.setItem("doge",JSON.stringify(0))
+                }
+                else{
+                    this.result.push(<p class="result">{this.player[i].HP}->{this.player[i].HP-damage}</p>)
+                    this.player[i].HP-=damage
+                }
             }
             else{
                 this.result.push(<p class="result">{this.player[i].HP}->{this.player[i].HP}</p>)
