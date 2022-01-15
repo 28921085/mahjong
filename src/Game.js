@@ -1108,11 +1108,13 @@ class Game extends Component{
         let damage=0
         let HPlist=[]
         for(let i=0;i<4;i++){
-            if(this.player[i].canATK)
+            if(this.player[i].canATK){
                 damage=this.final_total*this.player[i].ATK_add+this.player[i].ATK_base
+                
+            }
         }
         for(let i=0;i<4;i++){
-            if(this.player[i].beATK){
+            if(this.player[i].beATK&&!this.player[i].canATK){
                 this.result.push(<p class="result">{this.player[i].HP}->{this.player[i].HP-damage}</p>)
                 this.player[i].HP-=damage
             }
