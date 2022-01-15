@@ -42,7 +42,7 @@ class Start extends Component{
         </Badge></h1>
         <Button variant="secondary"href="/Level">開始遊戲</Button>
         <Button variant="outline-secondary"href="/CharacterShop">選擇角色</Button>
-        <Button variant="outline-secondary"href="/Dialog">新手教學 <Badge pill bg="warning" >
+        <Button variant="outline-secondary"href="/Teach">新手教學 <Badge pill bg="warning" >
         new
         </Badge>
         </Button>

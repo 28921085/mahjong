@@ -14,6 +14,7 @@ import reportWebVitals from './reportWebVitals';
 import Level from './Level';
 import Test from './AutoScroll';
 import TestScroll from './TestScroll';
+import Teach from './teach';
 // let dictionary=["1W","2W","3W","4W","5W","6W","7W","8W","9W","1T","2T","3T","4T","5T","6T","7T","8T","9T","1S","2S","3S","4S","5S","6S","7S","8S","9S","DONG","NAN","XI","BEI","ZHONG","FA","BAI","space"];
 
 
@@ -34,6 +35,7 @@ ReactDOM.render(
               }}><Game/></div>} />
               <Route path='/Dialog' element={<Dialog say={['大家好','謝謝大家']}/>} />
               <Route path='/CharacterShop' element={<CharacterShop/>} />
+              <Route exact path='/Teach' element={<Teach/>} />
           </Routes>
         
       </Router>

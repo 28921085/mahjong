@@ -94,6 +94,10 @@ button{
   color: white;
   text-align: center;
 }
+.pict{
+  width: 1000px;
+  height: 600px;
+}
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{height:auto;border-color:black;border-style:solid;border-width:0px;font-family:Arial, sans-serif;font-size:14px;
   overflow:visible;padding:10px 5px;word-break:normal;}
