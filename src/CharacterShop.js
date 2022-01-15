@@ -75,7 +75,7 @@ class CharacterShop extends Component{
     }
     makeMyself(img,name,descr){
       
-      return      <Card style={{ width: '18rem' }}className="text-center">
+      return          <Card style={{ width: '18rem' }}className="text-center">
         
        <Card.Img style={{height:'200px'}} variant="top" src={
        require('./static/character/'+img).default
@@ -97,7 +97,7 @@ class CharacterShop extends Component{
        </Card.Body> */}
        
      </Card>
-      
+     
 
     }
     getMoney(){
@@ -173,7 +173,7 @@ render(props){
   let tmpstyle={width:"18rem"}
   let half={width:"9rem"}
     return  [<div class="container">
-      
+      <h1>選擇角色</h1> 
       <div class="row ">
     <div class="col-sm-4">
     <Row xs={1} md={2} className="g-4">
