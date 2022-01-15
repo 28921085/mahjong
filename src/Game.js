@@ -337,7 +337,7 @@ class Game extends Component{
             console.log(this.win)
             if(this.win!=-1){
                 //window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
-                this.refresh("玩家"+this.now.toString()+"胡牌 遊戲結束"+"\n")
+                this.refresh(this.player[this.now].playername+"胡牌 遊戲結束"+"\n")
                 let loglist=this.calculate_reward(card,this.now)
 
                 for(let i=0;i<loglist.length;i++)
@@ -1232,7 +1232,7 @@ class Game extends Component{
                 this.eat=this.next_can_eat(discard)
                 if(this.win!=-1){
                     //window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
-                    this.refresh("玩家"+this.win.toString()+"胡牌 遊戲結束"+"\n")
+                    this.refresh(this.player[this.win].playername+"胡牌 遊戲結束"+"\n")
                     let loglist=this.calculate_reward(discard,this.now)
                     for(let i=0;i<loglist.length;i++)
                         this.refresh(loglist[i]+"\n")
@@ -1366,7 +1366,7 @@ class Game extends Component{
         //------------------切割成 按鈕後動作---------------------------------------
         if(this.win!=-1){
             //window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
-            this.refresh("玩家"+this.win.toString()+"胡牌 遊戲結束"+"\n")
+            this.refresh(this.player[this.win].playername+"胡牌 遊戲結束"+"\n")
             let loglist=this.calculate_reward(card,this.now)
             for(let i=0;i<loglist.length;i++)
                 this.refresh(loglist[i]+"\n")

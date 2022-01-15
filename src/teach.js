@@ -24,7 +24,7 @@ class Teach extends Component{
                 <p>玩家優先順序比電腦大</p>
                 <p>移除部分台數(下面將會詳細說明)</p>
             </div>,
-            <h3>遊戲說明</h3>,
+            <h3 align="center">遊戲說明</h3>,
             <h5>選擇角色介面</h5>,
             <div>
                 <p>一開始玩家可以選擇角色"傑哥"</p>
@@ -46,16 +46,16 @@ class Teach extends Component{
                 <p>每回合胡牌的人可以攻擊放槍的人</p>
                 <p>如果是自摸，可以一次攻擊全部敵人</p>
                 <p>傷害計算方式:角色攻擊力(底)+當前台數*角色攻擊力(台)</p>
-                <h2>以下為說明圖</h2>
+                <h2 align="center">以下為說明圖</h2>
                 <img class="pict" src={img1}></img>
-                <h1>一回合結束後</h1>
+                <h1 align="center">一回合結束後</h1>
                 <img class="pict" src={img2}></img>
                 <img class="pict" src={img3}></img>
-                <p>結算後玩家血量>敵人血量總和即為勝利</p>
+                <p>結算後玩家血量大於0 and 所有敵人血量小於0即為勝利</p>
                 <p>勝利後會獲得固定金錢</p>
                 <p>失敗後甚麼都不會損失</p>
             </div>,
-            <h1>台數計算</h1>,
+            <h1 align="center">台數計算</h1>,
             <p>本遊戲只還原了部分台灣麻將台數，如下:</p>,
             <img src={img4}></img>,
             <p>看到這裡辛苦你了</p>,
