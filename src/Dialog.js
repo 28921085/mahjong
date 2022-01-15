@@ -49,13 +49,13 @@ export default function Dialog(props) {
         </Modal.Header>
         <Modal.Body>{props.say[now]}</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            跳過
+          <Button variant="secondary" onClick={handleClose}  href='/Play'>
+            跳過劇情
           </Button>
           {now==props.say.length-1?<Button variant="primary" onClick={handleClose} href='/Play'>
-            結束
+            進入戰鬥
           </Button>:<Button variant="primary" onClick={nextSay}>
-            繼續</Button>}
+            繼續對話</Button>}
         </Modal.Footer>
       </Modal>
     </>
