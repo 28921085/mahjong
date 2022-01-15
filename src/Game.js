@@ -46,6 +46,7 @@ class Game extends Component{
         this.final_total=0//總共幾台
         this.music_switch=1
         this.MIGI=1
+        this.kanexcept=0
         this.disable=false
         this.result=[]//結算畫面
         this.currentRound=1//當前地幾局
@@ -67,7 +68,7 @@ class Game extends Component{
 
 
 
-        for(let j=0;j<4;j++){
+        /*for(let j=0;j<4;j++){
             for(let i=0;i<34;i++){
                 this.allCard[i*4+j]=i;
             }
@@ -75,15 +76,20 @@ class Game extends Component{
          for(let i=0;i<136;i++){//洗牌
              let idx=Math.floor(Math.random()*136);
              [this.allCard[i],this.allCard[idx]]=[this.allCard[idx],this.allCard[i]];//swap
-         }
-           /*this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,7,32,
+         }*/
+           this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,7,32,
             1,2,3,4,5,6,7,7,9,1,2,3,4,5,6,31,
             1,1,2,3,8,8,8,8,0,1,2,3,4,5,31,9,
             32,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17,
-            33,27,28,29,30,32,22,21,20,21,23,32,24,15,15]//測試case用*/
+            33,27,28,29,30,32,22,21,20,21,23,32,24,15,15]//測試case用
   //   this.player[0].skillID=4//韓國瑜
   //  this.player[1].skillID=3//柯文哲
         let allHP=JSON.parse(localStorage.getItem("HP"))
+        let round=JSON.parse(localStorage.getItem("round"))
+        if(round==null)
+            this.currentRound=0
+        else    
+            this.currentRound=parseInt(round)
         let allATK=JSON.parse(localStorage.getItem("ATK"))
         let allATK_base=[]
         let allATK_add=[]
@@ -218,6 +224,7 @@ class Game extends Component{
                     tmp[1]=1
                     this.playerKan.push(tmp)
                 }
+                this.kanexcept=1
             }
             return 0;
         }
@@ -688,6 +695,7 @@ class Game extends Component{
         this.pon=-1
         this.eat=-1
         this.player[0].dark_ker++;
+        this.kanexcept=0
         if(type==0)
             this.refresh(this.player[this.now].playername+"暗槓\n")
         else
@@ -701,7 +709,7 @@ class Game extends Component{
         this.playerKan=tmpnew
         //this.playerKan.splice(this.playerKan.indexOf(card),1)
         this.canDo=[0,0,0,0]
-        this.show=0
+        this.show=false
         this.disable=false
         console.log(this.playerKan)
         console.log( this.player[0])
@@ -779,11 +787,20 @@ class Game extends Component{
     doCancel(){
         this.canDo=[0,0,0,0]
         this.show=false
+
         this.now=(this.tempNow+1)%4
         console.log("玩家選擇取消");
         this.showEat=false
+        this.showKan=false
         this.disable=false
-        if(this.now){
+        
+        if(this.kanexcept){
+            this.kanexcept=0
+            this.eat=-1
+            this.pon=-1
+            this.kan=-1
+        }
+        else if(this.now){
             this.draw()
             this.botsent()
         }
@@ -1061,7 +1078,6 @@ class Game extends Component{
         return show;
     }
     show_result(show){
-        let cnt=0
         this.showTotal=true
         for(let i=0;i<4;i++){
             this.player[i].show=true
@@ -1075,8 +1091,6 @@ class Game extends Component{
                 change:true
             })
             this.result.push(<p class="result">{show[i]}</p>)
-
-            cnt++
             console.log(this.result)
             this.setState({
                 change:false
@@ -1116,20 +1130,31 @@ class Game extends Component{
             this.player[3].ATK_add*=2
             this.player[3].ATK_base*=2
         }
-        let ATKlist=[]
-        for(let i=0;i<4;i++){
-            let tmp=[]
-            tmp.push(this.player[1].ATK_base)
-            tmp.push(this.player[1].ATK_add)
-            ATKlist.push(tmp)
+        if(this.currentRound!=4){
+            let ATKlist=[]
+            for(let i=0;i<4;i++){
+                let tmp=[]
+                tmp.push(this.player[1].ATK_base)
+                tmp.push(this.player[1].ATK_add)
+                ATKlist.push(tmp)
+            }
+            localStorage.setItem("HP",JSON.stringify(HPlist))
+            localStorage.setItem("ATK",JSON.stringify(ATKlist))
         }
-        localStorage.setItem("HP",JSON.stringify(HPlist))
-        localStorage.setItem("ATK",JSON.stringify(ATKlist))
-        if(this.currentRound==4)
-            this.result.push(<Button onClick={()=>this.back()}>返回選關</Button>)
+        else{
+
+        }
+        if(this.currentRound==4){
+            this.result.push(<Button type="button" href="/Level">返回選關</Button>)
+            let stage=parseInt(JSON.parse(localStorage.getItem("level")))
+            let lock=parseInt(JSON.parse(localStorage.getItem("lock")))+1
+            localStorage.setItem("lock",JSON.stringify(Math.max(lock,stage)))
+        }
         else
             this.result.push(<Button type="button" href="/Play">下一回合</Button>)
         this.currentRound++
+        localStorage.setItem("round",JSON.stringify(this.currentRound))
+        
         this.setState({
             change:false
         })

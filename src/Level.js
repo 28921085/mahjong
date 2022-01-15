@@ -78,7 +78,7 @@ class Level extends Component{
         let HP=[200,200,200,200]
         let ATK=[[50,20],[50,20],[50,20],[50,20]]
         chr[0]=playercharacterlist[Number(localStorage.getItem("character"))]
-       
+        localStorage.setItem("round",JSON.stringify(1))
         if(level==0){
             console.log("level 0")
             chr[2]=enemylist[0]
