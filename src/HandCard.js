@@ -23,6 +23,8 @@ class HandCard extends Component{
         this.listenList=[]//聽牌名單
         this.alone=[]//孤張指數 電腦打牌用
         this.ker=[]//幾個刻子 判斷聽牌用 (手牌)
+        this.canATK=0//可以攻擊
+        this.beATK=0//會被攻擊
         for(let i=0;i<34;i++)
             this.ker.push(0)
         this.dark_ker=0//因暗槓產生的刻子
