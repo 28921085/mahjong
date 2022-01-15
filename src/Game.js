@@ -13,6 +13,7 @@ import Button from 'react-bootstrap/Button';
 import { findRenderedDOMComponentWithClass } from 'react-dom/cjs/react-dom-test-utils.production.min';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import { ButtonGroup } from 'react-bootstrap';
+import Guard from './static/character/小弟.png';
 import Jay from './static/character/Jay.png';
 import Wang from './static/character/Wang.jpg';
 import KP from './static/character/KP.jpg';
@@ -68,7 +69,7 @@ class Game extends Component{
 
 
 
-        /*for(let j=0;j<4;j++){
+        for(let j=0;j<4;j++){
             for(let i=0;i<34;i++){
                 this.allCard[i*4+j]=i;
             }
@@ -76,12 +77,12 @@ class Game extends Component{
          for(let i=0;i<136;i++){//洗牌
              let idx=Math.floor(Math.random()*136);
              [this.allCard[i],this.allCard[idx]]=[this.allCard[idx],this.allCard[i]];//swap
-         }*/
-           this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,7,32,
-            1,2,3,4,5,6,7,7,9,1,2,3,4,5,6,31,
-            1,1,2,3,8,8,8,8,0,1,2,3,4,5,31,9,
-            32,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17,
-            33,27,28,29,30,32,22,21,20,21,23,32,24,15,15]//測試case用
+         }
+         // this.allCard=[27,27,27,28,28,28,29,29,29,30,30,30,31,31,7,32,
+         //  1,2,3,4,5,6,7,7,9,1,2,3,4,5,6,31,
+         //  1,1,2,3,8,8,8,8,0,1,2,3,4,5,31,9,
+         //  32,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17,
+         //  33,27,28,29,30,32,22,21,20,21,23,32,24,15,15]//測試case用
   //   this.player[0].skillID=4//韓國瑜
   //  this.player[1].skillID=3//柯文哲
         let allHP=JSON.parse(localStorage.getItem("HP"))
@@ -114,8 +115,8 @@ class Game extends Component{
         
         this.headpic=[]
         
+       this.headpic.push(Guard)
        this.headpic.push(Jay)
-       this.headpic.push(Jay)//ID=0暫時是結哥
        this.headpic.push(Wang)
        this.headpic.push(KP)
        this.headpic.push(Han)
