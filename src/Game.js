@@ -1113,7 +1113,8 @@ class Game extends Component{
         for(let i=0;i<4;i++){
             if(this.player[i].canATK){
                 damage=this.final_total*this.player[i].ATK_add+this.player[i].ATK_base
-                
+                if(this.player[i].skillID==1)
+                    damage*=2
             }
         }
         for(let i=0;i<4;i++){
