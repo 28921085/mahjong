@@ -980,9 +980,7 @@ class Game extends Component{
                 total+=2
                 show.push("平胡 2台")
             }
-            //地聽
 
-            //天聽
 
             //大小四喜
             let dong=0,nan=0,xi=0,bei=0,donot=0;//27 28 29 30
@@ -1066,6 +1064,10 @@ class Game extends Component{
                     total+=16
                     show.push("人胡 16台")
                 }
+            }
+            if(this.player[win].skillID==2){//王世堅技能
+                total+=5
+                show.push("睜眼說瞎話 5台")
             }
         
             if(total==0)
