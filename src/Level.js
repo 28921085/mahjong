@@ -176,6 +176,7 @@ class Level extends Component{
         let HP=[200+Number(localStorage.getItem("bonusHp")),200,200,200]
         let ATK=[[50+Number(localStorage.getItem("bonusAtk")*2),20+Number(localStorage.getItem("bonusAtk"))],[50,20],[50,20],[50,20]]
         chr[0]=playercharacterlist[Number(localStorage.getItem("character"))]
+        skill[0]= Number(localStorage.getItem("character"))+1
         localStorage.setItem("round",JSON.stringify(1))
         localStorage.setItem("doge",JSON.stringify(1))
         if(level==0){
