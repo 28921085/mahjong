@@ -6,6 +6,10 @@ import bgm from './進關.mp3'
 import JayGer from './Jay.mp3'
 import bgm_listen from './聽牌.mp3'
 import AutoScroll from './AutoScroll'
+import KP_sound from './bluegreen.mp3'
+import Han_sound from './Fada.m4a'
+import Over from './over.mp3'
+import Eye from './Eye.mp3'
 import FuncMenu from './FuncMenu';
 import Container from 'react-bootstrap/Container';
 import Background from './battle-background.png';
@@ -68,8 +72,11 @@ class Game extends Component{
         this.music_bgm=new Audio(bgm)
         this.music_bgm.loop=true
         this.music_bgm.play()
-
-
+        
+        this.blue_green=new Audio(KP_sound)
+        this.fa_da_tsai=new Audio(Han_sound)
+        this.over=new Audio(Over)
+        this.eye=new Audio(Eye)
 
         for(let j=0;j<4;j++){
             for(let i=0;i<34;i++){
@@ -306,6 +313,7 @@ class Game extends Component{
             if(skill<7&&index!=-1){
                 console.log("高雄發大財技能發動")
                 this.refresh("高雄發大財技能發動\n")
+                this.fa_da_tsai.play()
                 this.switch_card(index)
             }
             else
@@ -320,6 +328,7 @@ class Game extends Component{
             if(skill<7&&index!=-1){
                 console.log("垃圾不分藍綠技能發動")
                 this.refresh("垃圾不分藍綠技能發動\n")
+                this.blue_green.play()
                 this.switch_card(index)
             }
             else
@@ -1068,6 +1077,7 @@ class Game extends Component{
             if(this.player[win].skillID==2){//王世堅技能
                 total+=5
                 show.push("睜眼說瞎話 5台")
+                this.eye.play()
             }
         
             if(total==0)
@@ -1129,6 +1139,8 @@ class Game extends Component{
                 else{
                     this.result.push(<p class="result">{this.player[i].HP}->{this.player[i].HP-damage}</p>)
                     this.player[i].HP-=damage
+                    if(this.player[i].skillID==2&&this.player[i].HP<=0)
+                        this.over.play()
                 }
             }
             else{
