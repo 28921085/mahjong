@@ -43,6 +43,7 @@ class Game extends Component{
         this.playerKan=[]
         this.whoIsListen=[0,0,0,0]
         this.hasKaned=[]
+        this.final_total=0//總共幾台
         this.music_switch=1
         this.MIGI=1
         this.disable=false
@@ -95,6 +96,7 @@ class Game extends Component{
             this.player[setLocal].HP=allHP[skill[setLocal]]
             this.player[setLocal].ATK_base=allATK_base[skill[setLocal]]
             this.player[setLocal].ATK_add=allATK_add[skill[setLocal]]
+            console.log("ID"+this.player[setLocal].skillID+"ATK"+this.player[setLocal].ATK_base)
             console.log("skillID="+this.player[setLocal].skillID)
         }
         
@@ -272,7 +274,7 @@ class Game extends Component{
             change:true
         })
         if(this.allCard.length-this.current==16){//16
-            window.alert("流局 遊戲結束")
+            
             this.refresh("流局 遊戲結束")
             this.game_end=1;
             this.show_result()
@@ -759,7 +761,7 @@ class Game extends Component{
         this.show=false
         console.log("玩家選擇胡");
         this.refresh(this.player[0].playername+"胡牌 遊戲結束\n")
-        let loglist=this.calculate_reward(this.state.card,0)
+        let loglist=this.calculate_reward(this.state.card,this.now)
             for(let i=0;i<loglist.length;i++)
                 console.log(loglist[i])
         this.game_end=1
@@ -795,6 +797,14 @@ class Game extends Component{
     calculate_reward(card,who){//胡的那張牌 誰放槍
         let total=0,show=[],win=this.win;//win=誰胡牌
         let self=0,clear=0
+        this.player[this.win].canATK=1
+        if(who==win){
+            for(let i=0;i<4;i++)
+                if(!this.player[i].canATk)
+                    this.player[i].beATK=1
+        }
+        else    
+            this.player[who].beATK=1
         if(this.allCard.length-this.current==16){
             show.push("流局")
         }
@@ -1039,6 +1049,7 @@ class Game extends Component{
                 this.refresh(show[i]+"\n")
 
             }
+            this.final_total=total;
             this.refresh("總共 "+total+"台\n")
             show.push("總共 "+total+"台")
         }
@@ -1053,14 +1064,10 @@ class Game extends Component{
         this.result.push(<p class="title">統計結果</p>)
         //let showResult=setInterval(function(){
             console.log(this.result)
-        if(this.currentRound==4)
-            this.result.push(<input type="button" onClick={this.back()}>返回選關</input>)
-        else
-            this.result.push(<input type="button" onClick={this.next_round()}>下一回合</input>)
-        this.currentRound++
+        
         for(let i=0;i<show.length;i++){
             this.setState({
-                change:false
+                change:true
             })
             this.result.push(<p class="result">{show[i]}</p>)
 
@@ -1070,11 +1077,44 @@ class Game extends Component{
                 change:false
             })
         }
-        
-        
+        this.result.push(<Button onClick={()=>this.next_page()}>下一頁</Button>)
+        this.setState({
+            change:false
+        })
+    
+    }
+    next_page(){
+        this.result=[]
+        this.result.push(<p class="title">血量變更</p>)
+        let damage=0
+        for(let i=0;i<4;i++){
+            if(this.player[i].canATK)
+                damage=this.final_total*this.player[i].ATK_add+this.player[i].ATK_base
+        }
+        for(let i=0;i<4;i++){
+            if(this.player[i].beATK){
+                this.result.push(<p class="result">{this.player[i].HP}->{this.player[i].HP-damage}</p>)
+                this.player[i].HP-=damage
+            }
+            else{
+                this.result.push(<p class="result">{this.player[i].HP}->{this.player[i].HP}</p>)
+            }
+            this.setState({
+                change:false
+            })
+        }
 
+        if(this.currentRound==4)
+            this.result.push(<Button onClick={()=>this.back()}>返回選關</Button>)
+        else
+            this.result.push(<Button type="button" onClick={()=>this.next_round()}>下一回合</Button>)
+        this.currentRound++
+        this.setState({
+            change:false
+        })
     }
     next_round(){
+        
         this.setState({
             change:false
         })
@@ -1141,7 +1181,7 @@ class Game extends Component{
                 this.eat=this.next_can_eat(discard)
                 if(this.win!=-1){
                     //window.alert("玩家"+this.now.toString()+"自摸 遊戲結束")
-                    this.refresh("玩家"+this.now.toString()+"胡牌 遊戲結束"+"\n")
+                    this.refresh("玩家"+this.win.toString()+"胡牌 遊戲結束"+"\n")
                     let loglist=this.calculate_reward(discard,this.now)
                     for(let i=0;i<loglist.length;i++)
                         this.refresh(loglist[i]+"\n")
