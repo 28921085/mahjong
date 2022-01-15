@@ -83,9 +83,14 @@ class Game extends Component{
             33,27,28,29,30,32,22,21,20,21,23,32,24,15,15]//測試case用*/
   //   this.player[0].skillID=4//韓國瑜
   //  this.player[1].skillID=3//柯文哲
-        let allHP=[250,200,50,400,450,1000]
-        let allATK_base=[50,50,50,30,40,100] 
-        let allATK_add=[10,20,30,20,40,50]
+        let allHP=JSON.parse(localStorage.getItem("HP"))
+        let allATK=JSON.parse(localStorage.getItem("ATK"))
+        let allATK_base=[]
+        let allATK_add=[]
+        for(let i=0;i<allATK.length;i++){
+            allATK_base.push(allATK[i][0])
+            allATK_add.push(allATK[i][1])
+        }
         let characterName=JSON.parse(localStorage.getItem("characterName"))
         console.log("charaname"+characterName)
         let skill=JSON.parse(localStorage.getItem("skill"))
@@ -93,9 +98,9 @@ class Game extends Component{
         for(let setLocal=0;setLocal<4;setLocal++){
             this.player[setLocal].playername=characterName[setLocal]
             this.player[setLocal].skillID=skill[setLocal]
-            this.player[setLocal].HP=allHP[skill[setLocal]]
-            this.player[setLocal].ATK_base=allATK_base[skill[setLocal]]
-            this.player[setLocal].ATK_add=allATK_add[skill[setLocal]]
+            this.player[setLocal].HP=allHP[setLocal]
+            this.player[setLocal].ATK_base=allATK_base[setLocal]
+            this.player[setLocal].ATK_add=allATK_add[setLocal]
             console.log("ID"+this.player[setLocal].skillID+"ATK"+this.player[setLocal].ATK_base)
             console.log("skillID="+this.player[setLocal].skillID)
         }
@@ -1087,6 +1092,7 @@ class Game extends Component{
         this.result=[]
         this.result.push(<p class="title">血量變更</p>)
         let damage=0
+        let HPlist=[]
         for(let i=0;i<4;i++){
             if(this.player[i].canATK)
                 damage=this.final_total*this.player[i].ATK_add+this.player[i].ATK_base
@@ -1099,26 +1105,36 @@ class Game extends Component{
             else{
                 this.result.push(<p class="result">{this.player[i].HP}->{this.player[i].HP}</p>)
             }
+            HPlist.push(this.player[i].HP)
             this.setState({
                 change:false
             })
         }
-
+        if(this.player[2].skillID==2&&HPlist[2]<=0){//over my dead body
+            this.player[1].ATK_add*=2
+            this.player[1].ATK_base*=2
+            this.player[3].ATK_add*=2
+            this.player[3].ATK_base*=2
+        }
+        let ATKlist=[]
+        for(let i=0;i<4;i++){
+            let tmp=[]
+            tmp.push(this.player[1].ATK_base)
+            tmp.push(this.player[1].ATK_add)
+            ATKlist.push(tmp)
+        }
+        localStorage.setItem("HP",JSON.stringify(HPlist))
+        localStorage.setItem("ATK",JSON.stringify(ATKlist))
         if(this.currentRound==4)
             this.result.push(<Button onClick={()=>this.back()}>返回選關</Button>)
         else
-            this.result.push(<Button type="button" onClick={()=>this.next_round()}>下一回合</Button>)
+            this.result.push(<Button type="button" href="/Play">下一回合</Button>)
         this.currentRound++
         this.setState({
             change:false
         })
     }
-    next_round(){
-        
-        this.setState({
-            change:false
-        })
-    }
+    
     back(){
         this.setState({
             change:false
