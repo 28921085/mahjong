@@ -980,9 +980,7 @@ class Game extends Component{
                 total+=2
                 show.push("平胡 2台")
             }
-            //地聽
 
-            //天聽
 
             //大小四喜
             let dong=0,nan=0,xi=0,bei=0,donot=0;//27 28 29 30
@@ -1067,6 +1065,10 @@ class Game extends Component{
                     show.push("人胡 16台")
                 }
             }
+            if(this.player[win].skillID==2){//王世堅技能
+                total+=5
+                show.push("睜眼說瞎話 5台")
+            }
         
             if(total==0)
                 show.push("屁胡 0台")
@@ -1110,16 +1112,24 @@ class Game extends Component{
         this.result.push(<p class="title">血量變更</p>)
         let damage=0
         let HPlist=[]
+        let doge=JSON.parse(localStorage.getItem("doge"))
         for(let i=0;i<4;i++){
             if(this.player[i].canATK){
                 damage=this.final_total*this.player[i].ATK_add+this.player[i].ATK_base
-                
+                if(this.player[i].skillID==1)
+                    damage*=2
             }
         }
         for(let i=0;i<4;i++){
-            if(this.player[i].beATK&&!this.player[i].canATK){
-                this.result.push(<p class="result">{this.player[i].HP}->{this.player[i].HP-damage}</p>)
-                this.player[i].HP-=damage
+            if((this.player[i].beATK&&!this.player[i].canATK)){
+                if(this.player[i].skillID==3&&doge==1){
+                    this.result.push(<p class="result">{this.player[i].HP}->{this.player[i].HP}</p>)
+                    localStorage.setItem("doge",JSON.stringify(0))
+                }
+                else{
+                    this.result.push(<p class="result">{this.player[i].HP}->{this.player[i].HP-damage}</p>)
+                    this.player[i].HP-=damage
+                }
             }
             else{
                 this.result.push(<p class="result">{this.player[i].HP}->{this.player[i].HP}</p>)
