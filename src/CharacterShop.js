@@ -44,6 +44,7 @@ class CharacterShop extends Component{
     choose(character){
       localStorage.setItem('character', character);
       console.log(character)
+      
       this.now=character
       this.forceUpdate()
     }
@@ -136,7 +137,8 @@ class CharacterShop extends Component{
         'money':localStorage.getItem("money"),
         'lock':localStorage.getItem("lock"),
         'bonusHp':localStorage.getItem("bonusHp"),
-        "bonusAtk":localStorage.getItem("bonusAtk")
+        "bonusAtk":localStorage.getItem("bonusAtk"),
+        "character":localStorage.getItem("character")
       })
 
     }
@@ -153,10 +155,12 @@ class CharacterShop extends Component{
         this.bonusHp=data.bonusHp
         this.bonusAtk=data.bonusAtk
         this.money=data.money
+        
         localStorage.setItem("money",data.money)
         localStorage.setItem("lock",data.lock)
         localStorage.setItem("bonusHp",data.bonusHp)
         localStorage.setItem("bonusAtk",data.bonusAtk)
+        localStorage.setItem("character",data.character)
         this.forceUpdate()
       }
       console.log(JSON.stringify(data))
