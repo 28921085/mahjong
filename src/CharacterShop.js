@@ -4,6 +4,8 @@ import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import database from './firebase';
 class CharacterShop extends Component{
     constructor(props){
         super(props)
@@ -11,7 +13,7 @@ class CharacterShop extends Component{
           change:true,
           
       }
-      
+     
         if(localStorage.getItem("lock")==null){
           localStorage.setItem("lock",0)
       }
@@ -104,24 +106,72 @@ class CharacterShop extends Component{
       this.forceUpdate()
     }
     buyHp(){
-      localStorage.setItem("bonusHp", Number(localStorage.getItem("bonusHp"))+100)
-      this.bonusHp=localStorage.getItem("bonusHp")
-      localStorage.setItem("money", Number(localStorage.getItem("money"))-100)
-      this.money=localStorage.getItem("money")
-      this.forceUpdate()
+      if( Number(localStorage.getItem("money")-100)<0){
+        alert("餘額不足請信仰充值")
+      }else{
+        localStorage.setItem("bonusHp", Number(localStorage.getItem("bonusHp"))+100)
+        this.bonusHp=localStorage.getItem("bonusHp")
+        localStorage.setItem("money", Number(localStorage.getItem("money"))-100)
+        this.money=localStorage.getItem("money")
+        this.forceUpdate()
+      }
+     
     }
     buyAtk(){
+      if( Number(localStorage.getItem("money")-100)<0){
+        alert("餘額不足請信仰充值")
+      }else{
       localStorage.setItem("bonusAtk", Number(localStorage.getItem("bonusAtk"))+10)
       this.bonusAtk=localStorage.getItem("bonusAtk")
       localStorage.setItem("money", Number(localStorage.getItem("money"))-100)
       this.money=localStorage.getItem("money")
       this.forceUpdate()
+      }
+    }
+    save(){
+      console.log("in")
+      let code='test'
+      code=window.prompt("請輸入代號")
+      database.ref(code).set({
+        'money':localStorage.getItem("money"),
+        'lock':localStorage.getItem("lock"),
+        'bonusHp':localStorage.getItem("bonusHp"),
+        "bonusAtk":localStorage.getItem("bonusAtk")
+      })
+
+    }
+    load(){
+      let code=window.prompt("請輸入代號")
+      
+      fetch( "https://majohn-18fe6-default-rtdb.firebaseio.com/"+code+".json", { /*設定request內容*/})
+    .then(res => res.json()) /*把request json化*/
+    .then(data => {
+      if(data==null){
+        alert("查無此代號")
+      }else{
+        this.lock=data.lock
+        this.bonusHp=data.bonusHp
+        this.bonusAtk=data.bonusAtk
+        this.money=data.money
+        localStorage.setItem("money",data.money)
+        localStorage.setItem("lock",data.lock)
+        localStorage.setItem("bonusHp",data.bonusHp)
+        localStorage.setItem("bonusAtk",data.bonusAtk)
+        this.forceUpdate()
+      }
+      console.log(JSON.stringify(data))
+          /*接到request data後要做的事情*/
+    })
+    .catch(e => {
+        /*發生錯誤時要做的事情*/
+    })
     }
 render(props){
   console.log("rerender")
   let chrname=['Jay.png','Wang.jpg','KP.jpg','Han.png']
   let name=['阿傑', '王世堅' , '柯文哲' , '韓國瑜']  
   let tmpstyle={width:"18rem"}
+  let half={width:"9rem"}
     return  [<div class="container">
       
       <div class="row ">
@@ -130,6 +180,10 @@ render(props){
     
       {this.makeMyself(chrname[this.now],name[this.now],'傑哥不要!!')}
       <Button style={tmpstyle} href="/">回首頁</Button>
+      </Row>
+      <Row xs={1} md={2} className="g-12">
+      <Button style={half} onClick={()=>this.save()}>存檔</Button>
+      <Button style={half} onClick={()=>this.load()}>載入</Button>
       </Row>
       </div>
       
