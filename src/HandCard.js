@@ -328,7 +328,7 @@ class HandCard extends Component{
     }
 //    transform: rotate(45deg);
     
-    render(now,disable=false){
+    render(now,playernum,disable=false){
         
         this.list=[]
         this.list.push(<div/>);
@@ -345,6 +345,12 @@ class HandCard extends Component{
             //  console.log(<Card  key={this.have[i] }card={this.have[i]} playernum={this.playernum}  top={this.top}/>)
              this.list.push(<Card show={this.show} id={"player"+this.playernum} disable={!(now==this.playernum)||disable} key={i+Math.random() }card={this.have[i]} playernum={this.playernum}  top={this.top}/>)
              
+         }
+         if(now==0&&playernum==0){
+             this.list.push(<p class="log">輪到你瞜</p>)
+         }
+         else if(now==playernum){
+            this.list.push(<p class="log">換他打牌</p>)
          }
          this.list.push(<br/>)
          this.list.push(<br/>)
