@@ -1264,6 +1264,7 @@ class Game extends Component{
             this.kan=this.someone_can_kan(discard)
             this.pon=this.someone_can_pon(discard)
             this.eat=this.next_can_eat(discard)
+            console.log("贏 槓 碰 吃",this.win,this.kan,this.pon,this.eat)
             this.doPlayerCanDo(discard,()=>{ //利用 call back 達成
                 this.win=this.someone_can_win(discard)
                 this.kan=this.someone_can_kan(discard)
