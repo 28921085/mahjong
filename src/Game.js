@@ -1701,18 +1701,19 @@ JayClose(){
                         <div>{this.whoIsListen[1]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div>
                     </div>
                 </div>
-                ,<div class="tg-0pky" >
-                    <div id="player0-top">
-                                {(!(this.Jayuseskill)&&this.player[0].skillID==1)?<Button onClick={()=>this.JayShow()}>發動技能</Button>:<p></p>}
-                                <div key={Math.random()}>{this.Kan()}</div><div key={Math.random()}>{this.Eat()}</div>{this.show?
-                        <div><Button key={Math.random()} variant="primary"   onClick={()=>this.doEat()} disabled={!this.canDo[0]}>吃</Button>
-                            <Button key={Math.random()} variant="secondary" onClick={()=>this.doPon()} disabled={!this.canDo[1]}>碰</Button>
-                            <Button key={Math.random()}variant="success"  onClick={()=>this.doKan()} disabled={!this.canDo[2]}>槓</Button>
+                ,<div id="player0-top">
+                        {(!(this.Jayuseskill)&&this.player[0].skillID==1)?<Button onClick={()=>this.JayShow()}>發動技能</Button>:<p></p>}
+                        <div key={Math.random()}>{this.Kan()}</div><div key={Math.random()}>{this.Eat()}</div>{this.show?
+                <div><Button key={Math.random()} variant="primary" style={{zIndex:1000}}   onClick={()=>this.doEat()} disabled={!this.canDo[0]}>吃</Button>
+                    <Button key={Math.random()} variant="secondary" style={{zIndex:1000}} onClick={()=>this.doPon()} disabled={!this.canDo[1]}>碰</Button>
+                    <Button key={Math.random()}variant="success"  style={{zIndex:1000}} onClick={()=>this.doKan()} disabled={!this.canDo[2]}>槓</Button>
 
-                            <Button key={Math.random()}variant="danger"    onClick={()=>this.doWin()} disabled={!this.canDo[3]}>胡</Button>
-                            <Button key={Math.random()}variant="info"    onClick={()=>this.doCancel()}>取消</Button>
-                            :<div></div></div>:''}
-                        </div>
+                    <Button key={Math.random()}variant="danger"  style={{zIndex:1000}}  onClick={()=>this.doWin()} disabled={!this.canDo[3]}>胡</Button>
+                    <Button key={Math.random()}variant="info" style={{zIndex:1000}} onClick={()=>this.doCancel()}>取消</Button>
+                    :<div></div></div>:''}
+                </div>
+                ,<div class="tg-0pky" >
+                    
                             <div id="player0">{this.player[0].render(this.now,0,this.disable)}
                         <div>{this.whoIsListen[0]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div>
                         </div>
