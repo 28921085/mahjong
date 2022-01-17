@@ -42,11 +42,12 @@ class Start extends Component{
         </Badge></h1>
         <Button variant="secondary"href="/Level">開始遊戲</Button>
         <Button variant="outline-secondary"href="/CharacterShop">選擇角色</Button>
-        <Button variant="outline-secondary"href="/Teach">新手教學 <Badge pill bg="warning" >
-        new
+        <Button variant="outline-secondary"href="/Teach"> 新手教學&nbsp;&nbsp; <Badge pill bg="info" >
+        Teach!
         </Badge>
         </Button>
-        
+        <Button  variant="outline-secondary" href='https://docs.google.com/presentation/d/1NOcYmlnZvNXC_tV-i2ovAZ0hMZVa5e_lhATn5aAdB6Q/edit?usp=sharing'>查看我們的文件</Button>
+        <Button variant="outline-secondary" href='https://github.com/28921085/mahjong/commits/React/src'>Github</Button>
         </Stack>
     }
     
