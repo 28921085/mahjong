@@ -15,21 +15,31 @@ class HandCard extends Component{
         this.haveID=[]//no use
         this.num=[]//count card
         this.skillID=ID
+        this.cover=[]
+        this.show=false
+        //this.skillID=4//韓國榆
         this.showlist=[]//亮搭
+        this.cover=[]//判斷要不要蓋
         this.listenList=[]//聽牌名單
         this.alone=[]//孤張指數 電腦打牌用
         this.ker=[]//幾個刻子 判斷聽牌用 (手牌)
+        this.canATK=0//可以攻擊
+        this.beATK=0//會被攻擊
         for(let i=0;i<34;i++)
             this.ker.push(0)
         this.dark_ker=0//因暗槓產生的刻子
         this.ming_ker=0//因碰 名槓產生的刻子
+        this.playername="AI"
         for(let i=0;i<34;i++){
             this.num.push(0);
             this.alone.push(0);
         }
+        this.ATK_base=0;//底
+        this.ATK_add=0;//台
+        this.HP=0;//攻擊力and 血量
         this.playernum=props//who 打牌
         this.top=top
-        this.dsiable=props.disable
+        this.dsiable=top.disable
         this.state={
             have: this.have,
             key:this.playernum
@@ -43,14 +53,14 @@ class HandCard extends Component{
    remove(card){//card!=index     is distionary id
         console.log("打出"+this.dictionary[card])
     //    console.log(this.have)
-        console.log("打出前")
+        /*console.log("打出前")
         console.log(this.num)
-        console.log(this.have)
+        console.log(this.have)*/
         this.num[card]--
-        console.log("打出後")
-        console.log(this.num)
+        //console.log("打出後")
+       // console.log(this.num)
        this.have.splice(this.have.indexOf(card),1)
-       console.log(this.have)
+       //console.log(this.have)
        this.setState({
         have: this.have,
         key:this.playernum
@@ -318,19 +328,29 @@ class HandCard extends Component{
     }
 //    transform: rotate(45deg);
     
-    render(now,disable=false){
+    render(now,playernum,disable=false){
         
         this.list=[]
         this.list.push(<div/>);
         for(let i=0;i<this.showlist.length;i++){
-            this.list.push(<Card id={"player"+this.playernum} disable={true} key={i+Math.random() }card={this.showlist[i]} playernum={this.playernum}  top={this.top}/>)
+            if(this.cover[i]==1)
+            this.list.push(<Card show={true}id={"player"+this.playernum} disable={true} key={i+Math.random() }card={this.showlist[i]} playernum={this.playernum}  top={this.top}/>)
+             else{
+                this.list.push(<Card show={false||this.show}id={"player"+this.playernum} disable={true} key={i+Math.random() }card={this.showlist[i]} playernum={this.playernum}  top={this.top}/>)
              
+             }
          }
          this.list.push(<br/>)
          for(let i=0;i<this.have.length;i++){
             //  console.log(<Card  key={this.have[i] }card={this.have[i]} playernum={this.playernum}  top={this.top}/>)
-             this.list.push(<Card id={"player"+this.playernum} disable={!(now==this.playernum)||disable} key={i+Math.random() }card={this.have[i]} playernum={this.playernum}  top={this.top}/>)
+             this.list.push(<Card show={this.show} id={"player"+this.playernum} disable={!(now==this.playernum)||disable} key={i+Math.random() }card={this.have[i]} playernum={this.playernum}  top={this.top}/>)
              
+         }
+         if(now==0&&playernum==0){
+             this.list.push(<p class="log">輪到你瞜</p>)
+         }
+         else if(now==playernum){
+            this.list.push(<p class="log">換他打牌</p>)
          }
          this.list.push(<br/>)
          this.list.push(<br/>)

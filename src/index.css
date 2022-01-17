@@ -19,24 +19,112 @@ button{
   padding: 0;
 }
 #player1{
-  
- 
+  position: absolute;
+  overflow: left;
+  bottom: 40%;
+  left: 10%;
   transform: rotate(90deg);
 }
 #player2{
-  
-  
+  overflow: left;
+  top: 5%;
+  left:35%;
+  position: absolute;
   transform: rotate(180deg);
 }
 #player3{
- 
+  overflow: left;
+  position: absolute;
+  bottom: 40%;
+  left: 60%;
   transform: rotate(270deg);
 }
-
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{height:auto;border-color:black;border-style:solid;border-width:0px;font-family:Arial, sans-serif;font-size:14px;
-  overflow:visible;padding:10px 5px;word-break:normal;}
-.tg th{border-color:black;border-style:solid;border-width:0px;font-family:Arial, sans-serif;font-size:14px;
-  font-weight:normal;overflow:visible;padding:10px 5px;word-break:normal;}
-.tg .tg-3d1r{border-color:#ffc702;font-weight:bold;text-align:left;vertical-align:top}
-.tg .tg-im3k{border-color:#ffc702;text-align:left;vertical-align:top}
+#player0{
+  overflow: left;
+  position: absolute;
+  left:35%;
+  top:85%;
+}
+#player0-top{
+  position: absolute;
+  left:35%;
+  top:70%;
+}
+.log{
+  color: #ffc702;
+}
+.showlast{
+  color: #ffc702;
+  position: absolute;
+  top:30%;
+  left:35%;
+}
+.gamelog{
+  position: absolute;
+  width: 300px;
+  top:500px;
+  left:0px;
+  text-align: justify;
+  font-family: "cwTeXFangSong",serif ;
+  white-space: pre-wrap;
+}
+.winlog{
+  position:absolute;
+  top:500px;
+  right:500px;
+  color:white;
+}
+.title{
+  color: coral;
+  font-weight: bold;
+  width:70px;
+  background-color: darkgreen;
+}
+.result{
+  color:white;
+  background-color: green;
+  font-family: serif;
+  width:60px;
+  text-shadow: -4px 4px 6px dimgray;
+  width:100px;
+}
+.discard{
+  position: absolute;
+  top:40%;
+  left:35%;
+}
+.player{
+  position: absolute;
+  top:85%;
+  left:70%;
+} 
+.enemy1{
+  position: absolute;
+  top: 40%;
+  right:10%;
+}
+.enemy2{
+  position: absolute;
+  top:4%;
+  left:25%;
+}
+.enemy3{
+  position: absolute;
+  bottom: 40%;
+  left:10%;
+}
+.head{
+  width: 100px;
+  height: 100px;
+}
+.blood{
+  background-color: red;
+  height: 20px;
+  color: white;
+  text-align: center;
+  width:100px;
+}
+.pict{
+  width: 1000px;
+  height: 600px;
+}
