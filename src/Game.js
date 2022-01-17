@@ -6,9 +6,9 @@ import bgm from './進關.mp3'
 import JayGer from './Jay.mp3'
 import bgm_listen from './聽牌.mp3'
 import AutoScroll from './AutoScroll'
-import KP_sound from './bluegreen.mp3'
+import KP_sound from './Bluegreen.mp3'
 import Han_sound from './Fada.m4a'
-import Over from './over.mp3'
+import Over from './Over.mp3'
 import Eye from './Eye.mp3'
 import FuncMenu from './FuncMenu';
 import Container from 'react-bootstrap/Container';
@@ -342,9 +342,11 @@ class Game extends Component{
         this.player[this.now].have.push(this.allCard[this.current++])
         //judge kan win
         this.win=this.self_win(card)
-        this.kan=this.light_kan()
+        this.kan=-1//this.light_kan()
         this._kan=this.dark_kan()
         console.log(this.win+"545")
+        this.pon=-1
+        this.eat=-1
         this.doPlayerCanDo(card,()=>{
             console.log(this.win)
             if(this.win!=-1){
@@ -800,7 +802,7 @@ class Game extends Component{
         this.canDo=[0,0,0,0]
         this.show=false
 
-        this.now=(this.tempNow+1)%4
+       
         console.log("玩家選擇取消");
         this.showEat=false
         this.showKan=false
@@ -812,14 +814,16 @@ class Game extends Component{
             this.pon=-1
             this.kan=-1
         }
-        else if(this.now){
+        else if(this.now!=0){
+            this.now=(this.tempNow+1)%4
             this.draw()
             this.botsent()
         }
-        else {
+        else { 
+           
             this.eat=-1
             this.pon=-1
-            this.draw()
+            // this.draw()
         }
 
         this.showKan=false
@@ -1161,10 +1165,11 @@ class Game extends Component{
             let ATKlist=[]
             for(let i=0;i<4;i++){
                 let tmp=[]
-                tmp.push(this.player[1].ATK_base)
-                tmp.push(this.player[1].ATK_add)
+                tmp.push(this.player[i].ATK_base)
+                tmp.push(this.player[i].ATK_add)
                 ATKlist.push(tmp)
             }
+            console.log("setAtk*"+JSON.stringify(ATKlist))
             localStorage.setItem("HP",JSON.stringify(HPlist))
             localStorage.setItem("ATK",JSON.stringify(ATKlist))
         }
