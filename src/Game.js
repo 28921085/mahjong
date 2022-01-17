@@ -1557,7 +1557,7 @@ JayClose(){
                 <tbody>
                 <tr>
 
-                    <td class="tg-0pky" colspan="2" align = "center" ><div id="player2">{this.player[2].render(this.now)}
+                    <td class="tg-0pky" colspan="2" align = "center" ><div id="player2">{this.player[2].render(this.now,2)}
                     <div>{this.whoIsListen[2]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div>
                     </div></td>
                     <td class="tg-0pky"></td>
@@ -1580,10 +1580,10 @@ JayClose(){
                     </td>
                 </tr>
                 <tr>
-                <td class="tg-0pky" rowspan="2" width="50%"align="center"><div id="player1">{this.player[3].render(this.now)}
+                <td class="tg-0pky" rowspan="2" width="50%"align="center"><div id="player1">{this.player[3].render(this.now,3)}
                 <div>{this.whoIsListen[3]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div></div></td>
 
-                    <td class="tg-0pky" rowspan="2" width="50%" align="center"><div id="player3">{this.player[1].render(this.now)}
+                    <td class="tg-0pky" rowspan="2" width="50%" align="center"><div id="player3">{this.player[1].render(this.now,1)}
                     <div>{this.whoIsListen[1]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div>
                     </div></td>
 
@@ -1618,7 +1618,7 @@ JayClose(){
                 <Button key={Math.random()}variant="danger"    onClick={()=>this.doWin()} disabled={!this.canDo[3]}>胡</Button>
                 <Button key={Math.random()}variant="info"    onClick={()=>this.doCancel()}>取消</Button>
                 :<div></div></div>:''}
-                        <div id="player0">{this.player[0].render(this.now,this.disable)}
+                        <div id="player0">{this.player[0].render(this.now,0,this.disable)}
                     <div>{this.whoIsListen[0]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div>
                     </div></td>
                     <td class="tg-0pky"></td>
