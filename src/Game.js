@@ -3,13 +3,13 @@ import HandCard from './HandCard'
 import Card from './Card'
 import mp3 from './sleep.mp3'
 import bgm from './進關.mp3'
-import JayGer from './jay.mp3'
+import JayGer from './Jay.mp3'
 import bgm_listen from './聽牌.mp3'
 import AutoScroll from './AutoScroll'
 import KP_sound from './bluegreen.mp3'
-import Han_sound from './fada.m4a'
+import Han_sound from './Fada.m4a'
 import Over from './over.mp3'
-import Eye from './eye.mp3'
+import Eye from './Eye.mp3'
 import FuncMenu from './FuncMenu';
 import Container from 'react-bootstrap/Container';
 import Background from './battle-background.png';
