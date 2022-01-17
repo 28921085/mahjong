@@ -20,23 +20,27 @@ button{
 }
 #player1{
   position: absolute;
+  overflow: left;
   bottom: 40%;
   left: 10%;
   transform: rotate(90deg);
 }
 #player2{
+  overflow: left;
   top: 5%;
   left:35%;
   position: absolute;
   transform: rotate(180deg);
 }
 #player3{
+  overflow: left;
   position: absolute;
   bottom: 40%;
   left: 60%;
   transform: rotate(270deg);
 }
 #player0{
+  overflow: left;
   position: absolute;
   left:35%;
   top:85%;
