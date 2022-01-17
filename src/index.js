@@ -31,7 +31,11 @@ ReactDOM.render(
               <Route exact path='/Level' element={<Level/>} />
               <Route path='/Play' element={
               <div style={{ 
-                backgroundImage: `url(${Background})` 
+                height: '100%',
+                width: '100%',
+                backgroundImage: `url(${Background})` ,
+                backgroundSize: '100% 100%',
+                backgroundRepeat:'repeat-x',
               }}><Game/></div>} />
               <Route path='/Dialog' element={<Dialog say={['大家好','謝謝大家']}/>} />
               <Route path='/CharacterShop' element={<CharacterShop/>} />
