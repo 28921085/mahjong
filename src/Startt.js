@@ -2,11 +2,27 @@ import React, { Component } from 'react';
 import Stack from 'react-bootstrap/Stack';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
+
 import bg from './home.jpg'
+
+import { Container } from 'react-bootstrap';
+
 class Start extends Component{
      style={
         textAlign:'center',
-        backgroundImage: `url(${bg})`
+        backgroundImage: `url(${bg})`,
+        backgroundSize: 'cover',
+        height:"100vmin",
+        // width:"100vmin",
+        marginLeft:"1px",
+        marginRight:"0",
+        backgroundColor:"green",
+        // backgroundAttachment:'fixed',
+        // borderTop:"15%",
+        // margin:"0",
+       
+backgroundPosition: 'center'
+
     }
     constructor(){
       super()
@@ -38,7 +54,9 @@ class Start extends Component{
     }
     
     render(){
-      return  <Stack gap={5} className="col-md-5 mx-auto" style={this.style}>
+      return <Container className="mx-auto" style={this.style}> 
+      <div style={{height:"15%"}}></div>
+      <Stack gap={5} className="col-md-5 mx-auto">
           <h1>麻將<Badge pill bg="success" >
         RPG
         </Badge></h1>
@@ -48,9 +66,10 @@ class Start extends Component{
         Teach!
         </Badge>
         </Button>
-        <Button  variant="outline-secondary" href='https://docs.google.com/presentation/d/1NOcYmlnZvNXC_tV-i2ovAZ0hMZVa5e_lhATn5aAdB6Q/edit?usp=sharing'>查看我們的文件</Button>
-        <Button variant="outline-secondary" href='https://github.com/28921085/mahjong/commits/React/src'>Github</Button>
+        <Button  target="_blank" variant="outline-secondary" href='https://docs.google.com/presentation/d/1NOcYmlnZvNXC_tV-i2ovAZ0hMZVa5e_lhATn5aAdB6Q/edit?usp=sharing'>查看我們的文件</Button>
+        <Button target="_blank" variant="outline-secondary" href='https://github.com/28921085/mahjong/commits/React/src'>Github</Button>
         </Stack>
+        </Container> 
     }
     
 }
