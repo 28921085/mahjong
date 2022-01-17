@@ -209,7 +209,8 @@ class Game extends Component{
     }
     //ex:碰7萬之後 自己在摸到一張7萬
     light_kan(){//明槓
-
+        if(this.AIcannotdo(this.now))
+            return -1
         let kanlist=[];//可能一回合槓很多次
         //找亮搭的堆 如果手牌中有一張牌已經碰過
         let tmp=this.player[this.now].showlist
@@ -243,7 +244,14 @@ class Game extends Component{
         else
             return kanlist[0];
     }
+    AIcannotdo(i){
+        if(i!=0&&this.player[i].listenList.length!=0)
+            return true
+        return false
+    }
     dark_kan(){//暗槓
+        if(this.AIcannotdo(this.now))
+            return -1
         let kanlist=[];//一回合可能槓很多次 選擇要槓哪張
 
         for(let i=0;i<34;i++){
@@ -399,7 +407,7 @@ class Game extends Component{
         let n=this.now;
          let ans=-1;//無人能碰
          for(let i=0;i<4;i++)
-             if(n!=i&&this.player[i].num[card]>=2)//不能碰自己&該牌>=2
+             if(n!=i&&this.player[i].num[card]>=2&&(!this.AIcannotdo(i)))//不能碰自己&該牌>=2
                  ans=i;
          /*if(ans==0){//玩家決定要不要碰
             if(this.kan!=-1)
@@ -417,7 +425,7 @@ class Game extends Component{
         let next=(n+1)%4;
         let ans=-1;
         for(let i=0;i<4;i++)
-            if(i!=n&&i!=next&&this.player[i].num[card]==3)//不能槓自己跟上家
+            if(i!=n&&i!=next&&this.player[i].num[card]==3&&!(this.AIcannotdo(i)))//不能槓自己跟上家
                 ans= i;
         // if(ans==0){
         //     // let reply=window.prompt("要槓嗎?(0=不槓 else=槓)","0");
@@ -442,6 +450,8 @@ class Game extends Component{
         str[1]="不吃 "
         str[2]="不吃 "
         //字牌不處理 n 吃 n-1 n-2
+        if(this.AIcannotdo(i))
+            return -1
         if(card<27&&card%9>1&&tmp[card-2]>0&&tmp[card-1]>0){
             this.k[0]=1
             this.eatCard[0]=[card-2,card-1]
