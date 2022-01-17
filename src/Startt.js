@@ -67,7 +67,7 @@ backgroundPosition: 'center'
         </Badge>
         </Button>
         <Button  target="_blank" variant="outline-secondary" href='https://docs.google.com/presentation/d/1NOcYmlnZvNXC_tV-i2ovAZ0hMZVa5e_lhATn5aAdB6Q/edit?usp=sharing'>查看我們的文件</Button>
-        <Button target="_blank" variant="outline-secondary" href='https://github.com/28921085/mahjong/commits/React/src'>Github</Button>
+        <Button target="_blank" variant="outline-secondary" href='https://github.com/28921085/mahjong'>Github</Button>
         </Stack>
         </Container> 
     }

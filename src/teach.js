@@ -4,13 +4,17 @@ import img1 from './teach/教學1.png'
 import img2 from './teach/胡牌後.png'
 import img3 from './teach/結算.png'
 import img4 from './teach/算台.png'
+
 class Teach extends Component{
     constructor(props){
         super(props)
 
     }
     render(){
-        return [
+        return <div style={{backgroundColor:"lightgray" ,float:'left'}}> <Button href='./'>返回首頁</Button>
+        <div style={{textAlign:'center' ,}}>
+           
+            {[
             <h1 align="center">新手教學</h1>,
             <p>可以先看基本台麻規則
                 <a href="https://zh.wikipedia.org/wiki/%E5%8F%B0%E7%81%A3%E9%BA%BB%E5%B0%87" target="_blank">WIKI</a>
@@ -61,7 +65,7 @@ class Teach extends Component{
             <p>看到這裡辛苦你了</p>,
             <p>祝你有個美好的遊戲體驗</p>,
             <p>開發者00857115呂宗祐 00857029陳冠樺</p>
-        ]
+        ]}<Button href='./'>返回首頁</Button></div></div>
     }
 }
 export default Teach
