@@ -6,9 +6,9 @@ import bgm from './進關.mp3'
 import JayGer from './Jay.mp3'
 import bgm_listen from './聽牌.mp3'
 import AutoScroll from './AutoScroll'
-import KP_sound from './Bluegreen.mp3'
+import KP_sound from './bluegreen.mp3'
 import Han_sound from './Fada.m4a'
-import Over from './Over.mp3'
+import Over from './over.mp3'
 import Eye from './Eye.mp3'
 import FuncMenu from './FuncMenu';
 import Container from 'react-bootstrap/Container';
