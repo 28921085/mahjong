@@ -20,7 +20,7 @@ button{
 }
 #player1{
   position: absolute;
-  top: 330px;
+  bottom: 40%;
   left: 10%;
   transform: rotate(90deg);
 }
@@ -32,7 +32,7 @@ button{
 }
 #player3{
   position: absolute;
-  top: 330px;
+  bottom: 40%;
   left: 60%;
   transform: rotate(270deg);
 }
@@ -91,23 +91,23 @@ button{
 }
 .player{
   position: absolute;
-  top:630px;
-  left:1100px;
+  top:90%;
+  left:72%;
 } 
 .enemy1{
   position: absolute;
-  top:350px;
-  left:1270px;
+  top: 40%;
+  right:10%;
 }
 .enemy2{
   position: absolute;
-  top:5px;
-  left:340px;
+  top:4%;
+  left:25%;
 }
 .enemy3{
   position: absolute;
-  top:350px;
-  left:170px;
+  bottom: 40%;
+  left:10%;
 }
 .head{
   width: 100px;
