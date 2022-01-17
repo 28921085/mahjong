@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import Stack from 'react-bootstrap/Stack';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
+import bg from './home.jpg'
 class Start extends Component{
      style={
-        textAlign:'center'
+        textAlign:'center',
+        backgroundImage: `url(${bg})`
     }
     constructor(){
       super()
