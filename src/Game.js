@@ -201,7 +201,7 @@ class Game extends Component{
     printArrayCard(array,start=0,who=0){
         let all=[]
         for(let k= start;k<array.length;k++){
-            all.push(<Card key={Math.random()}show={0} playernum={who} card={array[k]}/>)
+            all.push(<Card key={Math.random()}show={0} playernum={who} z-index='9' card={array[k] }/>)
             if(k%14==13)
                 all.push(<br></br>)
         }
@@ -1710,7 +1710,7 @@ JayClose(){
                 ,,<br/>
                 ,,<hr></hr>
             ],[/*this.printArrayCard(this.allCard,this.current),*/<br/>,<hr/>
-                ,<p class="discard">{this.printArrayCard(this.dropedCard)}</p>]
+                ,<p class="discard">{this.game_end==1?".":this.printArrayCard(this.dropedCard)}</p>]
 
             ]
         }
