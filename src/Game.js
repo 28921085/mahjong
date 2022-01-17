@@ -202,6 +202,8 @@ class Game extends Component{
         let all=[]
         for(let k= start;k<array.length;k++){
             all.push(<Card key={Math.random()}show={0} playernum={who} card={array[k]}/>)
+            if(k%17==16)
+                all.push(<br></br>)
         }
         return all
     }
@@ -336,7 +338,7 @@ class Game extends Component{
                 console.log("垃圾不分藍綠發動失敗")
 
         }
-        console.log("剩"+(this.allCard.length-this.current).toString()+"張牌")
+        
         console.log("玩家"+this.now.toString()+"抽")
         let card=this.allCard[this.current]
         this.player[this.now].num[card]++//num++
@@ -1557,9 +1559,7 @@ JayClose(){
                 <tbody>
                 <tr>
 
-                    <td class="tg-0pky" colspan="2" align = "center" ><div id="player2">{this.player[2].render(this.now,2)}
-                    <div>{this.whoIsListen[2]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div>
-                    </div></td>
+                    
                     <td class="tg-0pky"></td>
                 </tr>
                 <tr>
@@ -1575,17 +1575,10 @@ JayClose(){
                 <td>.</td>
                     </tr>
                 <tr>
-                    <td align='right' class="log">當前打出:
-                    {<Card id={"player0"} disable={true} key={Math.random() }card={this.lastcard} playernum={0}  />}
-                    </td>
+                    <td>.</td>
                 </tr>
                 <tr>
-                <td class="tg-0pky" rowspan="2" width="50%"align="center"><div id="player1">{this.player[3].render(this.now,3)}
-                <div>{this.whoIsListen[3]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div></div></td>
-
-                    <td class="tg-0pky" rowspan="2" width="50%" align="center"><div id="player3">{this.player[1].render(this.now,1)}
-                    <div>{this.whoIsListen[1]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div>
-                    </div></td>
+                    <td>.</td>
 
                 </tr>
                 <tr >
@@ -1607,31 +1600,43 @@ JayClose(){
                 <td>.</td>
                 </tr>
                 <tr>
-
-                    <td class="tg-0pky" colspan="2" align = "center">
-                    {(!(this.Jayuseskill)&&this.player[0].skillID==1)?<Button onClick={()=>this.JayShow()}>發動技能</Button>:<p></p>}
-                    <div key={Math.random()}>{this.Kan()}</div><div key={Math.random()}>{this.Eat()}</div>{this.show?
-            <div><Button key={Math.random()} variant="primary"   onClick={()=>this.doEat()} disabled={!this.canDo[0]}>吃</Button>
-                <Button key={Math.random()} variant="secondary" onClick={()=>this.doPon()} disabled={!this.canDo[1]}>碰</Button>
-                <Button key={Math.random()}variant="success"  onClick={()=>this.doKan()} disabled={!this.canDo[2]}>槓</Button>
-
-                <Button key={Math.random()}variant="danger"    onClick={()=>this.doWin()} disabled={!this.canDo[3]}>胡</Button>
-                <Button key={Math.random()}variant="info"    onClick={()=>this.doCancel()}>取消</Button>
-                :<div></div></div>:''}
-                        <div id="player0">{this.player[0].render(this.now,0,this.disable)}
-                    <div>{this.whoIsListen[0]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div>
-                    </div></td>
-                    <td class="tg-0pky"></td>
+                <td>.</td>
                 </tr>
                 <tr>
-                    <td align="left" class="log">
-                        <div>
-
-                            </div>
-
-                        
-
-                    </td>
+                <td>.</td>
+                </tr>
+                <tr>
+                <td>.</td>
+                </tr>
+                <tr>
+                <td>.</td>
+                </tr>
+                <tr>
+                <td>.</td>
+                </tr>
+                <tr>
+                <td>.</td>
+                </tr>
+                <tr>
+                <td>.</td>
+                </tr>
+                <tr>
+                <td>.</td>
+                </tr>
+                <tr>
+                <td>.</td>
+                </tr>
+                <tr>
+                <td>.</td>
+                </tr>
+                <tr>
+                <td>.</td>
+                </tr>
+                <tr>
+                <td>.</td>
+                </tr>
+                <tr>
+                <td>.</td>
                 </tr>
                 </tbody>
                 </table>,
@@ -1643,6 +1648,39 @@ JayClose(){
                 <div>
                     <Container className="winlog" key={Math.random()}>{this.result}</Container>
                 </div>
+                ,
+                <div class="tg-0pky"  >   
+                    <div id="player2">{this.player[2].render(this.now,2)}
+                        <div>{this.whoIsListen[2]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div>
+                    </div>
+                </div>
+                ,<div class="tg-0pky" >
+                    <div id="player1">{this.player[3].render(this.now,3)}
+                        <div>{this.whoIsListen[3]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div>
+                    </div>
+                </div>
+                ,<div class="tg-0pky" >  
+                    <div id="player3">{this.player[1].render(this.now,1)}
+                        <div>{this.whoIsListen[1]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div>
+                    </div>
+                </div>
+                ,<div class="tg-0pky" >
+                    <div id="player0-top">
+                                {(!(this.Jayuseskill)&&this.player[0].skillID==1)?<Button onClick={()=>this.JayShow()}>發動技能</Button>:<p></p>}
+                                <div key={Math.random()}>{this.Kan()}</div><div key={Math.random()}>{this.Eat()}</div>{this.show?
+                        <div><Button key={Math.random()} variant="primary"   onClick={()=>this.doEat()} disabled={!this.canDo[0]}>吃</Button>
+                            <Button key={Math.random()} variant="secondary" onClick={()=>this.doPon()} disabled={!this.canDo[1]}>碰</Button>
+                            <Button key={Math.random()}variant="success"  onClick={()=>this.doKan()} disabled={!this.canDo[2]}>槓</Button>
+
+                            <Button key={Math.random()}variant="danger"    onClick={()=>this.doWin()} disabled={!this.canDo[3]}>胡</Button>
+                            <Button key={Math.random()}variant="info"    onClick={()=>this.doCancel()}>取消</Button>
+                            :<div></div></div>:''}
+                        </div>
+                            <div id="player0">{this.player[0].render(this.now,0,this.disable)}
+                        <div>{this.whoIsListen[0]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div>
+                        </div>
+                </div>
+
                 ,<div class="player">
                     <img class="head" src={this.headpic[this.player[0].skillID] }></img>,
                     <div class="blood" width={this.player[0].HP.toString()+'px'}>{this.player[0].HP}</div>
@@ -1658,14 +1696,19 @@ JayClose(){
                 ,<div class="enemy3">
                     <img class="head" src={this.headpic[this.player[3].skillID] }></img>,
                     <div class="blood" width={this.player[3].HP.toString()+'px'}>{this.player[3].HP}</div>
+                </div>  
+                ,<div class="showlast">當前打出:
+                    {<Card id={"player0"} disable={true} key={Math.random() }card={this.lastcard} playernum={0}  />}
+                    <br></br>剩餘{this.allCard.length-this.current-16}張牌
                 </div>
+
                 ,<h1 align="center"></h1>
                 ,,<br/>
                 ,,<br/>
                 ,,<br/>
                 ,,<hr></hr>
             ],[/*this.printArrayCard(this.allCard,this.current),*/<br/>,<hr/>
-                ,this.printArrayCard(this.dropedCard)]
+                ,<p class="discard">{this.printArrayCard(this.dropedCard)}</p>]
 
             ]
         }

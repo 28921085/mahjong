@@ -19,21 +19,41 @@ button{
   padding: 0;
 }
 #player1{
-  
- 
+  position: absolute;
+  top: 330px;
+  left: 10%;
   transform: rotate(90deg);
 }
 #player2{
-  
-  
+  top: 5%;
+  left:35%;
+  position: absolute;
   transform: rotate(180deg);
 }
 #player3{
- 
+  position: absolute;
+  top: 330px;
+  left: 60%;
   transform: rotate(270deg);
+}
+#player0{
+  position: absolute;
+  left:35%;
+  top:85%;
+}
+#player0-top{
+  position: absolute;
+  left:35%;
+  top:80%;
 }
 .log{
   color: #ffc702;
+}
+.showlast{
+  color: #ffc702;
+  position: absolute;
+  top:30%;
+  left:35%;
 }
 .gamelog{
   position: absolute;
@@ -47,7 +67,7 @@ button{
 .winlog{
   position:absolute;
   top:500px;
-  left:700px;
+  right:500px;
   color:white;
 }
 .title{
@@ -64,25 +84,30 @@ button{
   text-shadow: -4px 4px 6px dimgray;
   width:100px;
 }
+.discard{
+  position: absolute;
+  top:380px;
+  left:35%;
+}
 .player{
   position: absolute;
   top:630px;
-  left:380px;
+  left:1100px;
 } 
 .enemy1{
   position: absolute;
   top:350px;
-  left:1200px;
+  left:1270px;
 }
 .enemy2{
   position: absolute;
-  top:20px;
-  left:1250px;
+  top:5px;
+  left:340px;
 }
 .enemy3{
   position: absolute;
   top:350px;
-  left:200px;
+  left:170px;
 }
 .head{
   width: 100px;
@@ -93,15 +118,9 @@ button{
   height: 20px;
   color: white;
   text-align: center;
+  width:100px;
 }
 .pict{
   width: 1000px;
   height: 600px;
 }
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{height:auto;border-color:black;border-style:solid;border-width:0px;font-family:Arial, sans-serif;font-size:14px;
-  overflow:visible;padding:10px 5px;word-break:normal;}
-.tg th{border-color:black;border-style:solid;border-width:0px;font-family:Arial, sans-serif;font-size:14px;
-  font-weight:normal;overflow:visible;padding:10px 5px;word-break:normal;}
-.tg .tg-3d1r{border-color:#ffc702;font-weight:bold;text-align:left;vertical-align:top}
-.tg .tg-im3k{border-color:#ffc702;text-align:left;vertical-align:top}
