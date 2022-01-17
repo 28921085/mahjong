@@ -1198,7 +1198,7 @@ class Game extends Component{
                 localStorage.setItem("lock",JSON.stringify(Math.max(lock,stage)))
                 this.result.push(<p class="title">勝利!</p>)
                 if(this.player[0].skillID==4){
-                    this.result(<p class="title">國瑜發大財發動</p>)
+                    this.result.push(<p class="title">國瑜發大財發動</p>)
                     localStorage.setItem("money",Number(localStorage.getItem("money"))+2000)
                 }else{
 
