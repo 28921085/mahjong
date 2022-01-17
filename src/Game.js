@@ -201,7 +201,7 @@ class Game extends Component{
     printArrayCard(array,start=0,who=0){
         let all=[]
         for(let k= start;k<array.length;k++){
-            all.push(<Card key={Math.random()}show={0} playernum={who} z-index='9' card={array[k] }/>)
+            all.push(<Card key={Math.random()}show={0} disable={true} playernum={who} z-index='9' card={array[k] }/>)
             if(k%14==13)
                 all.push(<br></br>)
         }
