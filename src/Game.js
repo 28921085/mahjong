@@ -1178,7 +1178,10 @@ class Game extends Component{
         }
         if(this.currentRound>=4){
             if(HPlist[1]<0&&HPlist[2]<0&&HPlist[3]<0&&HPlist[0]>0){
-                console.log("勝利")
+                console.log("勝利") 
+                let lock=parseInt(JSON.parse(localStorage.getItem("lock")))+1
+                let stage=parseInt(JSON.parse(localStorage.getItem("level")))
+                localStorage.setItem("lock",JSON.stringify(Math.max(lock,stage)))
                 this.result.push(<p class="title">勝利!</p>)
                 if(this.player[0].skillID==4){
                     this.result(<p class="title">國瑜發大財發動</p>)
@@ -1192,9 +1195,9 @@ class Game extends Component{
                 console.log("失敗")
             }
             this.result.push(<Button type="button" href="/Level">返回選關</Button>)
-            let stage=parseInt(JSON.parse(localStorage.getItem("level")))
-            let lock=parseInt(JSON.parse(localStorage.getItem("lock")))+1
-            localStorage.setItem("lock",JSON.stringify(Math.max(lock,stage)))
+            
+           
+            
         }
         else
             this.result.push(<Button type="button" href="/Play">下一回合</Button>)
