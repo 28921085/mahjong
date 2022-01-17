@@ -6,9 +6,9 @@ import bgm from './進關.mp3'
 import JayGer from './Jay.mp3'
 import bgm_listen from './聽牌.mp3'
 import AutoScroll from './AutoScroll'
-import KP_sound from './bluegreen.mp3'
+import KP_sound from './Bluegreen.mp3'
 import Han_sound from './Fada.m4a'
-import Over from './over.mp3'
+import Over from './Over.mp3'
 import Eye from './Eye.mp3'
 import FuncMenu from './FuncMenu';
 import Container from 'react-bootstrap/Container';
@@ -202,7 +202,7 @@ class Game extends Component{
         let all=[]
         for(let k= start;k<array.length;k++){
             all.push(<Card key={Math.random()}show={0} playernum={who} card={array[k]}/>)
-            if(k%17==16)
+            if(k%14==13)
                 all.push(<br></br>)
         }
         return all
@@ -1645,10 +1645,10 @@ JayClose(){
                         <AutoScroll sa={this.game_record}/>
                     </p>          
                 </div>,
-                <div>
-                    <Container className="winlog" key={Math.random()}>{this.result}</Container>
-                </div>
-                ,
+                
+                    
+              
+                
                 <div class="tg-0pky"  >   
                     <div id="player2">{this.player[2].render(this.now,2)}
                         <div>{this.whoIsListen[2]?<Button key={Math.random()} variant="dark" >聽</Button>:""}</div>
@@ -1697,7 +1697,9 @@ JayClose(){
                     <img class="head" src={this.headpic[this.player[3].skillID] }></img>,
                     <div class="blood" width={this.player[3].HP.toString()+'px'}>{this.player[3].HP}</div>
                 </div>  
-                ,<div class="showlast">當前打出:
+                ,<div class="showlast">
+                    <Container z-index="10" key={Math.random()}>{this.result}</Container>
+                    當前打出:
                     {<Card id={"player0"} disable={true} key={Math.random() }card={this.lastcard} playernum={0}  />}
                     <br></br>剩餘{this.allCard.length-this.current-16}張牌
                 </div>
