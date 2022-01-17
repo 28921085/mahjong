@@ -299,7 +299,8 @@ class Game extends Component{
             
             this.refresh("流局 遊戲結束")
             this.game_end=1;
-            this.show_result()
+            // this.calculate_reward()
+            this.show_result(['流局'])
             //結算
             this.setState({
                 change:false
@@ -833,6 +834,7 @@ class Game extends Component{
     }
     //算台
     calculate_reward(card,who){//胡的那張牌 誰放槍
+        
         let total=0,show=[],win=this.win;//win=誰胡牌
         let self=0,clear=0
         this.player[this.win].canATK=1
